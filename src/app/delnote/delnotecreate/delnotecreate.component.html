@@ -1,0 +1,145 @@
+<h4>Create Delivery Note</h4> 
+<div class="container">
+<section class="delnote-form">
+  <form (ngSubmit)="onSave()" [formGroup]="delnoteform" class="ordernote-form">
+
+  <mat-grid-list cols="1" rowHeight="65px">
+    <mat-grid-tile>
+      <div class="header">
+        <mat-form-field class="delnotehead">
+          <input 
+            matInput 
+            [matDatepicker]="picker" 
+            [max]="maxDate"
+            placeholder="Document Date"
+            formControlName="DelNoteDocDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="delnotehead">
+            <input 
+              matInput 
+              [matDatepicker]="picker2" 
+              [max]="maxDate"
+              placeholder="Delivery Date"
+              formControlName="DelNoteDeliveryDate">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>  
+        <mat-form-field class="delnotehead">
+          <input 
+            matInput 
+            placeholder="Delivery Time" 
+            formControlName="DelNoteDeliveryTime">
+        </mat-form-field>
+
+        <mat-form-field class="delnotehead">
+            <input 
+              matInput 
+              placeholder="Delivery Instructions" 
+              formControlName="DelInstructions">
+          </mat-form-field>  
+  
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-grid-list cols="2" rowHeight="140px">
+    <div class="Detail1">
+      <mat-grid-tile>
+          <mat-form-field class="delnotedetail1">
+              <textarea 
+                matInput
+                rows="5" 
+                placeholder="Sender"
+                formControlName="SenderNameAddr">
+              </textarea>
+          </mat-form-field>  
+      </mat-grid-tile>
+      <mat-grid-tile>
+          <mat-form-field class="delnotedetail1">
+              <textarea 
+                matInput
+                rows="5" 
+                placeholder="Receiver"
+                formControlName="ReceivNameAddr">
+              </textarea>
+          </mat-form-field>  
+      </mat-grid-tile>     
+    </div>
+  </mat-grid-list>
+  
+  <mat-grid-list cols="2" rowHeight="80px">
+      <div class="Detail2">
+        <mat-grid-tile>
+            <mat-form-field class="delnotedetail2">
+                <input 
+                matInput 
+                placeholder="Town" 
+                formControlName="SendTown">
+            </mat-form-field>  
+            <mat-form-field class="delnotedetail2">
+                <input 
+                matInput 
+                placeholder="Sender Message" 
+                formControlName="SendMessage">
+            </mat-form-field>  
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field class="delnotedetail2">
+                <input 
+                matInput 
+                placeholder="Town" 
+                formControlName="RecTown">
+            </mat-form-field>  
+            <mat-form-field class="delnotedetail2">
+                <input 
+                matInput 
+                placeholder="Receiver Telephone" 
+                formControlName="RecPhone">
+            </mat-form-field>  
+        </mat-grid-tile>     
+      </div>
+    </mat-grid-list>
+
+    <mat-grid-list cols="1" rowHeight="80px">
+ 
+      <mat-grid-tile>
+          <mat-form-field class="delnotedetail2" style="width: 90px;">
+            <input 
+            matInput 
+            placeholder="Code" 
+            formControlName="ItemCode">
+          </mat-form-field>  
+  
+          <mat-form-field class="delnotedetail2">
+              <input 
+                matInput 
+                placeholder="Description" 
+                formControlName="ItemDescr">
+          </mat-form-field> 
+
+          <mat-form-field class="delnotedetail2" style="width: 35px;">
+            <input 
+              matInput 
+              placeholder="Qty" 
+              formControlName="QtyOrd">
+          </mat-form-field> 
+
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+    <mat-grid-list cols="1" rowHeight="45px">      
+            <mat-grid-tile>
+              <div class="footer" >
+                <button  mat-raised-button type="submit" color="primary">Save</button>
+                <button  mat-raised-button type="button" color="accent" (click)="onCancel()">Cancel</button>
+              </div>
+            </mat-grid-tile>    
+    </mat-grid-list>    
+  
+  
+  </form>
+
+</section>

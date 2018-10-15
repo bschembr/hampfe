@@ -1,0 +1,126 @@
+h3{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 21px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 8px;
+    margin-left: 10px;
+  }
+  
+  h4{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 8px;
+    margin-left: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+  
+  }
+  
+  h5{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 5px;
+    margin-left: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+  }
+  
+  .a4{
+    width: 794px;
+    height: 1123px;
+    display:flex;
+  
+  }
+  
+  .label{
+    width: 366px;
+    height: 272px;
+    display:flex;
+    border: 2px solid black;
+  }
+  
+  .container1 {
+    align-self: flex-start;
+    width: 100%;
+    padding: 0%;
+  
+  }
+  
+  .acoLogo{
+    align-self: flex-start;
+    text-align: right;
+    width: auto;
+    height: 120px;
+    }
+  
+  .DelNote{
+    align-self: flex-start;
+    width: 100%;
+    padding: 0%;
+  
+  
+  }
+  
+  .Barcode{
+    align-self: flex-start;
+    width: 100%;
+    padding: 5px;
+  
+  }
+  
+  .Barcode h4{
+    text-align: right;
+  }
+  
+  .LogoContainer {
+    align-self: flex-start;
+    width: 100%;
+    padding: 0%;
+    margin-right: 8px;
+  
+  }
+  
+  .LogoContainer h5 , .LogoContainer h4{
+    text-align: right;
+  }
+  
+  .CustAddress {
+     align-self: flex-start;
+     width: 100%;
+     padding: 0%;
+  
+  }
+  .SenderAddress {
+    align-self: flex-start;
+    width: 100%;
+    padding: 0%;
+  
+  }
+  
+  .DocDate {
+    align-self: flex-start;
+    width: 100%;
+    padding: 0%;
+    margin-right: 10px;
+  }
+  
+  .DocDate h4{
+    text-align: right;
+  }
+  
+  .heading{
+    align-self: flex-start;
+    width: 100%;
+    padding: 0%;
+  
+  }
+  
+  .footer{
+    align-self: flex-start;
+    width: 100%;
+    padding: 0%;
+  
+    text-align: center;
+  }
+  

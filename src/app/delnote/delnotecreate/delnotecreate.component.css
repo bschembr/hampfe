@@ -1,0 +1,49 @@
+h4 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    margin-left: 10px;
+}
+
+.delnote-form{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    margin: 0px 5px;
+    width: 900px;
+}
+
+ .header {
+     align-self: flex-start;
+     flex-flow: row;
+     width: 100%;
+ }
+
+ .delnotehead {
+    padding: 15px;    
+}
+
+.delnotedetail1 {
+    align-self: flex-start;
+    width: 100%;
+    padding: 15px;
+}
+
+.delnotedetail2 {
+    align-self: flex-start;
+    width: 100%;
+    padding: 15px;
+}
+
+.footer {
+    display: flex;
+    flex-flow: row;    
+    align-items: flex-end; 
+    justify-content: flex-end;
+    width: 100%;  
+}
+
+.footer button {
+    margin: 0 5px;
+}
+

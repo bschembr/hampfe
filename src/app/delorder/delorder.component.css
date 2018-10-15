@@ -1,0 +1,42 @@
+h4 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    margin-left: 10px;
+}
+
+.order-form{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    margin: 0px 5px;
+    width: 1250px;
+}
+
+ .containercol1 {
+     align-self: flex-start;
+     width: 100%;
+     padding: 5%;    
+ }
+
+ .containercol2 {
+    flex-flow: row;
+    align-self: flex-start;
+    flex-wrap: wrap;
+    width: 100%;  
+    margin-top: 10px;
+ }
+
+ .containercol3 {
+    flex-flow: row;
+    align-self: flex-start;
+    flex-wrap: wrap;
+    width: 100%;  
+    margin-top: 10px;
+ }
+
+ .containercol4 {
+    align-self: flex-start;
+    width: 40%;
+    padding: 5%;    
+ }
