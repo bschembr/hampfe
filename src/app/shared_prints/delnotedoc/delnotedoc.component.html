@@ -1,200 +1,227 @@
-<section  id="content" #content>
-	<body>
-		<section class="a4">
-			<div class="container1">
-				<section>
-					<mat-grid-list cols="2" rowHeight="260px">
-						<mat-grid-tile colspan="1">
-							<div class="CustAddress">
-								<h4>Customer Address</h4>
-								<h5>Customer Name</h5>
-								<h5>Address 1</h5>
-								<h5>Address 2</h5>
-								<h5>Address 3</h5>
-								<h5>Address 4</h5>
-                <h5></h5>
-								<h5>Town</h5>
+<section id="content" #content>
+
+	<body class="a4">
+		<section>
+			<table class="container1">
+				<tr>
+					<td class="CustAddress">
+						<div>
+							<h4>Recepient Address</h4>
+							<h5 #receiverName>Recepient Name</h5>
+							<h5 #receiverAdd1>Address 1</h5>
+							<h5 #receiverAdd2>Address 2</h5>
+							<h5 #receiverAdd3>Address 3</h5>
+							<h5 #receiverAdd4>Address 4</h5>
+							<h5></h5>
+							<h5 #receiverTown>Town</h5>
+						</div>
+					</td>
+					<td class="LogoContainer">
+						<div class="acoLogo"><img src="http://acots/hampers/delnotelogo.png"></div>
+						<div>
+							<h5>Canter Business Center</h5>
+							<h5>Patri Felicjan Bilocca Street</h5>
+							<h5>Marsa MRS1524</h5>
+							<h5>Tel: 21237555</h5>
+							<h5>Waste Management No: WMP/01349/07</h5>
+							<h5>Email: info@attardco.com Web: www.attardcofood.com</h5>
+							<h5>Vat Reg: MT15713908 Ex No: EXO925 Comp Reg No: C25937</h5>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<table>
+				<tr>
+					<td class="DelNote">
+						<div>
+							<h3>Delivery Note:</h3>
+						</div>
+					</td>
+					<td>
+						<div>
+							<h3 #delNoteNo> 01234567890123456789 </h3>
+						</div>
+					</td>
+					<td class="Barcode">
+						<div>
+							<h4 #delNoteBarcode>Delivery Note Barcode</h4>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</section>
+
+		<section>
+
+			<table class="container2">
+				<tr>
+					<td class="heading" style="height:120px; width:15%; vertical-align: text-top;">
+						<div>
+							<h4>By Order Of:</h4>
+						</div>
+					</td>
+					<td class="SenderAddress" style="width:65%; vertical-align: text-top;">
+						<div>
+							<h4 #senderName>012345678901234567890123456789012345678</h4>
+							<h5 #senderAdd1>01234567890123456789012345678901234567890123456789</h5>
+							<h5 #senderAdd2>01234567890123456789012345678901234567890123456789</h5>
+							<h5 #senderAdd3>01234567890123456789012345678901234567890123456789</h5>
+							<h5 #senderAdd4>01234567890123456789012345678901234567890123456789</h5>
+						</div>
+					</td>
+					<td class="DocDate" style="width:10%; vertical-align: text-top;">
+						<div>
+							<h4>Document Date:</h4>
+						</div>
+					</td>
+					<td style="width:10%;vertical-align: text-top;">
+						<div>
+							<h4 #docDate>dd/mm/yyyy</h4>
+						</div>
+					</td>
+			</table>
+		</section>
+		<section>
+			<table class="container3">
+				<tr class="heading">
+					<td style="width:15%">
+						<div>
+							<h4>Code</h4>
+						</div>
+					</td>
+					<td style="width:75%">
+						<div>
+							<h4>Description</h4>
+						</div>
+					</td>
+					<td style="text-align:right; padding-right:5px; width:10%">
+						<div>
+							<h4>Qty</h4>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</section>
+
+
+		<section>
+			<table class="container4">
+				<tr class="heading">
+					<td style="width:15%">
+						<div>
+							<h5 #itemCode>HP0123456789</h5>
+						</div>
+					</td>
+					<td style="width:75%">
+						<div>
+							<h5 #itemDesc>HP0123456789012345678901234567890123456789012345678901234567890123456789</h5>
+						</div>
+					</td>
+					<td style="text-align:right; padding-right:5px;width:10%">
+						<div>
+							<h5 #itemQty>0123456789</h5>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</section>
+
+		<section>
+			<table class="container5">
+				<tr class="heading">
+					<td style="vertical-align: text-top;">
+						<section>
+							<div>
+								<h5 #delInst>Delivery Instruction 1</h5>
 							</div>
-						</mat-grid-tile>
-						<mat-grid-tile colspan="1">
-							<div class="LogoContainer">
-								<div class="acoLogo">
-									<img src="http://acots/hampers/delnotelogo.png">
-									</div>
-									<div>
-										<h5>Canter Business Center</h5>
-										<h5>Patri Felicjan Bilocca Street</h5>
-										<h5>Marsa MRS1524</h5>
-										<h5>Tel: 21237555</h5>
-										<h5>Waste Management No: WMP/01349/07</h5>
-										<h5>Email: info@attardco.com Web: www.attardcofood.com</h5>
-										<h5>Vat Reg: MT15713908 Ex No: EXO925 Comp Reg No: C25937</h5>
-									</div>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-						<mat-grid-list cols="2" rowHeight="50px">
-							<mat-grid-tile colspan="1">
-								<div class="DelNote">
-									<h3>Delivery Note : 01234567890123456789</h3>
-								</div>
-							</mat-grid-tile>
-							<mat-grid-tile colspan="1">
-								<div class="Barcode">
-									<h4>BARCODE or QR Code</h4>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
-					<section>
-						<mat-grid-list cols="8" rowHeight="100px">
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h4>By Order Of:</h4>
-								</div>
-							</mat-grid-tile>
-							<mat-grid-tile colspan="4">
-								<div class="SenderAddress">
-									<h4>012345678901234567890123456789012345678</h4>
-									<h5>01234567890123456789012345678901234567890123456789</h5>
-									<h5>01234567890123456789012345678901234567890123456789</h5>
-									<h5>01234567890123456789012345678901234567890123456789</h5>
-								</div>
-							</mat-grid-tile>
-							<mat-grid-tile colspan="2">
-								<div class="DocDate">
-									<h4>Document Date:</h4>
-								</div>
-							</mat-grid-tile>
-							<mat-grid-tile colspan="1">
-								<div class="DocDate">
-									<h4>dd/mm/yyyy</h4>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
-					<section>
-						<mat-grid-list cols="8" rowHeight="30px">
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h4>Code</h4>
-								</div>
-							</mat-grid-tile>
-							<mat-grid-tile colspan="6">
-								<div class="heading">
-									<h4>Description</h4>
-								</div>
-							</mat-grid-tile>
-
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h4>Qty</h4>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
-
-
-					<section>
-						<mat-grid-list cols="8" rowHeight="450px">
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h5>HP0123456789</h5>
-								</div>
-							</mat-grid-tile>
-							<mat-grid-tile colspan="6">
-								<div class="heading">
-									<h5>HP0123456789012345678901234567890123456789012345678901234567890123456789</h5>
-								</div>
-							</mat-grid-tile>
-
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h5>0123456789</h5>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
-
-					<section>
-						<mat-grid-list cols="1" rowHeight="30px">
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h5>Delivery Instructions</h5>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
-					<section>
-						<mat-grid-list cols="1" rowHeight="60px">
-							<mat-grid-tile colspan="1">
-								<div class="footer">
-									<h5>Attard & Co Food is proud to have been entrusted by</h5>
-									<h5>01234567890123456789012345678901234567890123456789</h5>
-									<h5>to present you with this Hamper</h5>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
+						</section>
+					</td>
+				</tr>
+			</table>
+		</section>
+		<section>
+			<table class="container6">
+				<tr class="heading">
+					<td>
+						<div class="footer">
+							<h5>Attard & Co Food is proud to have been entrusted by</h5>
+							<h5 #senderName>01234567890123456789012345678901234567890123456789</h5>
+							<h5>to present you with this Hamper</h5>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</section>
 
 
 
-					<section>
-						<mat-grid-list cols="1" rowHeight="40px">
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h5>Received in Good Order and Condition</h5>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
+		<section>
+			<table class="container7">
+				<tr class="heading">
+					<td>
+						<div>
+							<h5>Received in Good Order and Condition</h5>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</section>
 
-					<section>
-						<mat-grid-list cols="4" rowHeight="15px">
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h5>_____________________________________</h5>
-								</div>
-							</mat-grid-tile>
-							<mat-grid-tile colspan="2">
-								<div class="heading">
-									<h5>____________________________________________________________________________</h5>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
-					<section>
-						<mat-grid-list cols="4" rowHeight="20px">
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h5>Signature</h5>
-								</div>
-							</mat-grid-tile>
-							<mat-grid-tile colspan="2">
-								<div class="heading">
-									<h5>Name in Blocks</h5>
-								</div>
-							</mat-grid-tile>
-							<mat-grid-tile colspan="1">
-								<div class="heading">
-									<h5>Date & Time</h5>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
+		<section>
+			<table class="container8">
+				<tr class="heading">
+					<td style="width:30%;">
+						<div>
+							<h5>___________________________</h5>
+						</div>
+					</td>
+					<td>
+						<div>
+							<h5>_______________________________________</h5>
+						</div>
+					</td>
+					<td style="width:30%;">
+						<div>
+							<h5>___________________________</h5>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</section>
 
-					<section>
-						<mat-grid-list cols="1" rowHeight="50px">
-							<mat-grid-tile colspan="1">
-								<div class="footer">
-									<h4>Barcode</h4>
-									<h5>012345678901234567890123456789</h5>
-								</div>
-							</mat-grid-tile>
-						</mat-grid-list>
-					</section>
+		<section>
+			<table class="container8">
+				<tr class="heading">
+					<td style="width:30%;">
+						<div>
+							<h5>Signature</h5>
+						</div>
+					</td>
+					<td>
+						<div>
+							<h5>Name in Blocks</h5>
+						</div>
+					</td>
+					<td style="width:30%;">
+						<div>
+							<h5>Date & Time</h5>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</section>
 
-				</div>
-			</section>
-		</body>
-	</section>
+		<section>
+			<table class="container9">
+				<tr class="footer">
+					<td>
+						<div>
+							<h4 #orderNo>Barcode</h4>
+							<h5 #orderNo>012345678901234567890123456789</h5>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</section>
+	</body>
+</section>

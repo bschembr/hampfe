@@ -102,6 +102,10 @@ export class DellistComponent implements OnInit {
     dialogRef.afterClosed().subscribe(dialogData => {
 
       if (dialogData !== 'Canceled') {
+        this._delnotesservice.updateDelNote(dialogData).subscribe(_return => {
+          console.log(_return);
+        });
+
         this.delnotearray[rowindex] = dialogData;
         this.listData.data = this.delnotearray;
       }
@@ -113,7 +117,8 @@ export class DellistComponent implements OnInit {
     console.log('Credit note: ' + delNoteRef);
     const dialogRef = this.printdialog.open(DelnotedocComponent, {
       height: '500px',
-      width: '500px'
+      width: '500px',
+      data: { delnote: this.delnotearray[delNoteRef] }
     });
     this.printdialog.closeAll();
   }
