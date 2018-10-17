@@ -1,10 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import * as qz from 'qz-tray';
 import { sha256 } from 'js-sha256';
-import * as q from 'q';
-import * as crypto from 'crypto-browserify';
 import * as kutil from 'jsrsasign';
-
 
 @Injectable({
   providedIn: 'root'
@@ -19,19 +16,16 @@ export class QzTrayService implements OnInit {
 
   PRINTER_NAME = '';
 
+  options = { rasterize: false, scaleContent: false };
+
   constructor() { }
 
   ngOnInit() {
-    qz.api.setPromiseType(q.Promise);
-    qz.api.setSha256Type(function (data) {
-      const hash = sha256('Message to hash');
-      return hash;
-    });
   }
 
-  setCert() {
-    qz.security.setCertificatePromise(function (resolve, reject) {
-      resolve('-----BEGIN CERTIFICATE-----\n' +
+  SetCertificates() {
+    qz.security.setCertificatePromise(function (certresolve, reject) {
+      certresolve('-----BEGIN CERTIFICATE-----\n' +
         'MIIE3TCCAsegAwIBAgIBADALBgkqhkiG9w0BAQUwgZgxCzAJBgNVBAYTAlVTMQsw\n' +
         'CQYDVQQIDAJOWTEbMBkGA1UECgwSUVogSW5kdXN0cmllcywgTExDMRswGQYDVQQL\n' +
         'DBJRWiBJbmR1c3RyaWVzLCBMTEMxGTAXBgNVBAMMEHF6aW5kdXN0cmllcy5jb20x\n' +
@@ -122,8 +116,9 @@ export class QzTrayService implements OnInit {
       'qgw3G5m13gq4CYDPiKVQWk1hlW8zS2vxuU/nnOwjMICMtNNB1s3INhrUyrfXCpIm\n' +
       'jtirk5zvs/thihWO+Gh35w==\n' +
       '-----END PRIVATE KEY-----';
+
     qz.security.setSignaturePromise(function (toSign) {
-      return function (resolve, reject) {
+      return function (sigresolve, reject) {
         try {
           const pk = kutil.KEYUTIL.getKey(privateKey);
           const sig = new kutil.KJUR.crypto.Signature({ 'alg': 'SHA1withRSA' });
@@ -131,7 +126,7 @@ export class QzTrayService implements OnInit {
           sig.updateString(toSign);
           const hex = sig.sign();
           // console.log('DEBUG: \n\n' + kutil.stob64(kutil.hextorstr(hex)));
-          resolve(kutil.stob64(kutil.hextorstr(hex)));
+          sigresolve(kutil.stob64(kutil.hextorstr(hex)));
         } catch (err) {
           console.error(err);
           reject(err);
@@ -139,25 +134,49 @@ export class QzTrayService implements OnInit {
       };
     });
 
+    qz.api.setSha256Type(function (somedata) {
+      return sha256(somedata);
+    });
+
+    qz.api.setPromiseType(function promise(resolver) {
+      return new Promise(resolver);
+    });
+
   }
 
-  /*
-    setprintData(data: string) {
-      this.data[0].data = data;
-    }
+  // eg connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
+  connectAndPrint(printer: string, options: any, data = [{ type: '', format: '', data: '' }]) {
+    this.SetCertificates();
+    this.data = data;
+    this.PRINTER_NAME = printer;
+    this.options = options;
+    // our promise chain
+    this.connect().then(function () {
+      const config = qz.configs.create(this.PRINTER_NAME, this.options);
+      return qz.print(config, data);
+    }).catch(function (err) {
+      console.error(err);
+    });
 
-    printWithQZ(useprinter: string) {
-      const pdevice = useprinter;
-      const data = this.data;
-      qz.websocket.connect().then(function () {
-        return qz.printers.find(pdevice);
-      }).then(function (printer) {
-        const config = qz.configs.create(printer);       // Create a default config for the found printer
-        return qz.print(config, data);
-      }).then(qz.websocket.disconnect)
-        .catch(function (err) {
-          console.error(err);
+  }
+
+  // connection wrapper
+  //  - allows active and inactive connections to resolve regardless
+  //  - try to connect once before firing the mimetype launcher
+  //  - if connection fails, catch the reject, fire the mimetype launcher
+  //  - after mimetype launcher is fired, try to connect 3 more times
+  connect() {
+    return new Promise(function (resolve, reject) {
+      if (qz.websocket.isActive()) {	// if already active, resolve immediately
+        resolve();
+      } else {
+        // try to connect once before firing the mimetype launcher
+        qz.websocket.connect().then(resolve, function connectreject() {
+          // if a connect was not succesful, launch the mimetime, try 3 more times
+          qz.websocket.connect({ retries: 2, delay: 1 }).then(resolve, reject);
         });
-    }
-  */
+      }
+    });
+  }
+
 }

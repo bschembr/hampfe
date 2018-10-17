@@ -10,6 +10,7 @@ import { DelNote } from '../../delnote';
 import { DelNotesService } from '../../shared_service/del-notes.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DelnotedocComponent } from '../../shared_prints/delnotedoc/delnotedoc.component';
+import { QzTrayService } from '../../shared_service/qz-tray.service';
 
 @Component({
   selector: 'app-dellist',
@@ -26,7 +27,6 @@ export class DellistComponent implements OnInit {
   displayedColumns: string[] = ['select', 'delnoteref', 'deliveryDate', 'senderName', 'senderTown', 'senderMessage',
     'receiverName', 'receiverTown', 'receiverPhone', 'deliveryInstructions', 'status', 'actions'];
 
-  @ViewChild(DelnotedocComponent)
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -34,9 +34,8 @@ export class DellistComponent implements OnInit {
 
   constructor(public dialog: MatDialog,
     private _delnotesservice: DelNotesService,
-    private delnotePrintComp: DelnotedocComponent,
     public printdialog: MatDialog,
-    private delprint: DelnotedocComponent) {
+    private printEngine: QzTrayService) {
   }
 
   ngOnInit() {
@@ -117,15 +116,24 @@ export class DellistComponent implements OnInit {
       width: '500px'
     });
     this.printdialog.closeAll();
-    // const delprint: DelnotedocComponent = new DelnotedocComponent();
   }
 
   printSelected() {
+    /*
+    const data = [{
+      type: 'html',
+      format: 'plain', // or 'plain' if the data is raw HTML
+      data: 'test'
+    }];
     if (this.selection.hasValue) {
       this.selection.selected.forEach(element => {
-        console.log('Selected: ' + JSON.stringify(element));
+        data[0].data = JSON.stringify(element);
+        // this.printEngine.Print('PDFCreator', data);
       });
     }
+    */
+   // this.printEngine.connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
+
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
