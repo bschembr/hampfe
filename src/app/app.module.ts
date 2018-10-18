@@ -15,7 +15,7 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { DelnoteComponent } from './delnote/delnote.component';
 import { DelNotesService } from './shared_service/del-notes.service';
-import { DelnotecreateComponent } from './delnote/delnotecreate/delnotecreate.component';
+import { DelnotecrudComponent } from './delnote/delnotecrud/delnotecrud.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DellistComponent } from './delnote/dellist/dellist.component';
 import { DelnotedocComponent } from './shared_prints/delnotedoc/delnotedoc.component';
@@ -23,7 +23,6 @@ import { QzTrayService } from './shared_service/qz-tray.service';
 
 const appRoutes: Routes = [
   {path: '', component: DelorderComponent},
-  {path: 'delnotecreate', component: DelnotecreateComponent},
   {path: 'delnotelist', component: DellistComponent},
   {path: 'print', component: DelnotedocComponent}
 ];
@@ -33,7 +32,7 @@ const appRoutes: Routes = [
     AppComponent,
     DelorderComponent,
     DelnoteComponent,
-    DelnotecreateComponent,
+    DelnotecrudComponent,
     DellistComponent,
     DelnotedocComponent
   ],

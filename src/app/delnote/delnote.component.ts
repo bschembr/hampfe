@@ -5,7 +5,7 @@ import {
   MatPaginator,
   MatDialog
 } from '@angular/material';
-import { DelnotecreateComponent } from './delnotecreate/delnotecreate.component';
+import { DelnotecrudComponent } from './delnotecrud/delnotecrud.component';
 import { DelNote } from '../delnote';
 
 @Component({
@@ -66,7 +66,7 @@ export class DelnoteComponent implements OnInit {
 
   createDelNote() {
 
-    const dialogRef = this.dialog.open(DelnotecreateComponent, {
+    const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '500px',
       width: '1000px'
     });
@@ -102,7 +102,7 @@ export class DelnoteComponent implements OnInit {
       rowindex = ((this.paginator.pageIndex * this.paginator.pageSize) + row);
     }
 
-    const dialogRef = this.dialog.open(DelnotecreateComponent, {
+    const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '500px',
       width: '1000px',
       data: { delnote: this.delnotearray[rowindex] }

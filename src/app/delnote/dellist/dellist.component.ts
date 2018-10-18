@@ -5,12 +5,13 @@ import {
   MatPaginator,
   MatDialog
 } from '@angular/material';
-import { DelnotecreateComponent } from '../delnotecreate/delnotecreate.component';
+import { DelnotecrudComponent } from '../delnotecrud/delnotecrud.component';
 import { DelNote } from '../../delnote';
 import { DelNotesService } from '../../shared_service/del-notes.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DelnotedocComponent } from '../../shared_prints/delnotedoc/delnotedoc.component';
 import { QzTrayService } from '../../shared_service/qz-tray.service';
+import { JSDocTagName } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-dellist',
@@ -93,14 +94,15 @@ export class DellistComponent implements OnInit {
       rowindex = ((this.paginator.pageIndex * this.paginator.pageSize) + row);
     }
 
-    const dialogRef = this.dialog.open(DelnotecreateComponent, {
+    console.log('data passed to dialog: ' + JSON.stringify(this.delnotearray[rowindex]));
+
+    const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '500px',
       width: '1000px',
       data: { delnote: this.delnotearray[rowindex] }
     });
 
     dialogRef.afterClosed().subscribe(dialogData => {
-
       if (dialogData !== 'Canceled') {
         this._delnotesservice.updateDelNote(dialogData).subscribe(_return => {
           console.log(_return);
@@ -137,7 +139,7 @@ export class DellistComponent implements OnInit {
       });
     }
     */
-   // this.printEngine.connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
+    // this.printEngine.connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
 
   }
 

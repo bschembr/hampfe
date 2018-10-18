@@ -6,12 +6,13 @@ import { AcoGeneral } from '../../acogeneral';
 
 @Component({
   selector: 'app-delnotecreate',
-  templateUrl: './delnotecreate.component.html',
-  styleUrls: ['./delnotecreate.component.css']
+  templateUrl: './delnotecrud.component.html',
+  styleUrls: ['./delnotecrud.component.css']
 })
 
-export class DelnotecreateComponent implements OnInit {
+export class DelnotecrudComponent implements OnInit {
   createdDelNote: DelNote = new DelNote();
+  screenName: string;
 
   delnoteform: FormGroup = new FormGroup({
     DelNoteDocDate: new FormControl(new Date()),
@@ -29,12 +30,13 @@ export class DelnotecreateComponent implements OnInit {
     QtyOrd: new FormControl()
   });
 
-  constructor(public dialogRef: MatDialogRef<DelnotecreateComponent>,
+  constructor(public dialogRef: MatDialogRef<DelnotecrudComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any) { }
 
   ngOnInit() {
 
     if (this.data !== null) {
+      this.screenName = 'Create Delivery Note';
       this.delnoteform.controls['DelInstructions'].setValue(this.data.delnote.deliveryInstructions);
       this.delnoteform.controls['DelNoteDeliveryDate'].setValue(this.data.delnote.delNoteDate);
       this.delnoteform.controls['DelNoteDocDate'].setValue(this.data.delnote.delNoteDate);
@@ -57,6 +59,8 @@ export class DelnotecreateComponent implements OnInit {
       this.delnoteform.controls['ItemDescr'].setValue(this.data.delnote.itemDescription);
       this.delnoteform.controls['QtyOrd'].setValue(this.data.delnote.qtyOrd);
       // Intitialize qty lines
+    } else {
+      this.screenName = 'Update Delivery Note';
     }
   }
 
@@ -71,6 +75,7 @@ export class DelnotecreateComponent implements OnInit {
     const SendNameAddr = String(this.delnoteform.controls['SenderNameAddr'].value).split('\n');
     const ReceNameAddr = String(this.delnoteform.controls['ReceivNameAddr'].value).split('\n');
 
+    this.createdDelNote.delNoteRef = this.data.delnote.delNoteRef;
     this.createdDelNote.deliveryInstructions = this.delnoteform.controls['DelInstructions'].value;
     this.createdDelNote.deliveryDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDeliveryDate'].value);
     this.createdDelNote.delNoteDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDocDate'].value);
