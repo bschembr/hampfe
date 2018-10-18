@@ -65,8 +65,11 @@ export class DelnotecrudComponent implements OnInit {
   }
 
   getBlankStringIfUndef(stringele: string) {
-    if (typeof stringele === 'undefined') {
+    // if (typeof stringele === 'undefined') {
+    if ( !stringele ) {
       return '';
+    } else {
+      return stringele;
     }
   }
 
