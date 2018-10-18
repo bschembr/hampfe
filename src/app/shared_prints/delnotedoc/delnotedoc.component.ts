@@ -34,7 +34,6 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         this.onPrint();
-        console.log('passed data: ' + JSON.stringify(this.delnotedata));
     }
 
     public setHTMLelements() {

@@ -79,7 +79,7 @@
           <mat-cell *matCellDef="let element; let j = index;">
             <button mat-icon-button (click)="onEditLine(j)"><mat-icon>launch</mat-icon></button>
             <button mat-icon-button color="warn" (click)="onDeleteLine(j)"><mat-icon>delete_outline</mat-icon></button>            
-            <button mat-icon-button (click)="printSingle(element.delNoteRef)"><mat-icon>print</mat-icon></button>
+            <button mat-icon-button (click)="printSingle(j)"><mat-icon>print</mat-icon></button>
           </mat-cell>
         </ng-container>
         <ng-container matColumnDef="loading">

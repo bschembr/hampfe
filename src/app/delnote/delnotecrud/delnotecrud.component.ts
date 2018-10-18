@@ -5,7 +5,7 @@ import { DelNote } from '../../delnote';
 import { AcoGeneral } from '../../acogeneral';
 
 @Component({
-  selector: 'app-delnotecreate',
+  selector: 'app-delnotecrud',
   templateUrl: './delnotecrud.component.html',
   styleUrls: ['./delnotecrud.component.css']
 })
@@ -36,23 +36,23 @@ export class DelnotecrudComponent implements OnInit {
   ngOnInit() {
 
     if (this.data !== null) {
-      this.screenName = 'Create Delivery Note';
+      this.screenName = 'Update Delivery Note';
       this.delnoteform.controls['DelInstructions'].setValue(this.data.delnote.deliveryInstructions);
       this.delnoteform.controls['DelNoteDeliveryDate'].setValue(this.data.delnote.delNoteDate);
       this.delnoteform.controls['DelNoteDocDate'].setValue(this.data.delnote.delNoteDate);
       this.delnoteform.controls['DelNoteDeliveryTime'].setValue(this.data.delnote.deliveryTime);
-      this.delnoteform.controls['SenderNameAddr'].setValue( this.data.delnote.senderName + '\n' +
-                                                            this.data.delnote.senderAddr1 + '\n' +
-                                                            this.data.delnote.senderAddr2 + '\n' +
-                                                            this.data.delnote.senderAddr3 + '\n' +
-                                                            this.data.delnote.senderAddr4 + '\n' );
+      this.delnoteform.controls['SenderNameAddr'].setValue(this.data.delnote.senderName + '\n' +
+        this.data.delnote.senderAddr1 + '\n' +
+        this.data.delnote.senderAddr2 + '\n' +
+        this.data.delnote.senderAddr3 + '\n' +
+        this.data.delnote.senderAddr4 + '\n');
       this.delnoteform.controls['SendTown'].setValue(this.data.delnote.senderTown);
       this.delnoteform.controls['SendMessage'].setValue(this.data.delnote.senderMessage);
-      this.delnoteform.controls['ReceivNameAddr'].setValue( this.data.delnote.receiverName + '\n' +
-                                                            this.data.delnote.receiverAddr1 + '\n' +
-                                                            this.data.delnote.receiverAddr2 + '\n' +
-                                                            this.data.delnote.receiverAddr3 + '\n' +
-                                                            this.data.delnote.receiverAddr4 + '\n' );
+      this.delnoteform.controls['ReceivNameAddr'].setValue(this.data.delnote.receiverName + '\n' +
+        this.data.delnote.receiverAddr1 + '\n' +
+        this.data.delnote.receiverAddr2 + '\n' +
+        this.data.delnote.receiverAddr3 + '\n' +
+        this.data.delnote.receiverAddr4 + '\n');
       this.delnoteform.controls['RecTown'].setValue(this.data.delnote.receiverTown);
       this.delnoteform.controls['RecPhone'].setValue(this.data.delnote.receiverPhone);
       this.delnoteform.controls['ItemCode'].setValue(this.data.delnote.itemCode);
@@ -60,12 +60,12 @@ export class DelnotecrudComponent implements OnInit {
       this.delnoteform.controls['QtyOrd'].setValue(this.data.delnote.qtyOrd);
       // Intitialize qty lines
     } else {
-      this.screenName = 'Update Delivery Note';
+      this.screenName = 'Create Delivery Note';
     }
   }
 
   getBlankStringIfUndef(stringele: string) {
-    if ( typeof stringele === 'undefined' ) {
+    if (typeof stringele === 'undefined') {
       return '';
     }
   }
@@ -75,7 +75,10 @@ export class DelnotecrudComponent implements OnInit {
     const SendNameAddr = String(this.delnoteform.controls['SenderNameAddr'].value).split('\n');
     const ReceNameAddr = String(this.delnoteform.controls['ReceivNameAddr'].value).split('\n');
 
-    this.createdDelNote.delNoteRef = this.data.delnote.delNoteRef;
+    if (this.data !== null) {
+      this.createdDelNote.delNoteRef = this.data.delnote.delNoteRef;
+      this.createdDelNote.delOrdRef = this.data.delnote.delOrdRef;
+    }
     this.createdDelNote.deliveryInstructions = this.delnoteform.controls['DelInstructions'].value;
     this.createdDelNote.deliveryDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDeliveryDate'].value);
     this.createdDelNote.delNoteDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDocDate'].value);
@@ -99,75 +102,75 @@ export class DelnotecrudComponent implements OnInit {
     this.createdDelNote.qtyOrd = this.delnoteform.controls['QtyOrd'].value;
     this.createdDelNote.status = 'P'; // pending status
 
-    if (this.createdDelNote.delNoteRef === null ) {
+    if (this.createdDelNote.delNoteRef === null) {
       this.createdDelNote.delNoteRef = 0;
-   }
-   if (  this.createdDelNote.delNoteDate === null ) {
+    }
+    if (this.createdDelNote.delNoteDate === null) {
       this.createdDelNote.delNoteDate = new Date();
-   }
-   if (  this.createdDelNote.senderName === 'null' ) {
-      this.createdDelNote.senderName  = '';
-   }
-   if (  this.createdDelNote.senderAddr1 === null ) {
+    }
+    if (this.createdDelNote.senderName === 'null') {
+      this.createdDelNote.senderName = '';
+    }
+    if (this.createdDelNote.senderAddr1 === null) {
       this.createdDelNote.senderAddr1 = ' ';
-   }
-   if (  this.createdDelNote.senderAddr2 === null ) {
+    }
+    if (this.createdDelNote.senderAddr2 === null) {
       this.createdDelNote.senderAddr2 = '';
-   }
-   if (  this.createdDelNote.senderAddr3 === null ) {
+    }
+    if (this.createdDelNote.senderAddr3 === null) {
       this.createdDelNote.senderAddr3 = '';
-   }
-   if (  this.createdDelNote.senderAddr4 === null ) {
+    }
+    if (this.createdDelNote.senderAddr4 === null) {
       this.createdDelNote.senderAddr4 = '';
-   }
-   if (  this.createdDelNote.senderTown === null ) {
+    }
+    if (this.createdDelNote.senderTown === null) {
       this.createdDelNote.senderTown = '';
-   }
-   if (  this.createdDelNote.deliveryDate === null ) {
+    }
+    if (this.createdDelNote.deliveryDate === null) {
       this.createdDelNote.deliveryDate = new Date();
-   }
-   if (  this.createdDelNote.deliveryTime === null ) {
+    }
+    if (this.createdDelNote.deliveryTime === null) {
       this.createdDelNote.deliveryTime = '';
-   }
-   if (  this.createdDelNote.senderMessage === null ) {
+    }
+    if (this.createdDelNote.senderMessage === null) {
       this.createdDelNote.senderMessage = '';
-   }
-   if (  this.createdDelNote.receiverName === 'null' ) {
+    }
+    if (this.createdDelNote.receiverName === 'null') {
       this.createdDelNote.receiverName = '';
-   }
-   if (  this.createdDelNote.receiverAddr1 === null ) {
+    }
+    if (this.createdDelNote.receiverAddr1 === null) {
       this.createdDelNote.receiverAddr1 = '';
-   }
-   if (  this.createdDelNote.receiverAddr2 === null ) {
+    }
+    if (this.createdDelNote.receiverAddr2 === null) {
       this.createdDelNote.receiverAddr2 = '';
-   }
-   if (  this.createdDelNote.receiverAddr3 === null ) {
+    }
+    if (this.createdDelNote.receiverAddr3 === null) {
       this.createdDelNote.receiverAddr3 = '';
-   }
-   if (  this.createdDelNote.receiverAddr4 === null ) {
+    }
+    if (this.createdDelNote.receiverAddr4 === null) {
       this.createdDelNote.receiverAddr4 = '';
-   }
-   if (  this.createdDelNote.receiverTown === null ) {
+    }
+    if (this.createdDelNote.receiverTown === null) {
       this.createdDelNote.receiverTown = '';
-   }
-   if (  this.createdDelNote.receiverPhone === null ) {
+    }
+    if (this.createdDelNote.receiverPhone === null) {
       this.createdDelNote.receiverPhone = '';
-   }
-   if (  this.createdDelNote.deliveryInstructions === null ) {
+    }
+    if (this.createdDelNote.deliveryInstructions === null) {
       this.createdDelNote.deliveryInstructions = '';
-   }
-   if (  this.createdDelNote.itemCode === null ) {
+    }
+    if (this.createdDelNote.itemCode === null) {
       this.createdDelNote.itemCode = '';
-   }
-   if (  this.createdDelNote.itemDescription === null ) {
+    }
+    if (this.createdDelNote.itemDescription === null) {
       this.createdDelNote.itemDescription = '';
-   }
-   if (  this.createdDelNote.qtyOrd === null ) {
+    }
+    if (this.createdDelNote.qtyOrd === null) {
       this.createdDelNote.qtyOrd = 0;
-   }
-   if (  this.createdDelNote.status === null ) {
+    }
+    if (this.createdDelNote.status === null) {
       this.createdDelNote.status = '';
-   }
+    }
 
     this.dialogRef.close(this.createdDelNote);
   }

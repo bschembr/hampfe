@@ -85,7 +85,7 @@ export class DellistComponent implements OnInit {
 
   }
 
-  onEditLine(row: number) {
+  getRowPaginator(row: number) {
     let rowindex = 0;
 
     if (this.paginator.pageIndex === 0) {
@@ -93,34 +93,33 @@ export class DellistComponent implements OnInit {
     } else {
       rowindex = ((this.paginator.pageIndex * this.paginator.pageSize) + row);
     }
+    return rowindex;
+  }
 
-    console.log('data passed to dialog: ' + JSON.stringify(this.delnotearray[rowindex]));
+  onEditLine(row: number) {
 
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '500px',
       width: '1000px',
-      data: { delnote: this.delnotearray[rowindex] }
+      data: { delnote: this.delnotearray[ this.getRowPaginator(row) ] }
     });
 
     dialogRef.afterClosed().subscribe(dialogData => {
       if (dialogData !== 'Canceled') {
         this._delnotesservice.updateDelNote(dialogData).subscribe(_return => {
-          console.log(_return);
         });
 
-        this.delnotearray[rowindex] = dialogData;
+        this.delnotearray[ this.getRowPaginator(row) ] = dialogData;
         this.listData.data = this.delnotearray;
       }
     });
-
   }
 
-  printSingle(delNoteRef: number) {
-    console.log('Credit note: ' + delNoteRef);
+  printSingle(row: number) {
     const dialogRef = this.printdialog.open(DelnotedocComponent, {
       height: '500px',
       width: '500px',
-      data: { delnote: this.delnotearray[delNoteRef] }
+      data: { delnote: this.delnotearray[ this.getRowPaginator(row) ] }
     });
     this.printdialog.closeAll();
   }

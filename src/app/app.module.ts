@@ -62,6 +62,7 @@ const appRoutes: Routes = [
     QzTrayService,
     DelnotedocComponent
   ],
+  entryComponents: [ DelnotecrudComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
