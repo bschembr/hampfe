@@ -1,8 +1,9 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { QzTrayService } from '../../shared_service/qz-tray.service';
 import { CustomerOrder } from '../../customerorder';
 import { DelNote } from '../../delnote';
+
 
 @Component({
     selector: 'app-delnotedoc',
@@ -13,11 +14,7 @@ import { DelNote } from '../../delnote';
 export class DelnotedocComponent implements OnInit, AfterViewInit {
 
     content;
-    data = [{
-        type: 'html',
-        format: 'plain', // or 'plain' if the data is raw HTML
-        data: 'print job 1'
-    }];
+    data = [];
 
     @ViewChild('delNoteBarcode') HTMLdelNoteBarcode: ElementRef;
     @ViewChild('receiverName') HTMLreceiverName: ElementRef;
@@ -44,7 +41,8 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
 
 
     constructor(private printEngine: QzTrayService,
-                @Inject(MAT_DIALOG_DATA) private delnotedata: any) {
+                public dialogRef: MatDialogRef<DelnotedocComponent>,
+                @Inject(MAT_DIALOG_DATA) private delnotedata: DelNote[]) {
     }
 
     ngOnInit() {
@@ -56,41 +54,43 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
 
     public setHTMLelements() {
 
-        this.HTMLreceiverName.nativeElement.innerHTML = this.delnotedata.delnote.receiverName;
-        this.HTMLreceiverAdd1.nativeElement.innerHTML = this.delnotedata.delnote.receiverAddr1;
-        this.HTMLreceiverAdd2.nativeElement.innerHTML = this.delnotedata.delnote.receiverAddr2;
-        this.HTMLreceiverAdd3.nativeElement.innerHTML = this.delnotedata.delnote.receiverAddr3;
-        this.HTMLreceiverAdd4.nativeElement.innerHTML = this.delnotedata.delnote.receiverAddr4;
-        this.HTMLreceiverTown.nativeElement.innerHTML = this.delnotedata.delnote.receiverTown;
-        this.HTMLdelNoteNo.nativeElement.innerHTML = this.delnotedata.delnote.delNoteRef;
-        this.HTMLdelNoteBarcode.nativeElement.innerHTML = this.delnotedata.delnote.delNoteRef;
-        this.HTMLsenderName.nativeElement.innerHTML = this.delnotedata.delnote.senderName;
-        this.HTMLsenderAdd1.nativeElement.innerHTML = this.delnotedata.delnote.senderAddr1;
-        this.HTMLsenderAdd2.nativeElement.innerHTML = this.delnotedata.delnote.senderAddr2;
-        this.HTMLsenderAdd3.nativeElement.innerHTML = this.delnotedata.delnote.senderAddr3;
-        this.HTMLsenderAdd4.nativeElement.innerHTML = this.delnotedata.delnote.senderAddr4;
-        this.HTMLsenderTown.nativeElement.innerHTML = this.delnotedata.delnote.senderTown;
-        this.HTMLdocDate.nativeElement.innerHTML = this.delnotedata.delnote.delNoteDate;
-        this.HTMLitemCode.nativeElement.innerHTML = this.delnotedata.delnote.itemCode;
-        this.HTMLitemDesc.nativeElement.innerHTML = this.delnotedata.delnote.itemDescription;
-        this.HTMLitemQty.nativeElement.innerHTML = this.delnotedata.delnote.qtyOrd;
-        this.HTMLdelInst.nativeElement.innerHTML = this.delnotedata.delnote.delOrdRef.deliveryInstructions;
-        this.HTMLfooterSenderName.nativeElement.innerHTML = this.delnotedata.delnote.senderName;
-        this.HTMLorderNoBardcode.nativeElement.innerHTML = this.delnotedata.delnote.delOrdRef.delOrdRef;
-        this.HTMLorderNo.nativeElement.innerHTML = this.delnotedata.delnote.delOrdRef.delOrdRef;
+        for (const element of this.delnotedata) {
+            this.HTMLreceiverName.nativeElement.innerHTML = element.receiverName;
+            this.HTMLreceiverAdd1.nativeElement.innerHTML = element.receiverAddr1;
+            this.HTMLreceiverAdd2.nativeElement.innerHTML = element.receiverAddr2;
+            this.HTMLreceiverAdd3.nativeElement.innerHTML = element.receiverAddr3;
+            this.HTMLreceiverAdd4.nativeElement.innerHTML = element.receiverAddr4;
+            this.HTMLreceiverTown.nativeElement.innerHTML = element.receiverTown;
+            this.HTMLdelNoteNo.nativeElement.innerHTML = element.delNoteRef;
+            this.HTMLdelNoteBarcode.nativeElement.innerHTML = element.delNoteRef;
+            this.HTMLsenderName.nativeElement.innerHTML = element.senderName;
+            this.HTMLsenderAdd1.nativeElement.innerHTML = element.senderAddr1;
+            this.HTMLsenderAdd2.nativeElement.innerHTML = element.senderAddr2;
+            this.HTMLsenderAdd3.nativeElement.innerHTML = element.senderAddr3;
+            this.HTMLsenderAdd4.nativeElement.innerHTML = element.senderAddr4;
+            this.HTMLsenderTown.nativeElement.innerHTML = element.senderTown;
+            this.HTMLdocDate.nativeElement.innerHTML = element.delNoteDate;
+            this.HTMLitemCode.nativeElement.innerHTML = element.itemCode;
+            this.HTMLitemDesc.nativeElement.innerHTML = element.itemDescription;
+            this.HTMLitemQty.nativeElement.innerHTML = element.qtyOrd;
+            this.HTMLdelInst.nativeElement.innerHTML = element.deliveryInstructions;
+            this.HTMLfooterSenderName.nativeElement.innerHTML = element.senderName;
+            this.HTMLorderNoBardcode.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
+            this.HTMLorderNo.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
+            const printContent = document.getElementById('content').innerHTML;
+
+            this.content = '<!DOCTYPE html><html><head>  '
+                + '<link href="http://acots/hampers/delnote.css" rel="stylesheet"> '
+                + '</head>'
+                + printContent + '</html>';
+
+            const tmpdata =  { type: 'HTML', format: 'plain', data: this.content };
+            this.data.push(tmpdata);
+        }
     }
 
     public onPrint() {
         this.setHTMLelements();
-
-        const printContent = document.getElementById('content').innerHTML;
-        // printContent.getElementByid('custName').
-        this.content = '<!DOCTYPE html><html><head>  '
-            + '<link href="http://acots/hampers/delnote.css" rel="stylesheet"> '
-            + '</head>'
-            + printContent + '</html>';
-
-        this.data[0].data = this.content;
 
         this.printEngine.connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
     }

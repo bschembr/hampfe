@@ -3,7 +3,8 @@ import {
   MatTableDataSource,
   MatSort,
   MatPaginator,
-  MatDialog
+  MatDialog,
+  MatDialogRef
 } from '@angular/material';
 import { DelnotecrudComponent } from '../delnotecrud/delnotecrud.component';
 import { DelNote } from '../../delnote';
@@ -11,7 +12,6 @@ import { DelNotesService } from '../../shared_service/del-notes.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DelnotedocComponent } from '../../shared_prints/delnotedoc/delnotedoc.component';
 import { QzTrayService } from '../../shared_service/qz-tray.service';
-import { JSDocTagName } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-dellist',
@@ -101,7 +101,7 @@ export class DellistComponent implements OnInit {
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '500px',
       width: '1000px',
-      data: { delnote: this.delnotearray[ this.getRowPaginator(row) ] }
+      data: { delnote: this.delnotearray[this.getRowPaginator(row)] }
     });
 
     dialogRef.afterClosed().subscribe(dialogData => {
@@ -109,37 +109,43 @@ export class DellistComponent implements OnInit {
         this._delnotesservice.updateDelNote(dialogData).subscribe(_return => {
         });
 
-        this.delnotearray[ this.getRowPaginator(row) ] = dialogData;
+        this.delnotearray[this.getRowPaginator(row)] = dialogData;
         this.listData.data = this.delnotearray;
       }
     });
   }
 
   printSingle(row: number) {
+    const job: DelNote[] = [];
+    job.push(this.delnotearray[this.getRowPaginator(row)]);
+
     const dialogRef = this.printdialog.open(DelnotedocComponent, {
       height: '500px',
       width: '500px',
-      data: { delnote: this.delnotearray[ this.getRowPaginator(row) ] }
+      data: job
     });
     this.printdialog.closeAll();
   }
 
   printSelected() {
-    /*
-    const data = [{
-      type: 'html',
-      format: 'plain', // or 'plain' if the data is raw HTML
-      data: 'test'
-    }];
+    const job: DelNote[] = [];
+
     if (this.selection.hasValue) {
       this.selection.selected.forEach(element => {
-        data[0].data = JSON.stringify(element);
-        // this.printEngine.Print('PDFCreator', data);
+          if ( JSON.stringify(element) !== '' ) {
+            job.push(element);
+          }
       });
-    }
-    */
-    // this.printEngine.connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
 
+      const dialogRef = this.printdialog.open(DelnotedocComponent, {
+        height: '500px',
+        width: '500px',
+        data: job
+      });
+      this.printdialog.closeAll();
+      this.listData.data = this.delnotearray;
+
+    }
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
