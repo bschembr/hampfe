@@ -1,8 +1,12 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Optional } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DelNote } from '../../delnote';
 import { AcoGeneral } from '../../acogeneral';
+import { EyeselItemsService } from '../../shared_service/eyesel-items.service';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-delnotecrud',
@@ -11,6 +15,12 @@ import { AcoGeneral } from '../../acogeneral';
 })
 
 export class DelnotecrudComponent implements OnInit {
+
+  codedescrdisabled = 'false';
+  private itemcodeoptions: string[] = [];
+  private eyeselitems = new Array(); // [ { code: string, description } ];
+  filteredItemCodesOptions: Observable<string[]>;
+
   createdDelNote: DelNote = new DelNote();
   screenName: string;
 
@@ -31,10 +41,30 @@ export class DelnotecrudComponent implements OnInit {
   });
 
   constructor(public dialogRef: MatDialogRef<DelnotecrudComponent>,
+    private _eyeselitemsservice: EyeselItemsService,
     @Inject(MAT_DIALOG_DATA) private data: any) { }
 
-  ngOnInit() {
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
 
+    return this.itemcodeoptions.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  ngOnInit() {
+    this.filteredItemCodesOptions = this.delnoteform.controls['ItemCode'].valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+
+    this._eyeselitemsservice.getEyeSelItems().subscribe(items => {
+      // console.log(JSON.stringify(items));
+      items.forEach(element => {
+        this.itemcodeoptions.push( element.code );
+        this.eyeselitems.push( { code: element.code, description: element.desc1 });
+      });
+      console.log(this.eyeselitems);
+    });
     if (this.data !== null) {
       this.screenName = 'Update Delivery Note';
       this.delnoteform.controls['DelInstructions'].setValue(this.data.delnote.deliveryInstructions);
@@ -56,7 +86,13 @@ export class DelnotecrudComponent implements OnInit {
       this.delnoteform.controls['RecTown'].setValue(this.data.delnote.receiverTown);
       this.delnoteform.controls['RecPhone'].setValue(this.data.delnote.receiverPhone);
       this.delnoteform.controls['ItemCode'].setValue(this.data.delnote.itemCode);
+      if (this.data.delnote.itemCode !== '') {
+        this.delnoteform.controls['ItemCode'].disable( { onlySelf: true} );
+      }
       this.delnoteform.controls['ItemDescr'].setValue(this.data.delnote.itemDescription);
+      if ( this.data.delnote.itemDescription !== '') {
+        this.delnoteform.controls['ItemDescr'].disable( { onlySelf: true} );
+      }
       this.delnoteform.controls['QtyOrd'].setValue(this.data.delnote.qtyOrd);
       // Intitialize qty lines
     } else {
@@ -66,11 +102,20 @@ export class DelnotecrudComponent implements OnInit {
 
   getBlankStringIfUndef(stringele: string) {
     // if (typeof stringele === 'undefined') {
-    if ( !stringele ) {
+    if (!stringele) {
       return '';
     } else {
       return stringele;
     }
+  }
+
+  itemCodeFocusOut() {
+    this.delnoteform.controls['ItemDescr'].setValue( this.eyeselitems[this.itemcodeoptions.findIndex((element) => {
+                                                        return element === this.delnoteform.controls['ItemCode'].value;
+                                                    })].description);
+    this.delnoteform.controls['ItemDescr'].disable( { onlySelf: true} );
+    this.delnoteform.controls['ItemCode'].disable( { onlySelf: true} );
+
   }
 
   onSave() {

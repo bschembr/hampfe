@@ -8,6 +8,12 @@ mat-footer-row mat-footer-cell{
     font-style: italic;
 }
 
+.cdk-overlay-pane {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 12px !important;
+    width:150px;
+}
+
 /* filter controls */
 .search-div{
     margin: 10px;

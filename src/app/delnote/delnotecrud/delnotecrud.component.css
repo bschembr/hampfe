@@ -1,3 +1,20 @@
+/* mat-table */
+mat-footer-row mat-footer-cell{
+    justify-content: center;
+    font-style: italic;
+}
+
+.mat-option {
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 12px !important;
+    height: 25px;
+    }
+
+::ng-deep .cdk-overlay-pane {
+    /* Do you changes here */
+        min-width:150px;
+}
+
 h4 {
     margin-top: 0px;
     margin-bottom: 0px;

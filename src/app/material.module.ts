@@ -9,7 +9,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
         MatIconModule,
         MatPaginatorModule,
         MatSortModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatAutocompleteModule
     ],
     exports: [
         MatFormFieldModule,
@@ -36,7 +38,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
         MatIconModule,
         MatPaginatorModule,
         MatSortModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatAutocompleteModule
     ]
 })
 export class MaterialModule {}
