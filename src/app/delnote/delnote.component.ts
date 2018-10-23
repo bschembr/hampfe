@@ -68,7 +68,8 @@ export class DelnoteComponent implements OnInit {
 
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '500px',
-      width: '1000px'
+      width: '1000px',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(dialogData => {
@@ -105,6 +106,7 @@ export class DelnoteComponent implements OnInit {
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '500px',
       width: '1000px',
+      disableClose: true,
       data: { delnote: this.delnotearray[rowindex] }
     });
 

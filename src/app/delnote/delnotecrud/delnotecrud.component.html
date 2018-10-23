@@ -81,10 +81,10 @@
 
           <mat-form-field class="delnotedetail2">
             <input (focusout)="itemDescrFocusOut()" type="text" placeholder="Description" aria-label="Number" matInput
-              formControlName="ItemDescr" [matAutocomplete]="auto">
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" style="width:150px">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                {{option}}
+              formControlName="ItemDescr" [matAutocomplete]="autoItemDesc">
+            <mat-autocomplete autoActiveFirstOption #autoItemDesc="matAutocomplete" style="width:150px">
+              <mat-option *ngFor="let itemdesc of filteredItemDescriptionOptions | async" [value]="itemdesc">
+                {{itemdesc}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>

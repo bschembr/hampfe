@@ -11,7 +11,7 @@ import { DelNote } from '../delnote';
 })
 
 export class CustomerOrderService {
-  private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = 'http://acofs:8080/HampersBE/api';
   private headers = new Headers({'Content-Type': 'application/json'});
   private options = new RequestOptions({headers: this.headers});
   private custOrder: CustomerOrder;
