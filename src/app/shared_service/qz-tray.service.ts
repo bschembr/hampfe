@@ -146,6 +146,9 @@ export class QzTrayService implements OnInit {
 
   // eg connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
   connectAndPrint(printer: string, options: any, data = [{  }]) {
+    if ( printer === '') {
+      printer = qz.printers.getDefault();
+    }
 // console.log(JSON.stringify(data));
     this.SetCertificates();
     // our promise chain

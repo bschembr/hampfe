@@ -41,6 +41,7 @@
     "sha": "^2.0.1",
     "webpack": "^4.4.1",
     "ws": "^6.1.0",
+    "xlsx": "^0.14.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
