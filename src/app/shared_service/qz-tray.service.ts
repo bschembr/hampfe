@@ -14,7 +14,7 @@ export class QzTrayService implements OnInit {
     data: '<p><b>Printing HTML</b> works!</p>'
   }];
 
-  PRINTER_NAME = '';
+  private PRINTER_NAME = '';
 
   options = { rasterize: false, scaleContent: false };
 
@@ -146,15 +146,18 @@ export class QzTrayService implements OnInit {
 
   // eg connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
   connectAndPrint(printer: string, options: any, data = [{  }]) {
-    if ( printer === '') {
-      printer = qz.printers.getDefault();
-    }
-// console.log(JSON.stringify(data));
     this.SetCertificates();
     // our promise chain
     this.connect().then(function () {
-      const config = qz.configs.create(printer, options);
-      return qz.print(config, data);
+      if ( printer === '' ) {
+          qz.printers.getDefault().then(function (defprinter) {
+            const config = qz.configs.create(defprinter, options);
+            return qz.print(config, data);
+          });
+        } else {
+          const config = qz.configs.create(printer, options);
+          return qz.print(config, data);
+      }
     }).catch(function (err) {
       console.error(err);
     });

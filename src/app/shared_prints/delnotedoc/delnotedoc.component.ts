@@ -92,13 +92,13 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
     public onPrint() {
         this.setHTMLelements();
 
-        this.printEngine.connectAndPrint('PDFCreator',
-                        { rasterize: false,
-                          scaleContent: false,
-                          size: { width: 210, height: 297 },
-                          units: 'mm',
-                          orientation: 'portrait' },
-                        this.data);
+        this.printEngine.connectAndPrint('',
+                                        { rasterize: false,
+                                            scaleContent: false,
+                                            size: { width: 210, height: 297 },
+                                            units: 'mm',
+                                            orientation: 'portrait' },
+                                        this.data);
     }
 
 }
