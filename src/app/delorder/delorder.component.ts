@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { CustomerOrder } from '../customerorder';
 import { Router } from '@angular/router';
@@ -28,12 +28,12 @@ export class DelorderComponent implements OnInit, AfterViewInit {
 
   orderform: FormGroup = new FormGroup({
     DelOrdDate: new FormControl(new Date()),
-    CustRef: new FormControl(),
-    Client: new FormControl(),
-    Town: new FormControl(),
+    CustRef: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    Client: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    Town: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     DelInstructions: new FormControl(),
     DefSendMsg: new FormControl(),
-    InvoiceRef: new FormControl(),
+    InvoiceRef: new FormControl('', [Validators.required, Validators.maxLength(10)]),
     Status: new FormControl()
   });
 

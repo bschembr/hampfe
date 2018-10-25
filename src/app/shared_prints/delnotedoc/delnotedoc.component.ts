@@ -92,7 +92,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
     public onPrint() {
         this.setHTMLelements();
 
-        this.printEngine.connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
+        this.printEngine.connectAndPrint('Microsoft Print to PDF', { rasterize: false, scaleContent: false }, this.data);
     }
 
 }

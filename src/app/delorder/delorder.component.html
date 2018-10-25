@@ -1,4 +1,4 @@
-<h4>Customer Order</h4> 
+<h4>Customer Order</h4>
 <div class="container">
 <section class="order-form">
   <form (ngSubmit)="onSave()" [formGroup]="orderform" class="order-form">
@@ -7,9 +7,9 @@
     <mat-grid-tile colspan="1">
       <div class="containercol1">
         <mat-form-field class="orderhead">
-          <input 
-            matInput 
-            [matDatepicker]="picker" 
+          <input
+            matInput
+            [matDatepicker]="picker"
             [max]="maxDate"
             placeholder="Order Date"
             formControlName="DelOrdDate">
@@ -17,66 +17,66 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <mat-form-field class="orderhead">
-          <input 
-            matInput 
-            placeholder="Customer Reference" 
+          <input
+            matInput
+            placeholder="Customer Reference"
             formControlName="CustRef">
-        </mat-form-field>  
+        </mat-form-field>
       </div>
     </mat-grid-tile>
 
     <mat-grid-tile colspan="2">
       <div class="containercol2" dir="ltr" fxLayoutGap="20px" fxLayoutAlign="start start">
         <mat-form-field class="orderhead" style="width: 380px;">
-            <textarea 
+            <textarea
               matInput
-              rows="5" 
+              rows="5"
               placeholder="Client"
               formControlName="Client">
             </textarea>
-        </mat-form-field>  
+        </mat-form-field>
 
         <mat-form-field class="orderhead">
-            <input 
-              matInput 
-              placeholder="Town" 
+            <input
+              matInput
+              placeholder="Town"
               formControlName="Town">
-        </mat-form-field> 
+        </mat-form-field>
 
       </div>
     </mat-grid-tile>
 
-    <mat-grid-tile colspan="2"> 
-      <div class="containercol3" dir="ltr" fxLayoutGap="20px" fxLayoutAlign="start start">      
+    <mat-grid-tile colspan="2">
+      <div class="containercol3" dir="ltr" fxLayoutGap="20px" fxLayoutAlign="start start">
         <mat-form-field class="orderhead">
-            <input 
-              matInput 
-              placeholder="Sender Message" 
+            <input
+              matInput
+              placeholder="Sender Message"
               formControlName="DefSendMsg">
-        </mat-form-field> 
+        </mat-form-field>
         <mat-form-field class="orderhead">
-            <input 
-              matInput 
-              placeholder="Delivery Instructions" 
+            <input
+              matInput
+              placeholder="Delivery Instructions"
               formControlName="DelInstructions">
-        </mat-form-field>  
+        </mat-form-field>
         <mat-form-field class="orderhead">
-            <input 
-              matInput 
-              placeholder="InvoiceRef" 
+            <input
+              matInput
+              placeholder="InvoiceRef"
               formControlName="InvoiceRef">
-        </mat-form-field>  
+        </mat-form-field>
         <mat-form-field class="orderhead">
-            <input 
-              matInput 
-              placeholder="Status" 
+            <input
+              matInput
+              placeholder="Status"
               formControlName="Status">
-        </mat-form-field>  
+        </mat-form-field>
       </div>
-    </mat-grid-tile>    
+    </mat-grid-tile>
 
     <mat-grid-tile colspan="1">
-      <div class="containercol4">      
+      <div class="containercol4">
         <button mat-raised-button color="primary">Save</button>
       </div>
     </mat-grid-tile>
