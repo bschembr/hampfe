@@ -100,7 +100,7 @@
       <mat-grid-list cols="1" rowHeight="45px">
         <mat-grid-tile>
           <div class="footer">
-            <button mat-raised-button type="submit" color="primary">Save</button>
+            <button mat-raised-button type="submit" color="primary" [disabled]="!delnoteform.valid">Save</button>
             <button mat-raised-button type="button" color="accent" (click)="onCancel()">Cancel</button>
           </div>
         </mat-grid-tile>

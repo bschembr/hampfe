@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, Optional, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DelNote } from '../../delnote';
 import { AcoGeneral } from '../../acogeneral';
@@ -31,15 +31,15 @@ export class DelnotecrudComponent implements OnInit {
     DelNoteDeliveryDate: new FormControl(new Date()),
     DelNoteDeliveryTime: new FormControl(),
     DelInstructions: new FormControl(),
-    SenderNameAddr: new FormControl(),
-    SendTown: new FormControl(),
+    SenderNameAddr: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    SendTown: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     SendMessage: new FormControl(),
-    ReceivNameAddr: new FormControl(),
-    RecTown: new FormControl(),
-    RecPhone: new FormControl(),
+    ReceivNameAddr: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    RecTown: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    RecPhone: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     ItemCode: new FormControl(),
     ItemDescr: new FormControl(),
-    QtyOrd: new FormControl()
+    QtyOrd: new FormControl('', [Validators.required, Validators.maxLength(4)])
   });
 
   constructor(public dialogRef: MatDialogRef<DelnotecrudComponent>,
