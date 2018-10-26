@@ -50,7 +50,8 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    MatDialogModule
+    MatDialogModule,
+    DelnotedocComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
@@ -61,7 +62,7 @@ const appRoutes: Routes = [
     QzTrayService,
     DelnotedocComponent
   ],
-  entryComponents: [ DelnotecrudComponent ],
+  entryComponents: [ DelnotecrudComponent, DelnotedocComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
