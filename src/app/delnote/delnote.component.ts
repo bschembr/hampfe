@@ -14,6 +14,7 @@ import * as XLSX from 'xlsx';
   templateUrl: './delnote.component.html',
   styleUrls: ['./delnote.component.css']
 })
+
 export class DelnoteComponent implements OnInit {
 
   delnotearray: DelNote[] = new Array();
@@ -123,8 +124,23 @@ export class DelnoteComponent implements OnInit {
 
   }
 
-  excelImport() {
 
+
+  excelImport(file: any) {
+    console.log('file dialog: ' + file);
+
+    const target: DataTransfer = <DataTransfer>(file.target);
+    if (target.files.length !== 1 && target.files.length !== 0) {
+      throw new Error('Cannot use multiple files');
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event: any) => {
+      const bstr: string = event.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
+      console.log(wb);
+    };
+    reader.readAsBinaryString(target.files[0]);
   }
 
 }
