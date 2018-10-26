@@ -77,7 +77,7 @@
 
     <mat-grid-tile colspan="1">
       <div class="containercol4">
-        <button mat-raised-button color="primary">Save</button>
+        <button mat-raised-button color="primary" [disabled]="!orderform.valid">Save</button>
       </div>
     </mat-grid-tile>
 
