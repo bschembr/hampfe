@@ -24,7 +24,6 @@ import { QzTrayService } from './shared_service/qz-tray.service';
 const appRoutes: Routes = [
   {path: '', component: DelorderComponent},
   {path: 'delnotelist', component: DellistComponent},
-  {path: 'print', component: DelnotedocComponent}
 ];
 
 @NgModule({

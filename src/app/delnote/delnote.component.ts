@@ -7,6 +7,7 @@ import {
 } from '@angular/material';
 import { DelnotecrudComponent } from './delnotecrud/delnotecrud.component';
 import { DelNote } from '../delnote';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-delnote',
@@ -119,6 +120,10 @@ export class DelnoteComponent implements OnInit {
         this.listData.data = this.delnotearray;
       }
     });
+
+  }
+
+  excelImport() {
 
   }
 
