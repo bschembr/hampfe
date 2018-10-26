@@ -1,7 +1,7 @@
 <h4>{{screenName}}</h4>
 <div class="container">
   <section class="delnote-form">
-    <form (keydown.enter)="$event.preventDefault()" (ngSubmit)="onSave()" [formGroup]="delnoteform" class="ordernote-form">
+    <form  (ngSubmit)="onSave()" [formGroup]="delnoteform" class="ordernote-form">
 
       <mat-grid-list cols="1" rowHeight="65px">
         <mat-grid-tile>
@@ -49,7 +49,7 @@
         <div class="Detail2">
           <mat-grid-tile>
             <mat-form-field class="delnotedetail2">
-              <input matInput placeholder="Town" formControlName="SendTown">
+              <input matInput placeholder="Town" formControlName="SendTown" required>
             </mat-form-field>
             <mat-form-field class="delnotedetail2">
               <input matInput placeholder="Sender Message" formControlName="SendMessage">
