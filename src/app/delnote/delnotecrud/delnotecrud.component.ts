@@ -39,7 +39,8 @@ export class DelnotecrudComponent implements OnInit {
     RecPhone: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     ItemCode: new FormControl(),
     ItemDescr: new FormControl(),
-    QtyOrd: new FormControl('', [Validators.required, Validators.maxLength(4)])
+    QtyOrd: new FormControl('', [Validators.required, Validators.maxLength(4)]),
+    DelRequestsOther: new FormControl(),
   });
 
   constructor(public dialogRef: MatDialogRef<DelnotecrudComponent>,

@@ -99,7 +99,7 @@ export class DellistComponent implements OnInit {
   onEditLine(row: number) {
 
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
-      height: '500px',
+      height: '530px',
       width: '1000px',
       data: { delnote: this.delnotearray[this.getRowPaginator(row)] }
     });
