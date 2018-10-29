@@ -25,25 +25,13 @@ export class DelnoteComponent implements OnInit {
   listData: MatTableDataSource<DelNote>;
 
   displayedColumns: string[] = ['delnotelineref', 'deliveryDate', 'senderName', 'senderTown', 'senderMessage',
-   'receiverName', 'receiverTown', 'receiverPhone', 'deliveryInstructions', 'status', 'actions'];
+    'receiverName', 'receiverTown', 'receiverPhone', 'deliveryInstructions', 'status', 'actions'];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey = '';
 
   ngOnInit() {
-
-    /*
-    this.delnoteservice.getDelNotes().subscribe(
-      list => {
-        const array = list.map(item => {
-          return {
-            delnoteref: item.delnoteref,
-            ...item
-          };
-        });
-      */
-    // console.log(array);
 
     this.listData = new MatTableDataSource(this.delnotearray);
     this.listData.sort = this.sort;
@@ -69,8 +57,8 @@ export class DelnoteComponent implements OnInit {
   createDelNote() {
 
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
-      height: '500px',
-      width: '1000px',
+      height: '530px',
+      width: '1050px',
       disableClose: true,
     });
 
@@ -106,7 +94,7 @@ export class DelnoteComponent implements OnInit {
     }
 
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
-      height: '500px',
+      height: '530px',
       width: '1000px',
       disableClose: true,
       data: { delnote: this.delnotearray[rowindex] }
@@ -136,9 +124,14 @@ export class DelnoteComponent implements OnInit {
 
     const reader = new FileReader();
     reader.onload = (event: any) => {
+      /* read workbook */
       const bstr: string = event.target.result;
-      const wb: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
-      console.log(wb);
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+
+      /* grab first sheet */
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      console.log(ws);
     };
     reader.readAsBinaryString(target.files[0]);
   }

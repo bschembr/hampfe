@@ -31,15 +31,16 @@ export class DelnotecrudComponent implements OnInit {
     DelNoteDeliveryDate: new FormControl(new Date()),
     DelNoteDeliveryTime: new FormControl(),
     DelInstructions: new FormControl(),
-    SenderNameAddr: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    SenderNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     SendTown: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     SendMessage: new FormControl(),
-    ReceivNameAddr: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    ReceivNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     RecTown: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     RecPhone: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     ItemCode: new FormControl(),
     ItemDescr: new FormControl(),
-    QtyOrd: new FormControl('', [Validators.required, Validators.maxLength(4)])
+    QtyOrd: new FormControl('', [Validators.required, Validators.maxLength(4)]),
+    DelRequestsOther: new FormControl(),
   });
 
   constructor(public dialogRef: MatDialogRef<DelnotecrudComponent>,
