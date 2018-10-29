@@ -19,7 +19,7 @@
         <mat-form-field class="orderhead">
           <input
             matInput
-            placeholder="Customer Reference"
+            placeholder="Customer Reference *"
             formControlName="CustRef">
         </mat-form-field>
       </div>
@@ -31,7 +31,7 @@
             <textarea
               matInput
               rows="5"
-              placeholder="Client"
+              placeholder="Client *"
               formControlName="Client">
             </textarea>
         </mat-form-field>
@@ -39,7 +39,7 @@
         <mat-form-field class="orderhead">
             <input
               matInput
-              placeholder="Town"
+              placeholder="Town *"
               formControlName="Town">
         </mat-form-field>
 
@@ -63,14 +63,15 @@
         <mat-form-field class="orderhead">
             <input
               matInput
-              placeholder="InvoiceRef"
+              placeholder="InvoiceRef *"
               formControlName="InvoiceRef">
         </mat-form-field>
         <mat-form-field class="orderhead">
             <input
               matInput
               placeholder="Status"
-              formControlName="Status">
+              formControlName="Status"
+              >
         </mat-form-field>
       </div>
     </mat-grid-tile>
