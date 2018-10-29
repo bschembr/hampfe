@@ -20,9 +20,11 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DellistComponent } from './delnote/dellist/dellist.component';
 import { DelnotedocComponent } from './shared_prints/delnotedoc/delnotedoc.component';
 import { QzTrayService } from './shared_service/qz-tray.service';
+import { MenumainComponent } from './menu/menumain/menumain.component';
 
 const appRoutes: Routes = [
-  {path: '', component: DelorderComponent},
+  {path: '', component: MenumainComponent},
+  {path: 'delorder', component: DelorderComponent},
   {path: 'delnotelist', component: DellistComponent},
 ];
 
@@ -33,7 +35,8 @@ const appRoutes: Routes = [
     DelnoteComponent,
     DelnotecrudComponent,
     DellistComponent,
-    DelnotedocComponent
+    DelnotedocComponent,
+    MenumainComponent
   ],
   imports: [
     BrowserModule,
