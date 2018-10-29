@@ -3,7 +3,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material';
+import { MatNativeDateModule, MatMenu } from '@angular/material';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +11,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
     imports: [
@@ -25,7 +27,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         MatPaginatorModule,
         MatSortModule,
         MatCheckboxModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatMenuModule,
+        MatToolbarModule
     ],
     exports: [
         MatFormFieldModule,
@@ -39,7 +43,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         MatPaginatorModule,
         MatSortModule,
         MatCheckboxModule,
-        MatAutocompleteModule
+        MatAutocompleteModule,
+        MatMenuModule,
+        MatToolbarModule
     ]
 })
 export class MaterialModule {}

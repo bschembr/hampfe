@@ -1,3 +1,19 @@
-<p>
-  menumain works!
-</p>
+<body>
+<div>
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <button mat-button [matMenuTriggerFor]="Order">Order</button>
+        <button mat-button [matMenuTriggerFor]="DeliveryNote">Delivery Note</button>
+
+        <mat-menu #Order="matMenu" yPosition="below" [overlapTrigger]="false">
+          <button mat-menu-item>List Orders</button>
+        </mat-menu>
+        <mat-menu #DeliveryNote="matMenu" yPosition="below" [overlapTrigger]="false">
+          <button mat-menu-item>List Delivery Notes</button>
+        </mat-menu>
+
+      </mat-toolbar-row>
+    </mat-toolbar>
+    </div>
+    <div></div>
+</body>

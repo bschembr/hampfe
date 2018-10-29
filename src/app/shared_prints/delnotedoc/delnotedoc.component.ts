@@ -34,7 +34,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
     @ViewChild('itemCode') HTMLitemCode: ElementRef;
     @ViewChild('itemDesc') HTMLitemDesc: ElementRef;
     @ViewChild('itemQty') HTMLitemQty: ElementRef;
-    @ViewChild('delInst') HTMLdelInst: ElementRef;
+    @ViewChild('custHamper') HTMLcustHamper: ElementRef;
     @ViewChild('footerSenderName') HTMLfooterSenderName: ElementRef;
     @ViewChild('orderNoBarcode') HTMLorderNoBardcode: ElementRef;
     @ViewChild('orderNo') HTMLorderNo: ElementRef;
@@ -73,7 +73,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
             this.HTMLitemCode.nativeElement.innerHTML = element.itemCode;
             this.HTMLitemDesc.nativeElement.innerHTML = element.itemDescription;
             this.HTMLitemQty.nativeElement.innerHTML = element.qtyOrd;
-            this.HTMLdelInst.nativeElement.innerHTML = element.customHamperRemarks;
+            this.HTMLcustHamper.nativeElement.innerHTML = element.customHamperRemarks;
             this.HTMLfooterSenderName.nativeElement.innerHTML = element.senderName;
             this.HTMLorderNoBardcode.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
             this.HTMLorderNo.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
