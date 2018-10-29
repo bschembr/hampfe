@@ -73,7 +73,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
             this.HTMLitemCode.nativeElement.innerHTML = element.itemCode;
             this.HTMLitemDesc.nativeElement.innerHTML = element.itemDescription;
             this.HTMLitemQty.nativeElement.innerHTML = element.qtyOrd;
-            this.HTMLdelInst.nativeElement.innerHTML = element.deliveryInstructions;
+            this.HTMLdelInst.nativeElement.innerHTML = element.customHamperRemarks;
             this.HTMLfooterSenderName.nativeElement.innerHTML = element.senderName;
             this.HTMLorderNoBardcode.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
             this.HTMLorderNo.nativeElement.innerHTML = element.delOrdRef.delOrdRef;

@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject, Optional, ViewChild, ElementRef } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, Inject, Optional, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Validators, FormGroup, FormControl, NgModel } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DelNote } from '../../delnote';
 import { AcoGeneral } from '../../acogeneral';
@@ -15,6 +15,9 @@ import { map, startWith } from 'rxjs/operators';
 })
 
 export class DelnotecrudComponent implements OnInit {
+  isreqdiarychecked = false;
+  isreqcalendarchecked = false;
+  isreqcardchecked = false;
   maxDate;
   codedescrdisabled = 'false';
   private itemcodeoptions: string[] = [];
@@ -30,7 +33,7 @@ export class DelnotecrudComponent implements OnInit {
     DelNoteDocDate: new FormControl(new Date()),
     DelNoteDeliveryDate: new FormControl(new Date()),
     DelNoteDeliveryTime: new FormControl(),
-    DelInstructions: new FormControl(),
+    CustHamperRemarks: new FormControl(),
     SenderNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     SendTown: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     SendMessage: new FormControl(),
@@ -40,12 +43,13 @@ export class DelnotecrudComponent implements OnInit {
     ItemCode: new FormControl(),
     ItemDescr: new FormControl(),
     QtyOrd: new FormControl('', [Validators.required, Validators.maxLength(4)]),
-    DelRequestsOther: new FormControl(),
+    DelRequestsOther: new FormControl(''),
   });
 
   constructor(public dialogRef: MatDialogRef<DelnotecrudComponent>,
     private _eyeselitemsservice: EyeselItemsService,
     @Inject(MAT_DIALOG_DATA) private data: any) { }
+
 
   private _filteritemdescription(value: string): string[] {
     const filterValue = value.toLowerCase();
@@ -87,7 +91,7 @@ export class DelnotecrudComponent implements OnInit {
     });
     if (this.data !== null) {
       this.screenName = 'Update Delivery Note';
-      this.delnoteform.controls['DelInstructions'].setValue(this.data.delnote.deliveryInstructions);
+      this.delnoteform.controls['CustHamperRemarks'].setValue(this.data.delnote.customHamperRemarks);
       this.delnoteform.controls['DelNoteDeliveryDate'].setValue(this.data.delnote.delNoteDate);
       this.delnoteform.controls['DelNoteDocDate'].setValue(this.data.delnote.delNoteDate);
       this.delnoteform.controls['DelNoteDeliveryTime'].setValue(this.data.delnote.deliveryTime);
@@ -114,6 +118,11 @@ export class DelnotecrudComponent implements OnInit {
         this.delnoteform.controls['ItemDescr'].disable({ onlySelf: true });
       }
       this.delnoteform.controls['QtyOrd'].setValue(this.data.delnote.qtyOrd);
+      this.isreqcalendarchecked = this.data.delnote.reqCalendar;
+      this.isreqcardchecked = this.data.delnote.reqDiary;
+      this.isreqdiarychecked = this.data.delnote.reqDiary;
+      this.delnoteform.controls['DelRequestsOther'].setValue(this.data.delnote.reqOther);
+      this.delnoteform.controls['CustHamperRemarks'].setValue(this.data.delnote.customHamperRemarks);
       // Intitialize qty lines
     } else {
       this.screenName = 'Create Delivery Note';
@@ -145,6 +154,18 @@ export class DelnotecrudComponent implements OnInit {
     this.delnoteform.controls['ItemCode'].disable({ onlySelf: true });
   }
 
+  togglereqdiary() {
+    this.isreqdiarychecked = !this.isreqdiarychecked;
+  }
+
+  togglereqcard() {
+    this.isreqcardchecked = !this.isreqcardchecked;
+  }
+
+  togglereqcalendar() {
+    this.isreqcalendarchecked = !this.isreqcalendarchecked;
+  }
+
   onSave() {
 
     const SendNameAddr = String(this.delnoteform.controls['SenderNameAddr'].value).split('\n');
@@ -154,7 +175,11 @@ export class DelnotecrudComponent implements OnInit {
       this.createdDelNote.delNoteRef = this.data.delnote.delNoteRef;
       this.createdDelNote.delOrdRef = this.data.delnote.delOrdRef;
     }
-    this.createdDelNote.deliveryInstructions = this.delnoteform.controls['DelInstructions'].value;
+    this.createdDelNote.reqCalendar = this.isreqcalendarchecked;
+    this.createdDelNote.reqDiary = this.isreqdiarychecked;
+    this.createdDelNote.reqCard = this.isreqcardchecked;
+    this.createdDelNote.reqOther = this.delnoteform.controls['DelRequestsOther'].value;
+    this.createdDelNote.customHamperRemarks = this.delnoteform.controls['CustHamperRemarks'].value;
     this.createdDelNote.deliveryDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDeliveryDate'].value);
     this.createdDelNote.delNoteDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDocDate'].value);
     this.createdDelNote.deliveryTime = this.delnoteform.controls['DelNoteDeliveryTime'].value;
@@ -231,8 +256,8 @@ export class DelnotecrudComponent implements OnInit {
     if (this.createdDelNote.receiverPhone === null) {
       this.createdDelNote.receiverPhone = '';
     }
-    if (this.createdDelNote.deliveryInstructions === null) {
-      this.createdDelNote.deliveryInstructions = '';
+    if (this.createdDelNote.customHamperRemarks === null) {
+      this.createdDelNote.customHamperRemarks = '';
     }
     if (this.createdDelNote.itemCode === null) {
       this.createdDelNote.itemCode = '';

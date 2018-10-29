@@ -19,11 +19,18 @@ export class DelNote {
     receiverAddr4: string;
     receiverTown: string;
     receiverPhone: string;
-    deliveryInstructions: string;
+    customHamperRemarks: string;
+    reqCalendar: boolean;
+    reqDiary: boolean;
+    reqCard: boolean;
+    reqOther: string;
     itemCode: string;
     itemDescription: string;
     qtyOrd: number;
     status: string;
+    delNotePrintDate: Date;
+    labelPrintDate: Date;
+    locked: boolean;
 
     constructor() {
     }

@@ -13,9 +13,9 @@
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <div class="requestsgroup">
-                <mat-checkbox class="requests">Diary</mat-checkbox>
-                <mat-checkbox class="requests">Calendar</mat-checkbox>
-                <mat-checkbox class="requests">Card</mat-checkbox>
+                <mat-checkbox (change)="togglereqdiary()" color="primary" class="requests">Diary</mat-checkbox>
+                <mat-checkbox (change)="togglereqcalendar()" color="primary" class="requests">Calendar</mat-checkbox>
+                <mat-checkbox (change)="togglereqcard()" color="primary" class="requests">Card</mat-checkbox>
               </div>
             </div>
           </mat-grid-tile>
@@ -38,7 +38,7 @@
           </mat-grid-tile>
           <mat-grid-tile>
             <mat-form-field class="delnotehead">
-              <textarea matInput rows="3" placeholder="Custom Hamper Remarks" formControlName="DelInstructions">
+              <textarea matInput rows="3" placeholder="Custom Hamper Remarks" formControlName="CustHamperRemarks">
               </textarea>
             </mat-form-field>
           </mat-grid-tile>
