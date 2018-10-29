@@ -1,228 +1,256 @@
 <section id="content" #content>
 
-	<body class="a4">
-		<section>
-			<table class="container1">
-				<tr>
-					<td class="CustAddress">
-						<div>
-							<h4>Recepient Address</h4>
-							<h5 #receiverName>Recepient Name</h5>
-							<h5 #receiverAdd1>Address 1</h5>
-							<h5 #receiverAdd2>Address 2</h5>
-							<h5 #receiverAdd3>Address 3</h5>
-							<h5 #receiverAdd4>Address 4</h5>
-							<h5></h5>
-							<h5 #receiverTown>Town</h5>
-						</div>
-					</td>
-					<td class="LogoContainer">
-						<div class="acoLogo"><img src="http://acots/hampers/delnotelogo.png"></div>
-						<div>
-							<h5>Canter Business Center</h5>
-							<h5>Patri Felicjan Bilocca Street</h5>
-							<h5>Marsa MRS1524</h5>
-							<h5>Tel: 21237555</h5>
-							<h5>Waste Management No: WMP/01349/07</h5>
-							<h5>Email: info@attardco.com Web: www.attardcofood.com</h5>
-							<h5>Vat Reg: MT15713908 Ex No: EXO925 Comp Reg No: C25937</h5>
-						</div>
-					</td>
-				</tr>
-			</table>
-			<table>
-				<tr>
-					<td class="DelNote">
-						<div>
-							<h3>Delivery Note:</h3>
-						</div>
-					</td>
-					<td>
-						<div>
-							<h3 #delNoteNo> 01234567890123456789 </h3>
-						</div>
-					</td>
-					<td class="Barcode">
-						<div>
-							<h4 class="bcode" #delNoteBarcode>77002533</h4>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</section>
+  <body class="a4">
+    <section>
+      <table class="container1">
+        <tr>
+          <td class="CustAddress">
+            <div>
+              <h4>Recepient Address</h4>
+              <h5 #receiverName>Recepient Name</h5>
+              <h5 #receiverAdd1>Address 1</h5>
+              <h5 #receiverAdd2>Address 2</h5>
+              <h5 #receiverAdd3>Address 3</h5>
+              <h5 #receiverAdd4>Address 4</h5>
+              <h5></h5>
+              <h5 #receiverTown>Town</h5>
+            </div>
+          </td>
+          <td class="LogoContainer">
+            <div class="acoLogo"><img src="http://acots/hampers/delnotelogo.png"></div>
+            <div>
+              <h5>Canter Business Center</h5>
+              <h5>Patri Felicjan Bilocca Street</h5>
+              <h5>Marsa MRS1524</h5>
+              <h5>Tel: 21237555</h5>
+              <h5>Waste Management No: WMP/01349/07</h5>
+              <h5>Email: info@attardco.com Web: www.attardcofood.com</h5>
+              <h5>Vat Reg: MT15713908 Ex No: EXO925 Comp Reg No: C25937</h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td class="DelNote">
+            <div>
+              <h3>Delivery Note:</h3>
+            </div>
+          </td>
+          <td style="width:180px; text-align: left;">
+            <div>
+              <h3 #delNoteNo> 01234567890123456789 </h3>
+            </div>
+          </td>
+          <td class="Barcode">
+            <div>
+              <h4 class="bcode" #delNoteBarcode>77002533</h4>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-		<section>
+    <section>
 
-			<table class="container2">
-				<tr>
-					<td class="heading" style="height:120px; width:15%; vertical-align: text-top;">
-						<div>
-							<h4>By Order Of:</h4>
-						</div>
-					</td>
-					<td class="SenderAddress" style="width:55%; vertical-align: text-top;">
-						<div>
-							<h4 #senderName>012345678901234567890123456789012345678</h4>
-							<h5 #senderAdd1>01234567890123456789012345678901234567890123456789</h5>
-							<h5 #senderAdd2>01234567890123456789012345678901234567890123456789</h5>
-							<h5 #senderAdd3>01234567890123456789012345678901234567890123456789</h5>
-							<h5 #senderAdd4>01234567890123456789012345678901234567890123456789</h5>
-							<h5 #senderTown>01234567890123456789012345678901234567890123456789</h5>
-						</div>
-					</td>
-					<td class="DocDate" style="width:10%; vertical-align: text-top;">
-						<div>
-							<h4>Document Date:</h4>
-						</div>
-					</td>
-					<td style="width:20%; vertical-align: text-top;">
-						<div>
-							<h4 #docDate>dd - mm - yyyy</h4>
-						</div>
-					</td>
-			</table>
-		</section>
-		<section>
-			<table class="container3">
-				<tr class="heading">
-					<td style="width:15%">
-						<div>
-							<h4>Code</h4>
-						</div>
-					</td>
-					<td style="width:60%">
-						<div>
-							<h4>Description</h4>
-						</div>
-					</td>
-					<td style="text-align:left; padding-right:5px; width:35%">
-						<div>
-							<h4>Qty</h4>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</section>
-
-
-		<section>
-			<table class="container4">
-				<tr class="heading">
-					<td style="width:15%">
-						<div>
-							<h5 #itemCode>HP0123456789</h5>
-						</div>
-					</td>
-					<td style="width:60%">
-						<div>
-							<h5 #itemDesc>HP01234567890123456789012345678901234567890123456789012</h5>
-						</div>
-					</td>
-					<td style="text-align:left; padding-right:5px;width:35%;">
-						<div>
-							<h5 #itemQty>0123456789</h5>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</section>
-
-		<section>
-			<table class="container5">
-				<tr class="heading">
-					<td style="vertical-align: text-top;">
-						<section>
-							<div>
-								<h5 #delInst>Delivery Instruction 1</h5>
-							</div>
-						</section>
-					</td>
-				</tr>
-			</table>
-		</section>
-		<section>
-			<table class="container6">
-				<tr class="heading">
-					<td>
-						<div class="footer">
-							<h5>Attard & Co Food is proud to have been entrusted by</h5>
-							<h5 #footerSenderName>01234567890123456789012345678901234567890123456789</h5>
-							<h5>to present you with this Hamper</h5>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</section>
+      <table class="container2">
+        <tr>
+          <td class="heading" style="height:120px; width:15%; vertical-align: text-top;">
+            <div>
+              <h4>By Order Of:</h4>
+            </div>
+          </td>
+          <td class="SenderAddress" style="width:55%; vertical-align: text-top;">
+            <div>
+              <h4 #senderName>012345678901234567890123456789012345678</h4>
+              <h5 #senderAdd1>01234567890123456789012345678901234567890123456789</h5>
+              <h5 #senderAdd2>01234567890123456789012345678901234567890123456789</h5>
+              <h5 #senderAdd3>01234567890123456789012345678901234567890123456789</h5>
+              <h5 #senderAdd4>01234567890123456789012345678901234567890123456789</h5>
+              <h5 #senderTown>01234567890123456789012345678901234567890123456789</h5>
+            </div>
+          </td>
+          <td class="DocDate" style="width:10%; vertical-align: text-top;">
+            <div>
+              <h4>Document Date:</h4>
+            </div>
+          </td>
+          <td style="width:20%; vertical-align: text-top;">
+            <div>
+              <h4 #docDate>dd - mm - yyyy</h4>
+            </div>
+          </td>
+      </table>
+    </section>
+    <section>
+      <table class="container3">
+        <tr class="heading">
+          <td style="width:15%">
+            <div>
+              <h4>Code</h4>
+            </div>
+          </td>
+          <td style="width:60%">
+            <div>
+              <h4>Description</h4>
+            </div>
+          </td>
+          <td style="text-align:left; padding-right:5px; width:35%">
+            <div>
+              <h4>Qty</h4>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </section>
 
 
+    <section>
+      <table class="container4">
+        <tr class="heading">
+          <td style="width:15%">
+            <div>
+              <h5 #itemCode>HP0123456789</h5>
+            </div>
+          </td>
+          <td style="width:60%">
+            <div>
+              <h5 #itemDesc>HP01234567890123456789012345678901234567890123456789012</h5>
+            </div>
+          </td>
+          <td style="text-align:left; padding-right:5px;width:35%;">
+            <div>
+              <h5 #itemQty>0123456789</h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-		<section>
-			<table class="container7">
-				<tr class="heading">
-					<td>
-						<div>
-							<h5>Received in Good Order and Condition</h5>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</section>
+    <section>
+      <table class="container5">
+        <tr class="heading">
+          <td style="width: 15%;"></td>
+          <td style="vertical-align: text-top; width: 85%">
+            <section>
+              <div>
+                <h5 #custHamper>Custom Hamper</h5>
+              </div>
+            </section>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <section>
+      <table class="container5-1">
+        <tr class="heading">
+          <td style="width: 15%;">
+            <div>
+              <h5 #DelDate>dd/mm/yyyy</h5>
+            </div>
+            <div>
+              <h5 #DelTime>hh:mm</h5>
+            </div>
+          </td>
+          <td style="width:60%"></td>
+          <td style="text-align:left; padding-right:5px;width:35%; vertical-align: text-top;">
+            <section>
+              <div>
+                <h5 style="text-decoration: underline;">Delivery Requests</h5>
+                <h5 #delRequestDiary>Diary</h5>
+                <h5 #delRequestCard>Card</h5>
+                <h5 #delRequestCalendar>Calendar</h5>
+                <h5 #delRequestOther>Other</h5>
+              </div>
+            </section>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-		<section>
-			<table class="container8">
-				<tr class="heading">
-					<td style="width:30%;">
-						<div>
-							<h5>___________________________</h5>
-						</div>
-					</td>
-					<td>
-						<div>
-							<h5>_______________________________________</h5>
-						</div>
-					</td>
-					<td style="width:30%;">
-						<div>
-							<h5>___________________________</h5>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</section>
+    <section>
+      <table class="container6">
+        <tr class="heading">
+          <td>
+            <div class="footer">
+              <h5>Attard & Co Food is proud to have been entrusted by</h5>
+              <h5 #footerSenderName>01234567890123456789012345678901234567890123456789</h5>
+              <h5>to present you with this Hamper</h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </section>
 
-		<section>
-			<table class="container8">
-				<tr class="heading">
-					<td style="width:30%;">
-						<div>
-							<h5>Signature</h5>
-						</div>
-					</td>
-					<td>
-						<div>
-							<h5>Name in Blocks</h5>
-						</div>
-					</td>
-					<td style="width:30%;">
-						<div>
-							<h5>Date & Time</h5>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</section>
 
-		<section>
-			<table class="container9">
-				<tr class="footer">
-					<td>
-						<div>
-							<h4 class="bcode" #orderNoBarcode>CH17000186</h4>
-							<h5 #orderNo>17000186</h5>
-						</div>
-					</td>
-				</tr>
-			</table>
-		</section>
-	</body>
+
+    <section>
+      <table class="container7">
+        <tr class="heading">
+          <td>
+            <div>
+              <h5>Received in Good Order and Condition</h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      <table class="container8">
+        <tr class="heading">
+          <td style="width:30%;">
+            <div>
+              <h5>___________________________</h5>
+            </div>
+          </td>
+          <td>
+            <div>
+              <h5>_______________________________________</h5>
+            </div>
+          </td>
+          <td style="width:30%;">
+            <div>
+              <h5>___________________________</h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      <table class="container8">
+        <tr class="heading">
+          <td style="width:30%;">
+            <div>
+              <h5>Signature</h5>
+            </div>
+          </td>
+          <td>
+            <div>
+              <h5>Name in Blocks</h5>
+            </div>
+          </td>
+          <td style="width:30%;">
+            <div>
+              <h5>Date & Time</h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <section>
+      <table class="container9">
+        <tr class="footer">
+          <td>
+            <div>
+              <h4 class="bcode" #orderNoBarcode>CH17000186</h4>
+              <h5 #orderNo>17000186</h5>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </section>
+  </body>
 </section>

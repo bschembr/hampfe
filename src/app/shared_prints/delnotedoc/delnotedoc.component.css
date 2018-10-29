@@ -1,126 +1,193 @@
-h3{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 21px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-bottom: 8px;
-    margin-left: 10px;
-  }
-  
-  h4{
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-bottom: 8px;
-    margin-left: 10px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-  
-  }
-  
-  h5{
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-bottom: 5px;
-    margin-left: 10px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;
-  }
-  
-  .a4{
-    width: 794px;
-    height: 1123px;
-    display:flex;
-  
-  }
-  
-  .label{
-    width: 366px;
-    height: 272px;
-    display:flex;
-    border: 2px solid black;
-  }
-  
-  .container1 {
-    align-self: flex-start;
-    width: 100%;
-    padding: 0%;
-  
-  }
-  
-  .acoLogo{
-    align-self: flex-start;
-    text-align: right;
-    width: auto;
-    height: 120px;
-    }
-  
-  .DelNote{
-    align-self: flex-start;
-    width: 100%;
-    padding: 0%;
-  
-  
-  }
-  
-  .Barcode{
-    align-self: flex-start;
-    width: 100%;
-    padding: 5px;
-  
-  }
-  
-  .Barcode h4{
-    text-align: right;
-  }
-  
-  .LogoContainer {
-    align-self: flex-start;
-    width: 100%;
-    padding: 0%;
-    margin-right: 8px;
-  
-  }
-  
-  .LogoContainer h5 , .LogoContainer h4{
-    text-align: right;
-  }
-  
-  .CustAddress {
-     align-self: flex-start;
-     width: 100%;
-     padding: 0%;
-  
-  }
-  .SenderAddress {
-    align-self: flex-start;
-    width: 100%;
-    padding: 0%;
-  
-  }
-  
-  .DocDate {
-    align-self: flex-start;
-    width: 100%;
-    padding: 0%;
-    margin-right: 10px;
-  }
-  
-  .DocDate h4{
-    text-align: right;
-  }
-  
-  .heading{
-    align-self: flex-start;
-    width: 100%;
-    padding: 0%;
-  
-  }
-  
-  .footer{
-    align-self: flex-start;
-    width: 100%;
-    padding: 0%;
-  
-    text-align: center;
-  }
-  
+h3 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 21px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 8px;
+  margin-left: 10px;
+}
+
+h4 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 8px;
+  margin-left: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+h5 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-bottom: 5px;
+  margin-left: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+
+@font-face {
+  font-family: "bcode39";
+  src: url("http://acots/hampers/3of9Barcode.ttf");
+  font-size: 25pt;
+}
+
+.a4 {
+  width: 764px;
+  height: 1100px;
+  padding-left: 10px;
+}
+
+.label {
+  width: 366px;
+  height: 272px;
+}
+
+.container1 {
+  width: 100%;
+  padding: 0%;
+  padding-right: 10px;
+}
+
+.container2 {
+  width: 100%;
+  padding: 0%;
+  padding-right: 10px;
+}
+
+.container3 {
+  width: 100%;
+  padding: 0%;
+  height: 30px;
+  padding-right: 10px;
+}
+.container4 {
+  width: 100%;
+  padding: 0%;
+  padding-right: 10px;
+}
+
+.container5 {
+  width: 100%;
+  padding: 0%;
+  /* margin-bottom: 400px; */
+  height: 120px;
+  padding-right: 10px;
+}
+
+.container5-1 {
+  width: 100%;
+  padding: 0%;
+  /* margin-bottom: 400px; */
+  height: 120px;
+  padding-right: 10px;
+}
+
+.container6 {
+  width: 100%;
+  padding: 0%;
+  padding-right: 10px;
+  height: 50px;
+}
+
+.container7 {
+  width: 100%;
+  padding: 0%;
+  padding-right: 10px;
+  height: 100px;
+}
+
+.container8 {
+  width: 100%;
+  padding: 0%;
+  padding-right: 10px;
+  height: 20px;
+}
+
+.container9 {
+  width: 100%;
+  padding: 0%;
+  padding-right: 10px;
+  height: 50px;
+}
+
+.acoLogo {
+  text-align: right;
+  width: auto;
+  height: 120px;
+}
+
+.DelNote {
+  height: 50px;
+  width: 25%;
+  padding: 0%;
+
+}
+
+.bcode:before {
+  content: "*";
+}
+.bcode:after {
+  content: "*";
+}
+.Barcode {
+  font-family: "bcode39";
+  width: 35%;
+  padding: 5px;
+  padding-right: 10px;
+ text-align: right;
+}
+
+.Barcode h4 {
+  text-align: right;
+  font-family: "bcode39";
+  font-size: 40px;
+  font-weight: 100;
+}
+
+.footer {
+  width: 100%;
+  padding: 0%;
+  text-align: center;
+}
+
+.footer h4 {
+  font-family: "bcode39";
+  font-size: 40px;
+  font-weight: 100;
+}
+
+.LogoContainer {
+  width: 100%;
+  padding: 5px;
+  margin-right: 8px;
+}
+
+.LogoContainer h5,
+.LogoContainer h4 {
+  text-align: right;
+}
+
+.CustAddress {
+  height: 260px;
+  width: 52%;
+  padding: 0%;
+}
+.SenderAddress {
+  width: 100%;
+  padding: 0%;
+}
+
+.DocDate {
+  padding: 0%;
+  margin-right: 10px;
+}
+
+.DocDate h4 {
+  text-align: right;
+  width: 110px;
+}
+
+.heading {
+  width: 10%;
+  padding: 0%;
+}
