@@ -59,9 +59,7 @@ export class DelorderComponent implements OnInit, AfterViewInit {
   }
 
   onSave() {
-
-    // this._custOrderService.setter(this.custOrder);
-
+    // console.log(this._delnotes);
     this.custOrder = new CustomerOrder();
 
     const NameAddr = String(this.orderform.controls['Client'].value).split('\n');

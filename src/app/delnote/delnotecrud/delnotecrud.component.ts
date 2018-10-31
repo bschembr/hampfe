@@ -44,6 +44,9 @@ export class DelnotecrudComponent implements OnInit {
     ItemDescr: new FormControl(),
     QtyOrd: new FormControl('', [Validators.required, Validators.maxLength(4)]),
     DelRequestsOther: new FormControl(''),
+    CheckBoxDiary: new FormControl(false),
+    CheckBoxCalendar: new FormControl(false),
+    CheckBoxCard: new FormControl(false)
   });
 
   constructor(public dialogRef: MatDialogRef<DelnotecrudComponent>,
@@ -88,11 +91,18 @@ export class DelnotecrudComponent implements OnInit {
         this.itemdescoptions.push(element.desc1);
         this.eyeselitems.push({ code: element.code, description: element.desc1 });
       });
+      if ((this.data !== null) && (!(!this.data.delnote.itemCode))) {
+        this.delnoteform.controls['ItemDescr'].setValue(this.eyeselitems[this.itemcodeoptions.findIndex((element) => {
+          return element === this.data.delnote.itemCode;
+        })].description);
+      }
     });
+
     if (this.data !== null) {
       this.screenName = 'Update Delivery Note';
+
       this.delnoteform.controls['CustHamperRemarks'].setValue(this.data.delnote.customHamperRemarks);
-      this.delnoteform.controls['DelNoteDeliveryDate'].setValue(this.data.delnote.delNoteDate);
+      this.delnoteform.controls['DelNoteDeliveryDate'].setValue(this.data.delnote.deliveryDate);
       this.delnoteform.controls['DelNoteDocDate'].setValue(this.data.delnote.delNoteDate);
       this.delnoteform.controls['DelNoteDeliveryTime'].setValue(this.data.delnote.deliveryTime);
       this.delnoteform.controls['SenderNameAddr'].setValue(this.data.delnote.senderName + '\n' +
@@ -113,14 +123,20 @@ export class DelnotecrudComponent implements OnInit {
       if (this.data.delnote.itemCode !== '') {
         this.delnoteform.controls['ItemCode'].disable({ onlySelf: true });
       }
-      this.delnoteform.controls['ItemDescr'].setValue(this.data.delnote.itemDescription);
       if (this.data.delnote.itemDescription !== '') {
         this.delnoteform.controls['ItemDescr'].disable({ onlySelf: true });
       }
       this.delnoteform.controls['QtyOrd'].setValue(this.data.delnote.qtyOrd);
+
       this.isreqcalendarchecked = this.data.delnote.reqCalendar;
-      this.isreqcardchecked = this.data.delnote.reqDiary;
+      this.delnoteform.controls['CheckBoxCalendar'].setValue(this.isreqcalendarchecked);
+
+      this.isreqcardchecked = this.data.delnote.reqCard;
+      this.delnoteform.controls['CheckBoxCard'].setValue(this.isreqcardchecked);
+
       this.isreqdiarychecked = this.data.delnote.reqDiary;
+      this.delnoteform.controls['CheckBoxDiary'].setValue(this.isreqdiarychecked);
+
       this.delnoteform.controls['DelRequestsOther'].setValue(this.data.delnote.reqOther);
       this.delnoteform.controls['CustHamperRemarks'].setValue(this.data.delnote.customHamperRemarks);
       // Intitialize qty lines
