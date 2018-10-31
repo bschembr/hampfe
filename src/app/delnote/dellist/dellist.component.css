@@ -1,5 +1,30 @@
+/* Absolute Center Spinner */
+.loading-indicator {
+    position: fixed;
+    z-index: 999;
+    height: 2em;
+    width: 2em;
+    overflow: show;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    bottom: 50%;
+    right: 50%;
+  }
+
+.DelNotes {
+    display: flex;
+    flex-flow: column;
+}
 .hide{
     display: none;
+}
+
+.search-div {
+    width: 100%;
+}
+.headeractions {
+    align-content: stretch; 
 }
 
 /* mat-table */

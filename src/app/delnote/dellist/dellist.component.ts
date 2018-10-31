@@ -19,6 +19,7 @@ import { QzTrayService } from '../../shared_service/qz-tray.service';
   styleUrls: ['./dellist.component.css']
 })
 export class DellistComponent implements OnInit {
+  showSpinner = true;
 
   selection = new SelectionModel<DelNote>(true, []);
   delnotearray: DelNote[] = new Array();
@@ -57,6 +58,7 @@ export class DellistComponent implements OnInit {
       list.forEach(element => {
         this.delnotearray.push(element);
         this.listData.data = this.delnotearray;
+        this.showSpinner = false;
       });
     });
 
@@ -161,4 +163,17 @@ export class DellistComponent implements OnInit {
       this.selection.clear() :
       this.listData.data.forEach(row => this.selection.select(row));
   }
+
+  onRefresh() {
+    this.showSpinner = true;
+    this.delnotearray.length = 0;
+    this._delnotesservice.getDelNotes().subscribe(list => {
+      list.forEach(element => {
+        this.delnotearray.push(element);
+        this.listData.data = this.delnotearray;
+      });
+      this.showSpinner = false;
+    });
+  }
+
 }

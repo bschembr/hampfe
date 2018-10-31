@@ -1,104 +1,124 @@
+<div class="loading-indicator">
+  <mat-progress-spinner *ngIf="showSpinner" [color]="primary" [mode]="indeterminate"></mat-progress-spinner>
+</div>
+
 <div class="DelNotes">
-  <div class="search-div">
-      <mat-form-field class="search-form-field" floatLabel="never">
-        <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
-        <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
-          <mat-icon>close</mat-icon>
+  <div class="headeractions">
+    <mat-grid-list cols="5" rowHeight="60px">
+      <mat-grid-tile colspan="4">
+        <div class="search-div">
+          <mat-form-field class="search-form-field" floatLabel="never">
+            <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1">
+        <button mat-icon-button (click)="onRefresh()">
+          <mat-icon>refresh</mat-icon>
         </button>
-      </mat-form-field>
-    </div>
-    <div class="mat-elevation-z8">
-      <mat-table [dataSource]="listData"  matSort matSortActive="delnoteref" matSortDirection="asc">
-        <!-- Checkbox Column -->
-        <ng-container matColumnDef="select">
-            <mat-header-cell *matHeaderCellDef>
-            <mat-checkbox (change)="$event ? masterToggle() : null"
-                          [checked]="selection.hasValue() && isAllSelected()"
-                          [indeterminate]="selection.hasValue() && !isAllSelected()">
-            </mat-checkbox>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row">
-              <mat-checkbox (click)="$event.stopPropagation()"
-                            (change)="$event ? selection.toggle(row) : null"
-                            [checked]="selection.isSelected(row)">
-              </mat-checkbox>
-            </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="delnoteref">
-          <mat-header-cell *matHeaderCellDef  mat-sort-header>Del. N Ref</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{element.delNoteRef}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="delnotedate">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Del.N Date</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{element.delNoteDate | date:'dd-MM-yyyy'}}</mat-cell>
-        </ng-container>          
-        <ng-container matColumnDef="delordref">
-          <mat-header-cell *matHeaderCellDef  mat-sort-header>Instr/.</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{element.deliveryInstructions}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="deliveryDate">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Del.N Date</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{element.deliveryDate | date:'dd-MM-yyyy'}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="senderName">
-          <mat-header-cell *matHeaderCellDef mat-sort-header>Sender</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{element.senderName}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="senderTown">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Send Town</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.senderTown}}</mat-cell>
-        </ng-container>    
-        <ng-container matColumnDef="senderMessage">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Send Message</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.senderMessage}}</mat-cell>
-        </ng-container>    
-        <ng-container matColumnDef="receiverName">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Name</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{element.receiverName}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="receiverTown">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Town</mat-header-cell>
-              <mat-cell *matCellDef="let element">{{element.receiverTown}}</mat-cell>
-          </ng-container>    
-          <ng-container matColumnDef="receiverPhone">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Phone</mat-header-cell>
-              <mat-cell *matCellDef="let element">{{element.receiverPhone}}</mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="deliveryInstructions">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Instructions</mat-header-cell>
-                <mat-cell *matCellDef="let element">{{element.deliveryInstructions}}</mat-cell>
-            </ng-container>    
-            <ng-container matColumnDef="status">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
-                <mat-cell *matCellDef="let element">{{element.status}}</mat-cell>
-            </ng-container>    
-        <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef>
-              <button mat-icon-button (click)="printSelected()"><mat-icon>print</mat-icon></button>
-          </mat-header-cell>
-          <mat-cell *matCellDef="let element; let j = index;">
-            <button mat-icon-button (click)="onEditLine(j)"><mat-icon>launch</mat-icon></button>
-            <button mat-icon-button color="warn" (click)="onDeleteLine(j)"><mat-icon>delete_outline</mat-icon></button>            
-            <button mat-icon-button (click)="printSingle(j)"><mat-icon>print</mat-icon></button>
-          </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="loading">
-          <mat-footer-cell *matFooterCellDef colspan="6">
-            Loading data...
-          </mat-footer-cell>
-        </ng-container>
-        <ng-container matColumnDef="noData">
-          <mat-footer-cell *matFooterCellDef colspan="6">
-            No data.
-          </mat-footer-cell>
-        </ng-container>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="listData" matSort matSortActive="delnoteref" matSortDirection="asc">
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="delnoteref">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Del. N Ref</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.delNoteRef}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="delnotedate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Del.N Date</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.delNoteDate | date:'dd-MM-yyyy'}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="delordref">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Instr/.</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.deliveryInstructions}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="deliveryDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Del.N Date</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.deliveryDate | date:'dd-MM-yyyy'}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="senderName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Sender</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.senderName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="senderTown">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Send Town</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.senderTown}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="senderMessage">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Send Message</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.senderMessage}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="receiverName">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.receiverName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="receiverTown">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Town</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.receiverTown}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="receiverPhone">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Phone</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.receiverPhone}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="deliveryInstructions">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Instructions</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.deliveryInstructions}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.status}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+          <button mat-icon-button (click)="printSelected()">
+            <mat-icon>print</mat-icon>
+          </button>
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element; let j = index;">
+          <button mat-icon-button (click)="onEditLine(j)">
+            <mat-icon>launch</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDeleteLine(j)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="printSingle(j)">
+            <mat-icon>print</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="loading">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Loading data...
+        </mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          No data.
+        </mat-footer-cell>
+      </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>                      
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-        <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
-        <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
-      </mat-table>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
-    </div>
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+  </div>
 </div>
