@@ -17,7 +17,7 @@ import { EyeselItemsService } from '../shared_service/eyesel-items.service';
 })
 
 export class DelnoteComponent implements OnInit {
-
+  showSpinner = true;
   delnotearray: DelNote[] = new Array();
   private itemcodeoptions: string[] = [];
   private itemdescoptions: string[] = [];
@@ -56,7 +56,7 @@ export class DelnoteComponent implements OnInit {
       });
     });
 
-
+    this.showSpinner = false;
   }
 
   onSearchClear() {
@@ -99,6 +99,8 @@ export class DelnoteComponent implements OnInit {
   }
 
   onEditLine(row: number) {
+    const rowindex = row;
+    /* the below commented lines were being used in the case of pagination
     let rowindex = 0;
 
     if (this.paginator.pageIndex === 0) {
@@ -106,6 +108,7 @@ export class DelnoteComponent implements OnInit {
     } else {
       rowindex = ((this.paginator.pageIndex * this.paginator.pageSize) + row);
     }
+    */
 
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '530px',
@@ -128,6 +131,7 @@ export class DelnoteComponent implements OnInit {
 
 
   excelImport(file: any) {
+    this.showSpinner = true;
     const target: DataTransfer = <DataTransfer>(file.target);
     if (target.files.length !== 1 && target.files.length !== 0) {
       throw new Error('Cannot use multiple files');
@@ -275,6 +279,7 @@ export class DelnoteComponent implements OnInit {
         this.delnotearray.push(tmpDelNote);
       }
       this.listData.data = this.delnotearray;
+      this.showSpinner = false;
     };
     reader.readAsBinaryString(target.files[0]);
   }
