@@ -4,21 +4,21 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
-
-export class EyeselItemsService {
+export class EyeselClientsService {
   private baseUrl = 'http://acofs:8080/HampersBE/api';
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
 
   constructor(private _http: Http) { }
 
-  getEyeSelItems() {
+  getEyeSelClients() {
 
     return this._http
-      .get(this.baseUrl + '/items', this.options)
+      .get(this.baseUrl + '/clients', this.options)
       .pipe(
         map((response: Response) => {
           return response.json();

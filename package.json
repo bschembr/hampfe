@@ -24,6 +24,7 @@
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
+    "@oasisdigital/angular-material-search-select": "^0.13.0",
     "angular-base64": "^2.0.5",
     "angular-material-time-picker": "^1.0.8",
     "bootstrap": "^4.1.3",

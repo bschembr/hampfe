@@ -21,6 +21,8 @@ import { DellistComponent } from './delnote/dellist/dellist.component';
 import { DelnotedocComponent } from './shared_prints/delnotedoc/delnotedoc.component';
 import { QzTrayService } from './shared_service/qz-tray.service';
 import { MenumainComponent } from './menu/menumain/menumain.component';
+import { SearchSelectModule } from '@oasisdigital/angular-material-search-select';
+import { SelectClientMatTableComponent } from './select-client-mat-table/select-client-mat-table.component';
 
 
 const appRoutes: Routes = [
@@ -38,6 +40,7 @@ const appRoutes: Routes = [
     DellistComponent,
     DelnotedocComponent,
     MenumainComponent,
+    SelectClientMatTableComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes),
-    MatDialogModule
+    MatDialogModule,
+    SearchSelectModule
   ],
   exports: [
     FormsModule,

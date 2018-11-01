@@ -9,6 +9,10 @@ import * as moment from 'moment';
 import { DelnoteComponent } from '../delnote/delnote.component';
 import { DelNote } from '../delnote';
 import { AcoGeneral } from '../acogeneral';
+import { Observable, of } from 'rxjs';
+import { OptionEntry, DataSource } from '@oasisdigital/angular-material-search-select';
+import { Clients } from '../clients';
+import { EyeselClientsService } from '../shared_service/eyesel-clients.service';
 
 
 @Component({
@@ -17,7 +21,9 @@ import { AcoGeneral } from '../acogeneral';
   styleUrls: ['./delorder.component.css']
 })
 
-export class DelorderComponent implements OnInit, AfterViewInit {
+export class DelorderComponent implements OnInit, AfterViewInit, DataSource  {
+  showSpinner = true;
+  private clients: Clients[] = [];
 
   @ViewChild(DelnoteComponent) _delnotes;
 
@@ -25,6 +31,7 @@ export class DelorderComponent implements OnInit, AfterViewInit {
   orderdate: Date;
   private custOrder: CustomerOrder;
   delnotearray: DelNote[] = new Array();
+  filteredClients: Observable<string[]>;
 
   orderform: FormGroup = new FormGroup({
     DelOrdDate: new FormControl(new Date()),
@@ -41,21 +48,80 @@ export class DelorderComponent implements OnInit, AfterViewInit {
     this.delnotearray = this._delnotes.delnotearray;
   }
 
+  displayValue(value: any): Observable<OptionEntry | null> {
+    // console.log('finding display value for', value);
+    const client = this.clients.find((c: any) => c.account === parseInt(value || '', 10));
+    if (client) {
+      return of({
+        value: client.account,
+        display: client.account,
+        details: {}
+      });
+    }
+    return of(null);
+  }
+
+  search(term: string): Observable<OptionEntry[]> {
+    // console.log('searching for', term);
+    const lowerTerm = typeof term === 'string' ? term.toLowerCase() : '';
+    const result = this.clients
+      .filter((c: any) => c.account.toLowerCase().indexOf(lowerTerm) >= 0)
+      .slice(0, 200)
+      .map((client: any) => ({
+        value: client.account,
+        display: client.account,
+        details: client
+      }));
+    return of(result);
+  }
+
   ngOnInit() {
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear(),
       this.maxDate.getMonth(),
       this.maxDate.getDate());
 
-    this.custOrder = this._custOrderService.getter();
-
+    // this.custOrder = this._custOrderService.getter();
+    this._eyeselclientsservice.getEyeSelClients().subscribe(clients => {
+      clients.forEach(element => {
+        // console.log(JSON.stringify(element));
+        this.clients.push(element);
+      });
+      // console.log(this.clients);
+    });
+    this.showSpinner = false;
   }
 
   constructor(private adapter: DateAdapter<any>,
     private _custOrderService: CustomerOrderService,
     private _delNotesService: DelNotesService,
+    private _eyeselclientsservice: EyeselClientsService,
     private _router: Router
   ) {
+  }
+
+  onCustRefFocutOut() {
+    if ( this.orderform.controls['CustRef'].value === '11CA921') {
+      this.orderform.controls['Client'].setValue('ENTER CLIENT DETAILS!');
+    } else {
+        const client = this.clients[this.clients.findIndex((element) => {
+          return element.account === this.orderform.controls['CustRef'].value;
+        })];
+        this.orderform.controls['Client'].setValue(client.name + '\n' +
+        client.addressln1 + '\n' +
+        client.addressln2 + '\n' +
+        client.addressln3 + '\n' +
+        client.addressln4 + '\n');
+
+        if (client.town !== '') {
+          this.orderform.controls['Town'].setValue(client.town);
+        } else {
+          this.orderform.controls['Town'].setValue('');
+        }
+
+        this.orderform.controls['Town'].disable();
+        this.orderform.controls['Client'].disable();
+    }
   }
 
   onSave() {
@@ -95,6 +161,6 @@ export class DelorderComponent implements OnInit, AfterViewInit {
 
     this._router.navigate(['/']);
 
-    }
+  }
 
 }
