@@ -22,6 +22,7 @@ import { DelnotedocComponent } from './shared_prints/delnotedoc/delnotedoc.compo
 import { QzTrayService } from './shared_service/qz-tray.service';
 import { MenumainComponent } from './menu/menumain/menumain.component';
 
+
 const appRoutes: Routes = [
   {path: '', component: MenumainComponent},
   {path: 'delorder', component: DelorderComponent},
@@ -36,7 +37,7 @@ const appRoutes: Routes = [
     DelnotecrudComponent,
     DellistComponent,
     DelnotedocComponent,
-    MenumainComponent
+    MenumainComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +55,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpModule,
     MatDialogModule,
-    DelnotedocComponent
+    DelnotedocComponent,
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},

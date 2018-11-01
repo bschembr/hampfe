@@ -1,0 +1,16 @@
+<div class="container">
+  <section class="docselect-form">
+    <form (ngSubmit)="onSave()" [formGroup]="docselectform" class="docselect-form">
+      <div class="docSelection">
+        <mat-checkbox formControlName="CheckBoxDelNote" color="primary" class="requests">Delivery
+          Note</mat-checkbox>
+
+        <mat-checkbox formControlName="CheckBoxLabel" color="primary" class="requests">Label</mat-checkbox>
+      </div>
+      <div>
+        <button mat-raised-button color="accent">Print</button>
+        <button mat-raised-button color="primary">Cancel</button>
+      </div>
+    </form>
+  </section>
+</div>
