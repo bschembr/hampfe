@@ -2,9 +2,6 @@
 <div class="container">
   <section class="order-form">
     <form (ngSubmit)="onSave()" [formGroup]="orderform" class="order-form">
-      
-      <mat-progress-spinner *ngIf="showSpinner" [color]="primary" [mode]="indeterminate"></mat-progress-spinner>
-      
       <mat-grid-list cols="6" rowHeight="200px">
         <mat-grid-tile colspan="1">
           <div class="containercol1">

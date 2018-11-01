@@ -13,6 +13,7 @@ import { Observable, of } from 'rxjs';
 import { OptionEntry, DataSource } from '@oasisdigital/angular-material-search-select';
 import { Clients } from '../clients';
 import { EyeselClientsService } from '../shared_service/eyesel-clients.service';
+import { DocSelectComponent } from '../delnote/docselect/docselect.component';
 
 
 @Component({
@@ -32,6 +33,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource  {
   private custOrder: CustomerOrder;
   delnotearray: DelNote[] = new Array();
   filteredClients: Observable<string[]>;
+  dialog: any;
 
   orderform: FormGroup = new FormGroup({
     DelOrdDate: new FormControl(new Date()),
@@ -125,6 +127,22 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource  {
   }
 
   onSave() {
+
+      const dialogRef = this.dialog.open(DocSelectComponent, {
+        width: '120px',
+        height: '120px',
+        data: {checkDelnote: this.checkDelnote, checkLabel: this.checkLabel},
+        disableClose: true,
+      });
+
+      /* dialogRef.afterClosed().subscribe(dialogData => {
+
+        if (dialogData !== 'Canceled') {
+          this.delnotearray.push(dialogData);
+          this.listData.data = this.delnotearray;
+        }
+      }); */
+
     // console.log(this._delnotes);
     this.custOrder = new CustomerOrder();
 

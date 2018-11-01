@@ -20,22 +20,6 @@ export class DocSelectComponent {
 
   constructor(public dialog: MatDialog) {}
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DocSelectComponent, {
-      width: '120px',
-      height: '120px',
-      data: {checkDelnote: this.checkDelnote, checkLabel: this.checkLabel},
-      disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe(dialogData => {
-
-      if (dialogData !== 'Canceled') {
-        this.delnotearray.push(dialogData);
-        this.listData.data = this.delnotearray;
-      }
-    });
-}
 
 toggledelnote() {
   this.checkDelnote = !this.checkDelnote;
