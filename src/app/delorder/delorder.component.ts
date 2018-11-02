@@ -18,6 +18,7 @@ import { MatDialog } from '@angular/material';
 import { DelnotedocComponent } from '../shared_prints/delnotedoc/delnotedoc.component';
 import { map, mergeMap } from 'rxjs/operators';
 import { forEach } from '@angular/router/src/utils/collection';
+import { LabeldocComponent } from '../shared_prints/labeldoc/labeldoc.component';
 
 
 @Component({
@@ -102,6 +103,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
     private _eyeselclientsservice: EyeselClientsService,
     public dialog: MatDialog,
     public printdialogdelnote: MatDialog,
+    public printdialoglabel: MatDialog,
     private _router: Router
   ) {
   }
@@ -176,7 +178,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
         this.custOrder.delOrdRef = order.delOrdRef;
 
         // this._delnotes.delnotearray.forEach(async function( delnote ) {
-          for (let i = 0; i < this._delnotes.delnotearray.length; i++) {
+        for (let i = 0; i < this._delnotes.delnotearray.length; i++) {
           this._delnotes.delnotearray[i].delOrdRef = this.custOrder;
           delNoteInserted.push(await this._delNotesService.createDelNotePromise(this._delnotes.delnotearray[i]));
 
@@ -188,12 +190,22 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
             delNoteInserted[delNoteInserted.length - 1].labelPrintDate = new Date();
           }
         }
-        await this.printdialogdelnote.open(DelnotedocComponent, {
-          height: '500px',
-          width: '500px',
-          data: delNoteInserted
-        });
-        await this.printdialogdelnote.closeAll();
+        if (isDelNoteRequested) { // ie User selected print delivery note checkbox
+          await this.printdialogdelnote.open(DelnotedocComponent, {
+            height: '500px',
+            width: '500px',
+            data: delNoteInserted
+          });
+          await this.printdialogdelnote.closeAll();
+        }
+        if (isLabelRequested) { // ie User selected print label note checkbox
+          await this.printdialoglabel.open(LabeldocComponent, {
+            height: '500px',
+            width: '500px',
+            data: delNoteInserted
+          });
+          await this.printdialoglabel.closeAll();
+        }
 
         this._router.navigate(['/']);
       }

@@ -24,6 +24,7 @@ import { MenumainComponent } from './menu/menumain/menumain.component';
 import { SearchSelectModule } from '@oasisdigital/angular-material-search-select';
 import { SelectClientMatTableComponent } from './select-client-mat-table/select-client-mat-table.component';
 import { DocSelectComponent } from './delnote/docselect/docselect.component';
+import { LabeldocComponent } from './shared_prints/labeldoc/labeldoc.component';
 
 const appRoutes: Routes = [
   {path: '', component: MenumainComponent},
@@ -41,7 +42,8 @@ const appRoutes: Routes = [
     DelnotedocComponent,
     MenumainComponent,
     SelectClientMatTableComponent,
-    DocSelectComponent
+    DocSelectComponent,
+    LabeldocComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,8 @@ const appRoutes: Routes = [
     HttpModule,
     MatDialogModule,
     DelnotedocComponent,
-    DocSelectComponent
+    DocSelectComponent,
+    LabeldocComponent
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
@@ -71,9 +74,10 @@ const appRoutes: Routes = [
     DelNotesService,
     QzTrayService,
     DelnotedocComponent,
-    DocSelectComponent
+    DocSelectComponent,
+    LabeldocComponent
   ],
-  entryComponents: [ DelnotecrudComponent, DelnotedocComponent, DocSelectComponent ],
+  entryComponents: [ DelnotecrudComponent, DelnotedocComponent, DocSelectComponent, LabeldocComponent ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
