@@ -64,6 +64,20 @@ export class DelNotesService {
 
   }
 
+
+  async createDelNotePromise(delNote: DelNote) {
+    try {
+    const response = await this._http
+    // return this._http
+      .post(this.baseUrl + '/delnote', delNote, this.options)
+      .toPromise();
+      return response.json();
+    } catch (error) {
+      await this.errorHandler(error);
+    }
+  }
+
+
   updateDelNote(delNote: DelNote) {
     return this._http
       .put(this.baseUrl + '/delnote', JSON.stringify(delNote), this.options)

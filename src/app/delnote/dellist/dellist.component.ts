@@ -138,7 +138,6 @@ export class DellistComponent implements OnInit {
             job.push(element);
           }
       });
-
       const dialogRef = this.printdialog.open(DelnotedocComponent, {
         height: '500px',
         width: '500px',

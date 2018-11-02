@@ -86,6 +86,8 @@ export class DelnoteComponent implements OnInit {
   }
 
   onDeleteLine(row: number) {
+    const rowindex = row;
+    /* the below commented lines were being used in the case of pagination
     let rowindex = 0;
 
     if (this.paginator.pageIndex === 0) {
@@ -93,6 +95,7 @@ export class DelnoteComponent implements OnInit {
     } else {
       rowindex = ((this.paginator.pageIndex * this.paginator.pageSize) + row);
     }
+    */
     this.delnotearray.splice(rowindex, 1);
     this.listData.data = this.delnotearray;
 

@@ -53,8 +53,9 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
     }
 
     public setHTMLelements() {
-
-        for (const element of this.delnotedata) {
+        // console.log('Passed delnotedata: ' + this.delnotedata[0].senderName + ' Del Ord: ' + this.delnotedata[0].delNoteRef);
+        this.delnotedata.forEach(element => {
+        // for (const element of this.delnotedata) {
             this.HTMLreceiverName.nativeElement.innerHTML = element.receiverName;
             this.HTMLreceiverAdd1.nativeElement.innerHTML = element.receiverAddr1;
             this.HTMLreceiverAdd2.nativeElement.innerHTML = element.receiverAddr2;
@@ -86,12 +87,11 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
 
             const tmpdata =  { type: 'HTML', format: 'plain', data: this.content };
             this.data.push(tmpdata);
-        }
+        });
     }
 
     public onPrint() {
         this.setHTMLelements();
-
         this.printEngine.connectAndPrint('',
                                         { rasterize: false,
                                             scaleContent: false,

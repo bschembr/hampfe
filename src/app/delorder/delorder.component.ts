@@ -14,6 +14,10 @@ import { OptionEntry, DataSource } from '@oasisdigital/angular-material-search-s
 import { Clients } from '../clients';
 import { EyeselClientsService } from '../shared_service/eyesel-clients.service';
 import { DocSelectComponent } from '../delnote/docselect/docselect.component';
+import { MatDialog } from '@angular/material';
+import { DelnotedocComponent } from '../shared_prints/delnotedoc/delnotedoc.component';
+import { map, mergeMap } from 'rxjs/operators';
+import { forEach } from '@angular/router/src/utils/collection';
 
 
 @Component({
@@ -22,10 +26,9 @@ import { DocSelectComponent } from '../delnote/docselect/docselect.component';
   styleUrls: ['./delorder.component.css']
 })
 
-export class DelorderComponent implements OnInit, AfterViewInit, DataSource  {
+export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   showSpinner = true;
   private clients: Clients[] = [];
-
   @ViewChild(DelnoteComponent) _delnotes;
 
   maxDate;
@@ -33,7 +36,6 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource  {
   private custOrder: CustomerOrder;
   delnotearray: DelNote[] = new Array();
   filteredClients: Observable<string[]>;
-  dialog: any;
 
   orderform: FormGroup = new FormGroup({
     DelOrdDate: new FormControl(new Date()),
@@ -98,87 +100,103 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource  {
     private _custOrderService: CustomerOrderService,
     private _delNotesService: DelNotesService,
     private _eyeselclientsservice: EyeselClientsService,
+    public dialog: MatDialog,
+    public printdialogdelnote: MatDialog,
     private _router: Router
   ) {
   }
 
   onCustRefFocutOut() {
-    if ( this.orderform.controls['CustRef'].value === '11CA921') {
+    if (this.orderform.controls['CustRef'].value === '11CA921') {
       this.orderform.controls['Client'].setValue('ENTER CLIENT DETAILS!');
     } else {
-        const client = this.clients[this.clients.findIndex((element) => {
-          return element.account === this.orderform.controls['CustRef'].value;
-        })];
-        this.orderform.controls['Client'].setValue(client.name + '\n' +
+      const client = this.clients[this.clients.findIndex((element) => {
+        return element.account === this.orderform.controls['CustRef'].value;
+      })];
+      this.orderform.controls['Client'].setValue(client.name + '\n' +
         client.addressln1 + '\n' +
         client.addressln2 + '\n' +
         client.addressln3 + '\n' +
         client.addressln4 + '\n');
 
-        if (client.town !== '') {
-          this.orderform.controls['Town'].setValue(client.town);
-        } else {
-          this.orderform.controls['Town'].setValue('');
-        }
+      if (client.town !== '') {
+        this.orderform.controls['Town'].setValue(client.town);
+      } else {
+        this.orderform.controls['Town'].setValue('');
+      }
 
-        this.orderform.controls['Town'].disable();
-        this.orderform.controls['Client'].disable();
+      this.orderform.controls['Town'].disable();
+      this.orderform.controls['Client'].disable();
     }
   }
 
   onSave() {
-
-      const dialogRef = this.dialog.open(DocSelectComponent, {
-        width: '120px',
-        height: '120px',
-        data: {checkDelnote: this.checkDelnote, checkLabel: this.checkLabel},
-        disableClose: true,
-      });
-
-      /* dialogRef.afterClosed().subscribe(dialogData => {
-
-        if (dialogData !== 'Canceled') {
-          this.delnotearray.push(dialogData);
-          this.listData.data = this.delnotearray;
-        }
-      }); */
-
-    // console.log(this._delnotes);
-    this.custOrder = new CustomerOrder();
-
-    const NameAddr = String(this.orderform.controls['Client'].value).split('\n');
-
-    // console.log('delnote[0] delinst: ' + this.delnotearray[0].deliveryInstructions);
-    this.orderdate = new Date(moment(this.orderform.controls['DelOrdDate'].value).format('M/D/YYYY'));
-    this.orderdate.setMinutes(this.orderdate.getMinutes() + 120); // note 120 is to add 2 Hours to GMT
-    this.custOrder.delOrdDate = this.orderdate;
-    this.custOrder.defSendMessage = this.orderform.controls['DefSendMsg'].value;
-    this.custOrder.deliveryInstructions = this.orderform.controls['DelInstructions'].value;
-    this.custOrder.custRef = this.orderform.controls['CustRef'].value;
-    this.custOrder.custName = NameAddr[0];
-    this.custOrder.custAddr1 = NameAddr[1];
-    this.custOrder.custAddr2 = NameAddr[2];
-    this.custOrder.custAddr3 = NameAddr[3];
-    this.custOrder.custAddr4 = NameAddr[4];
-    this.custOrder.custTown = this.orderform.controls['Town'].value;
-    this.custOrder.invoiceRef = this.orderform.controls['InvoiceRef'].value;
-    this.custOrder.status = this.orderform.controls['Status'].value;
-
-    this._custOrderService.createCustomerOrder(this.custOrder).subscribe((custOrderSubs) => {
-      this.custOrder.delOrdRef = custOrderSubs.delOrdRef;
-      this._delnotes.delnotearray.forEach(element => {
-        element.delOrdRef = this.custOrder;
-        this._delNotesService.createDelNote(element).subscribe((delNoteSubs) => {
-        }, (errordelnotes) => {
-          console.log(errordelnotes);
-        });
-      });
-    }, (errorcustord) => {
-      console.log(errorcustord);
+    let job: DelNote[];
+    job = [];
+    const printdelnotearray: DelNote[] = new Array();
+    // let delNoteInserted: DelNote = new DelNote();
+    const delNoteInserted: DelNote[] = [];
+    let isDelNoteRequested = false;
+    let isLabelRequested = false;
+    const dialogRef = this.dialog.open(DocSelectComponent, {
+      width: '320px',
+      height: '220px',
+      disableClose: true,
     });
 
-    this._router.navigate(['/']);
+    dialogRef.afterClosed().subscribe(async dialogData => {
 
+      if (dialogData === 'Canceled') {
+        // console.log('canceled');
+      } else {
+        isDelNoteRequested = dialogData.delnote;
+        isLabelRequested = dialogData.label;
+        this.custOrder = new CustomerOrder();
+
+        const NameAddr = String(this.orderform.controls['Client'].value).split('\n');
+
+        // console.log('delnote[0] delinst: ' + this.delnotearray[0].deliveryInstructions);
+        this.orderdate = new Date(moment(this.orderform.controls['DelOrdDate'].value).format('M/D/YYYY'));
+        this.orderdate.setMinutes(this.orderdate.getMinutes() + 120); // note 120 is to add 2 Hours to GMT
+        this.custOrder.delOrdDate = this.orderdate;
+        this.custOrder.defSendMessage = this.orderform.controls['DefSendMsg'].value;
+        this.custOrder.deliveryInstructions = this.orderform.controls['DelInstructions'].value;
+        this.custOrder.custRef = this.orderform.controls['CustRef'].value;
+        this.custOrder.custName = NameAddr[0];
+        this.custOrder.custAddr1 = NameAddr[1];
+        this.custOrder.custAddr2 = NameAddr[2];
+        this.custOrder.custAddr3 = NameAddr[3];
+        this.custOrder.custAddr4 = NameAddr[4];
+        this.custOrder.custTown = this.orderform.controls['Town'].value;
+        this.custOrder.invoiceRef = this.orderform.controls['InvoiceRef'].value;
+        this.custOrder.status = this.orderform.controls['Status'].value;
+
+        const order = await this._custOrderService.createCustomerOrderPromise(this.custOrder);
+
+        this.custOrder.delOrdRef = order.delOrdRef;
+
+        // this._delnotes.delnotearray.forEach(async function( delnote ) {
+          for (let i = 0; i < this._delnotes.delnotearray.length; i++) {
+          this._delnotes.delnotearray[i].delOrdRef = this.custOrder;
+          delNoteInserted.push(await this._delNotesService.createDelNotePromise(this._delnotes.delnotearray[i]));
+
+          if (isDelNoteRequested) { // ie User selected print delivery note checkbox
+            delNoteInserted[delNoteInserted.length - 1].delNotePrintDate = new Date();
+          }
+
+          if (isLabelRequested) { // ie User selected print label note checkbox
+            delNoteInserted[delNoteInserted.length - 1].labelPrintDate = new Date();
+          }
+        }
+        await this.printdialogdelnote.open(DelnotedocComponent, {
+          height: '500px',
+          width: '500px',
+          data: delNoteInserted
+        });
+        await this.printdialogdelnote.closeAll();
+
+        this._router.navigate(['/']);
+      }
+    });
   }
-
 }

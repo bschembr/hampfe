@@ -1,5 +1,6 @@
 import { CustomerOrder } from './customerorder';
 export class DelNote {
+
     delNoteRef: number;
     delNoteDate: Date;
     delOrdRef: CustomerOrder;
@@ -32,6 +33,5 @@ export class DelNote {
     labelPrintDate: Date;
     locked: boolean;
 
-    constructor() {
-    }
+    constructor() {}
 }

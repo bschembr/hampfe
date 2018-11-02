@@ -6,7 +6,7 @@ import * as kutil from 'jsrsasign';
 @Injectable({
   providedIn: 'root'
 })
-export class QzTrayService implements OnInit {
+export class QzTrayService {
 
   data = [{
     type: 'HTML',
@@ -20,10 +20,15 @@ export class QzTrayService implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
   SetCertificates() {
+    qz.api.setSha256Type(function (somedata) {
+      return sha256(somedata);
+    });
+
+    qz.api.setPromiseType(function promise(resolver) {
+      return new Promise(resolver);
+    });
+
     qz.security.setCertificatePromise(function (certresolve, reject) {
       certresolve('-----BEGIN CERTIFICATE-----\n' +
         'MIIE3TCCAsegAwIBAgIBADALBgkqhkiG9w0BAQUwgZgxCzAJBgNVBAYTAlVTMQsw\n' +
@@ -134,53 +139,38 @@ export class QzTrayService implements OnInit {
       };
     });
 
-    qz.api.setSha256Type(function (somedata) {
-      return sha256(somedata);
-    });
-
-    qz.api.setPromiseType(function promise(resolver) {
-      return new Promise(resolver);
-    });
-
   }
 
   // eg connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
-  connectAndPrint(printer: string, options: any, data = [{  }]) {
+  async connectAndPrint(printer: string, options: any, data = [{  }]) {
+    // console.log('QZ data: ' + data);
     this.SetCertificates();
-    // our promise chain
-    this.connect().then(function () {
-      if ( printer === '' ) {
-          qz.printers.getDefault().then(function (defprinter) {
-            const config = qz.configs.create(defprinter, options);
-            return qz.print(config, data);
-          });
-        } else {
-          const config = qz.configs.create(printer, options);
-          return qz.print(config, data);
-      }
-    }).catch(function (err) {
-      console.error(err);
-    });
 
+    await this.connect();
+      if ( printer === '' ) {
+          const defprinter = await qz.printers.getDefault();
+          const config = await qz.configs.create(defprinter, options);
+          await qz.print(config, data);
+        } else {
+          const config = await qz.configs.create(printer, options);
+          await qz.print(config, data);
+      }
   }
 
-  // connection wrapper
-  //  - allows active and inactive connections to resolve regardless
-  //  - try to connect once before firing the mimetype launcher
-  //  - if connection fails, catch the reject, fire the mimetype launcher
-  //  - after mimetype launcher is fired, try to connect 3 more times
-  connect() {
-    return new Promise(function (resolve, reject) {
-      if (qz.websocket.isActive()) {	// if already active, resolve immediately
-        resolve();
-      } else {
-        // try to connect once before firing the mimetype launcher
-        qz.websocket.connect().then(resolve, function connectreject() {
-          // if a connect was not succesful, launch the mimetime, try 3 more times
-          qz.websocket.connect({ retries: 2, delay: 1 }).then(resolve, reject);
-        });
+    async connect() {
+    // try {
+      if (! await qz.websocket.isActive()) {
+        await qz.websocket.connect();
+        // console.log('QZ websocket Connected');
+      } /* else {
+        await qz.websocket.disconnect();
+        await qz.websocket.connect();
+        console.log('QZ websocket Re-Connected');
       }
-    });
+    } catch (error) {
+      await console.log(error);
+    }
+    */
   }
 
 }

@@ -64,6 +64,17 @@ export class CustomerOrderService {
 
   }
 
+  async createCustomerOrderPromise(custOrder: CustomerOrder) {
+    try {
+    const response = await this._http
+      .post(this.baseUrl + '/delorder', JSON.stringify(custOrder), this.options)
+      .toPromise();
+      return response.json();
+    } catch (error) {
+      await this.errorHandler(error);
+    }
+  }
+
   updateCustomerOrder(custOrder: CustomerOrder) {
     return this._http
       .put(this.baseUrl + '/delorder', JSON.stringify(custOrder), this.options)
