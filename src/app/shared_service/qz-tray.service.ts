@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as qz from 'qz-tray';
 import { sha256 } from 'js-sha256';
 import * as kutil from 'jsrsasign';
@@ -20,16 +20,8 @@ export class QzTrayService {
 
   constructor() { }
 
-  SetCertificates() {
-    qz.api.setSha256Type(function (somedata) {
-      return sha256(somedata);
-    });
-
-    qz.api.setPromiseType(function promise(resolver) {
-      return new Promise(resolver);
-    });
-
-    qz.security.setCertificatePromise(function (certresolve, reject) {
+  async SetCertificates() {
+    await qz.security.setCertificatePromise(function (certresolve, reject) {
       certresolve('-----BEGIN CERTIFICATE-----\n' +
         'MIIE3TCCAsegAwIBAgIBADALBgkqhkiG9w0BAQUwgZgxCzAJBgNVBAYTAlVTMQsw\n' +
         'CQYDVQQIDAJOWTEbMBkGA1UECgwSUVogSW5kdXN0cmllcywgTExDMRswGQYDVQQL\n' +
@@ -122,7 +114,7 @@ export class QzTrayService {
       'jtirk5zvs/thihWO+Gh35w==\n' +
       '-----END PRIVATE KEY-----';
 
-    qz.security.setSignaturePromise(function (toSign) {
+    await qz.security.setSignaturePromise(function (toSign) {
       return function (sigresolve, reject) {
         try {
           const pk = kutil.KEYUTIL.getKey(privateKey);
@@ -141,36 +133,74 @@ export class QzTrayService {
 
   }
 
-  // eg connectAndPrint('PDFCreator', { rasterize: false, scaleContent: false }, this.data);
-  async connectAndPrint(printer: string, options: any, data = [{  }]) {
+  async connectAndPrint(printer: string, options: any, data = [{}]) {
     // console.log('QZ data: ' + data);
-    this.SetCertificates();
+    await this.SetCertificates();
 
-    await this.connect();
-      if ( printer === '' ) {
-          const defprinter = await qz.printers.getDefault();
-          const config = await qz.configs.create(defprinter, options);
-          await qz.print(config, data);
-        } else {
-          const config = await qz.configs.create(printer, options);
-          await qz.print(config, data);
-      }
+    // await this.connect();
+    await qz.api.setSha256Type(function (somedata) {
+      return sha256(somedata);
+    });
+
+    await qz.api.setPromiseType(async function promise(resolver) {
+      // return await new Promise(resolver);
+      return new Promise(resolver);
+    });
+
+    await qz.websocket.connect();
+    if (printer === '') {
+      await console.log('getting default');
+      const defprinter = await qz.printers.getDefault();
+      await console.log('creating config');
+      const config = await qz.configs.create(defprinter, options);
+      await console.log('printing start...');
+      await qz.print(config, data);
+      await console.log('printing complete...');
+      data.length = 0;
+    } else {
+      const config = await qz.configs.create(printer, options);
+      await qz.print(config, data);
+      data.length = 0;
+    }
   }
 
-    async connect() {
-    // try {
-      if (! await qz.websocket.isActive()) {
-        await qz.websocket.connect();
-        // console.log('QZ websocket Connected');
-      } /* else {
-        await qz.websocket.disconnect();
-        await qz.websocket.connect();
-        console.log('QZ websocket Re-Connected');
-      }
-    } catch (error) {
-      await console.log(error);
-    }
-    */
+  async connectAndPrintLabelAndDelNote(printer: string[], data: string[]) {
+    const delnoteoptions =  {  rasterize: false,
+                        scaleContent: false,
+                        size: { width: 210, height: 297 },
+                        units: 'mm',
+                        orientation: 'portrait' };
+
+    const labeloptions =  {  rasterize: false,
+                        scaleContent: false,
+                        size: { width: 210, height: 297 },
+                        units: 'mm',
+                        orientation: 'portrait' };
+
+    let config = await qz.configs.create(printer[0], delnoteoptions);
+    await this.SetCertificates();
+
+    // await this.connect();
+    await qz.api.setSha256Type(function (somedata) {
+      return sha256(somedata);
+    });
+
+    await qz.api.setPromiseType(async function promise(resolver) {
+      // return await new Promise(resolver);
+      return new Promise(resolver);
+    });
+
+    await qz.websocket.connect();
+console.log('data: ' + data);
+    // Print DelNote
+    const defprinter = await qz.printers.getDefault();
+    await config.setPrinter(defprinter);
+    await qz.print(config, data[0]);
+
+    // Print Label
+    config = await qz.configs.create(printer[1], labeloptions);
+    await config.setPrinter(printer[1]);
+    await qz.print(config, data[1]);
   }
 
 }

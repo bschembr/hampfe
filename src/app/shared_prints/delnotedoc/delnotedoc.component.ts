@@ -42,19 +42,25 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
 
     constructor(private printEngine: QzTrayService,
                 public dialogRef: MatDialogRef<DelnotedocComponent>,
-                @Inject(MAT_DIALOG_DATA) private delnotedata: DelNote[]) {
+                @Inject(MAT_DIALOG_DATA) private matdata: any) {
     }
 
     ngOnInit() {
     }
 
     ngAfterViewInit() {
-        this.onPrint();
+        if ( this.matdata.isLabelAndDelNote ) {
+            this.setHTMLelements();
+            this.dialogRef.close(this.data);
+        } else {
+            this.onPrint();
+        }
     }
 
     public setHTMLelements() {
+
         // console.log('Passed delnotedata: ' + this.delnotedata[0].senderName + ' Del Ord: ' + this.delnotedata[0].delNoteRef);
-        this.delnotedata.forEach(element => {
+        this.matdata.delnotedata.forEach(element => {
         // for (const element of this.delnotedata) {
             this.HTMLreceiverName.nativeElement.innerHTML = element.receiverName;
             this.HTMLreceiverAdd1.nativeElement.innerHTML = element.receiverAddr1;
@@ -88,11 +94,12 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
             const tmpdata =  { type: 'HTML', format: 'plain', data: this.content };
             this.data.push(tmpdata);
         });
+
     }
 
-    public onPrint() {
-        this.setHTMLelements();
-        this.printEngine.connectAndPrint('',
+    public async onPrint() {
+        await this.setHTMLelements();
+        await this.printEngine.connectAndPrint('',
                                         { rasterize: false,
                                             scaleContent: false,
                                             size: { width: 210, height: 297 },

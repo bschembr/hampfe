@@ -12,13 +12,26 @@ import { DelNotesService } from '../../shared_service/del-notes.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DelnotedocComponent } from '../../shared_prints/delnotedoc/delnotedoc.component';
 import { QzTrayService } from '../../shared_service/qz-tray.service';
+import { DocSelectComponent } from '../docselect/docselect.component';
+import { LabeldocComponent } from 'src/app/shared_prints/labeldoc/labeldoc.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dellist',
   templateUrl: './dellist.component.html',
   styleUrls: ['./dellist.component.css']
 })
+
 export class DellistComponent implements OnInit {
+  subscribe: any;
+  job: string[] = [];
+  constructor(public dialog: MatDialog,
+    private _delnotesservice: DelNotesService,
+    // public printdialog: MatDialog,
+    public printdialogdelnote: MatDialog,
+    public printdialoglabel: MatDialog,
+    private printEngine: QzTrayService) {
+  }
   showSpinner = true;
 
   selection = new SelectionModel<DelNote>(true, []);
@@ -33,12 +46,6 @@ export class DellistComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   searchKey = '';
-
-  constructor(public dialog: MatDialog,
-    private _delnotesservice: DelNotesService,
-    public printdialog: MatDialog,
-    private printEngine: QzTrayService) {
-  }
 
   ngOnInit() {
 
@@ -118,34 +125,130 @@ export class DellistComponent implements OnInit {
   }
 
   printSingle(row: number) {
-    const job: DelNote[] = [];
-    job.push(this.delnotearray[this.getRowPaginator(row)]);
+    const jobdelnotes: DelNote[] = [];
+    const joblabels: DelNote[] = [];
+    const job: string[] = [];
+    const printers: string[] = new Array();
+    let isDelNoteRequested = false;
+    let isLabelRequested = false;
 
-    const dialogRef = this.printdialog.open(DelnotedocComponent, {
-      height: '500px',
-      width: '500px',
-      data: job
+    const dialogRef = this.dialog.open(DocSelectComponent, {
+      width: '320px',
+      height: '220px',
+      disableClose: true,
     });
-    this.printdialog.closeAll();
+
+    dialogRef.afterClosed().subscribe(async dialogData => {
+      if (dialogData === 'Canceled') {
+        // console.log('canceled');
+      } else {
+        isDelNoteRequested = dialogData.delnote;
+        isLabelRequested = dialogData.label;
+
+        if (isDelNoteRequested && isLabelRequested) {
+          if (isDelNoteRequested) { // ie User selected print delivery note checkbox
+            this.delnotearray[this.getRowPaginator(row)].delNotePrintDate = new Date();
+            jobdelnotes.push(this.delnotearray[this.getRowPaginator(row)]);
+          }
+
+          if (isLabelRequested) { // ie User selected print label note checkbox
+            this.delnotearray[this.getRowPaginator(row)].labelPrintDate = new Date();
+            joblabels.push(this.delnotearray[this.getRowPaginator(row)]);
+          }
+
+          if (isDelNoteRequested) { // ie User selected print delivery note checkbox
+            const delnotedialogref = await this.printdialogdelnote.open(DelnotedocComponent, {
+              height: '500px',
+              width: '500px',
+              data: { delnotedata: jobdelnotes, isLabelAndDelNote: true }
+            });
+            delnotedialogref.afterClosed().subscribe(async (delnotes) => {
+              printers.push('');
+              job.push(delnotes);
+
+              if (isLabelRequested) { // ie User selected print label note checkbox
+                const labelsdialogref = await this.printdialoglabel.open(LabeldocComponent, {
+                  height: '500px',
+                  width: '500px',
+                  data: { delnotedata: joblabels, isLabelAndDelNote: true }
+                });
+                labelsdialogref.afterClosed().subscribe(async (labels) => {
+                  printers.push('PDFCreator');
+                  job.push(labels);
+
+                  await this.printEngine.connectAndPrintLabelAndDelNote(printers, job);
+
+                });
+
+                await this.printdialoglabel.closeAll();
+              }
+
+            });
+
+            await this.printdialogdelnote.closeAll();
+          }
+        }
+      }
+    }); // not canc
+
+
   }
 
+
   printSelected() {
-    const job: DelNote[] = [];
+    const jobdelnotes: DelNote[] = [];
+    const joblabels: DelNote[] = [];
+    let isDelNoteRequested = false;
+    let isLabelRequested = false;
 
     if (this.selection.hasValue) {
-      this.selection.selected.forEach(element => {
-          if ( JSON.stringify(element) !== '' ) {
-            job.push(element);
-          }
-      });
-      const dialogRef = this.printdialog.open(DelnotedocComponent, {
-        height: '500px',
-        width: '500px',
-        data: job
-      });
-      this.printdialog.closeAll();
-      this.listData.data = this.delnotearray;
 
+      const dialogRef = this.dialog.open(DocSelectComponent, {
+        width: '320px',
+        height: '220px',
+        disableClose: true,
+      });
+
+      dialogRef.afterClosed().subscribe(async dialogData => {
+
+        if (dialogData === 'Canceled') {
+          // console.log('canceled');
+        } else {
+          isDelNoteRequested = dialogData.delnote;
+          isLabelRequested = dialogData.label;
+
+          this.selection.selected.forEach(element => {
+            if (JSON.stringify(element) !== '') {
+              if (isDelNoteRequested) { // ie User selected print delivery note checkbox
+                element.delNotePrintDate = new Date();
+                jobdelnotes.push(element);
+              }
+              if (isLabelRequested) { // ie User selected print label note checkbox
+                element.labelPrintDate = new Date();
+                joblabels.push(element);
+              }
+
+            }
+          });
+          if (isDelNoteRequested) { // ie User selected print delivery note checkbox
+            await this.printdialogdelnote.open(DelnotedocComponent, {
+              height: '500px',
+              width: '500px',
+              data: { delnotedata: jobdelnotes, isLabelAndDelNote: true }
+            });
+            await this.printdialogdelnote.closeAll();
+          }
+          if (isLabelRequested) { // ie User selected print label note checkbox
+            await this.printdialoglabel.open(LabeldocComponent, {
+              height: '500px',
+              width: '500px',
+              data: { delnotedata: joblabels, isLabelAndDelNote: true }
+            });
+            await this.printdialoglabel.closeAll();
+          }
+          this.listData.data = this.delnotearray;
+        }
+      });
     }
   }
 

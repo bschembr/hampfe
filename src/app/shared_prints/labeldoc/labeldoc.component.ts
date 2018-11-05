@@ -28,19 +28,24 @@ export class LabeldocComponent implements OnInit, AfterViewInit {
 
     constructor(private printEngine: QzTrayService,
                 public dialogRef: MatDialogRef<LabeldocComponent>,
-                @Inject(MAT_DIALOG_DATA) private delnotedata: DelNote[]) {
+                @Inject(MAT_DIALOG_DATA) private matdata: any ) {
     }
 
     ngOnInit() {
     }
 
     ngAfterViewInit() {
-        this.onPrint();
+        if ( this.matdata.isLabelAndDelNote ) {
+            this.setHTMLelements();
+            this.dialogRef.close(this.data);
+        } else {
+            this.onPrint();
+        }
     }
 
-    public setHTMLelements() {
+    public setMatDataHTMLelements() {
         // console.log('Passed delnotedata: ' + this.delnotedata[0].senderName + ' Del Ord: ' + this.delnotedata[0].delNoteRef);
-        this.delnotedata.forEach(element => {
+        this.matdata.delnotedata.forEach(element => {
         // for (const element of this.delnotedata) {
             this.HTMLreceiverName.nativeElement.innerHTML = element.receiverName;
             this.HTMLreceiverAdd1.nativeElement.innerHTML = element.receiverAddr1;
@@ -65,9 +70,36 @@ export class LabeldocComponent implements OnInit, AfterViewInit {
         });
     }
 
-    public onPrint() {
-        this.setHTMLelements();
-        this.printEngine.connectAndPrint('PDFCreator',
+    public setHTMLelements() {
+        // console.log('Passed delnotedata: ' + this.delnotedata[0].senderName + ' Del Ord: ' + this.delnotedata[0].delNoteRef);
+        this.matdata.delnotedata.forEach(element => {
+        // for (const element of this.delnotedata) {
+            this.HTMLreceiverName.nativeElement.innerHTML = element.receiverName;
+            this.HTMLreceiverAdd1.nativeElement.innerHTML = element.receiverAddr1;
+            this.HTMLreceiverAdd2.nativeElement.innerHTML = element.receiverAddr2;
+            this.HTMLreceiverAdd3.nativeElement.innerHTML = element.receiverAddr3;
+            this.HTMLreceiverAdd4.nativeElement.innerHTML = element.receiverAddr4;
+            this.HTMLreceiverTown.nativeElement.innerHTML = element.receiverTown;
+            this.HTMLdelNoteNo.nativeElement.innerHTML = element.delNoteRef;
+            this.HTMLsenderName.nativeElement.innerHTML = element.senderName;
+            this.HTMLitemQty.nativeElement.innerHTML = element.qtyOrd;
+            this.HTMLsenderMessage.nativeElement.innerHTML = element.senderMessage;
+            this.HTMLreceiverTel.nativeElement.innerHTML = element.receiverPhone;
+            const printContent = document.getElementById('content').innerHTML;
+
+            this.content = '<!DOCTYPE html><html><head>  '
+                + '<link href="http://acots/hampers/delLabel.css" rel="stylesheet"> '
+                + '</head>'
+                + printContent + '</html>';
+
+            const tmpdata =  { type: 'HTML', format: 'plain', data: this.content };
+            this.data.push(tmpdata);
+        });
+    }
+
+    public async onPrint() {
+        await this.setHTMLelements();
+        await this.printEngine.connectAndPrint('PDFCreator',
                                         { rasterize: false,
                                             scaleContent: false,
                                             size: { width: 210, height: 297 },
