@@ -134,7 +134,7 @@ export class QzTrayService {
   }
 
   async connectAndPrint(printer: string, options: any, data = [{}]) {
-    // console.log('QZ data: ' + data);
+    console.log('QZ connectAndPrint ');
     await this.SetCertificates();
 
     // await this.connect();
@@ -148,20 +148,23 @@ export class QzTrayService {
     });
 
     await qz.websocket.connect();
+    let config = await qz.configs.create();
     if (printer === '') {
       await console.log('getting default');
       const defprinter = await qz.printers.getDefault();
+      config = await qz.configs.create(defprinter, options);
       await console.log('creating config');
-      const config = await qz.configs.create(defprinter, options);
+      await config.setPrinter(defprinter);
       await console.log('printing start...');
       await qz.print(config, data);
       await console.log('printing complete...');
       data.length = 0;
     } else {
-      const config = await qz.configs.create(printer, options);
+      config = await qz.configs.create(printer, options);
       await qz.print(config, data);
       data.length = 0;
     }
+    await qz.websocket.disconnect();
   }
 
   async connectAndPrintLabelAndDelNote(printer: string[], data: string[]) {
