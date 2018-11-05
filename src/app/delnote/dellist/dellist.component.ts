@@ -88,10 +88,12 @@ export class DellistComponent implements OnInit {
     } else {
       rowindex = ((this.paginator.pageIndex * this.paginator.pageSize) + row);
     }
-    this.delnotearray.splice(rowindex, 1);
-
-    this.listData.data = this.delnotearray;
-
+    if ((!this.delnotearray[rowindex].delNotePrintDate) || (!this.delnotearray[rowindex].labelPrintDate)) {
+      alert('Delivery Note or Label has been printed - Delete not allowed');
+    } else {
+      this.delnotearray.splice(rowindex, 1);
+      this.listData.data = this.delnotearray;
+    }
   }
 
   getRowPaginator(row: number) {
