@@ -165,17 +165,21 @@ export class QzTrayService {
   }
 
   async connectAndPrintLabelAndDelNote(printer: string[], data: string[]) {
-    const delnoteoptions =  {  rasterize: false,
-                        scaleContent: false,
-                        size: { width: 210, height: 297 },
-                        units: 'mm',
-                        orientation: 'portrait' };
+    const delnoteoptions = {
+      rasterize: false,
+      scaleContent: false,
+      size: { width: 210, height: 297 },
+      units: 'mm',
+      orientation: 'portrait'
+    };
 
-    const labeloptions =  {  rasterize: false,
-                        scaleContent: false,
-                        size: { width: 210, height: 297 },
-                        units: 'mm',
-                        orientation: 'portrait' };
+    const labeloptions = {
+      rasterize: false,
+      scaleContent: false,
+      size: { width: 210, height: 297 },
+      units: 'mm',
+      orientation: 'portrait'
+    };
 
     let config = await qz.configs.create(printer[0], delnoteoptions);
     await this.SetCertificates();
@@ -191,16 +195,21 @@ export class QzTrayService {
     });
 
     await qz.websocket.connect();
-console.log('data: ' + data);
-    // Print DelNote
-    const defprinter = await qz.printers.getDefault();
-    await config.setPrinter(defprinter);
-    await qz.print(config, data[0]);
 
-    // Print Label
-    config = await qz.configs.create(printer[1], labeloptions);
-    await config.setPrinter(printer[1]);
-    await qz.print(config, data[1]);
+    // Print DelNote
+    if (!(!data[0])) {
+      const defprinter = await qz.printers.getDefault();
+      await config.setPrinter(defprinter);
+      await qz.print(config, data[0]);
+    }
+
+    if (!(!data[1])) {
+      // Print Label
+      config = await qz.configs.create(printer[1], labeloptions);
+      await config.setPrinter(printer[1]);
+      await qz.print(config, data[1]);
+    }
+    await qz.websocket.disconnect();
   }
 
 }

@@ -187,6 +187,38 @@ export class DellistComponent implements OnInit {
 
             await this.printdialogdelnote.closeAll();
           }
+        } else if (isDelNoteRequested && !isLabelRequested) {
+          this.delnotearray[this.getRowPaginator(row)].delNotePrintDate = new Date();
+          jobdelnotes.push(this.delnotearray[this.getRowPaginator(row)]);
+
+          const delnotedialogref = await this.printdialogdelnote.open(DelnotedocComponent, {
+            height: '500px',
+            width: '500px',
+            data: { delnotedata: jobdelnotes, isLabelAndDelNote: true }
+          });
+          delnotedialogref.afterClosed().subscribe(async (delnotes) => {
+            printers.push('');
+            job.push(delnotes);
+            await this.printEngine.connectAndPrintLabelAndDelNote(printers, job);
+          });
+          await this.printdialogdelnote.closeAll();
+
+        } else if (isLabelRequested && !isDelNoteRequested) {
+          this.delnotearray[this.getRowPaginator(row)].delNotePrintDate = new Date();
+          joblabels.push(this.delnotearray[this.getRowPaginator(row)]);
+
+          const delnotedialogref = await this.printdialogdelnote.open(LabeldocComponent, {
+            height: '500px',
+            width: '500px',
+            data: { delnotedata: joblabels, isLabelAndDelNote: true }
+          });
+          delnotedialogref.afterClosed().subscribe(async (labels) => {
+            printers.push('PDFCreator');
+            job.push(labels);
+            await this.printEngine.connectAndPrintLabelAndDelNote(printers, job);
+          });
+          await this.printdialogdelnote.closeAll();
+
         }
       }
     }); // not canc
