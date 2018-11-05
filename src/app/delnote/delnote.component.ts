@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   MatTableDataSource,
-  MatSort,
+  // MatSort,
   MatPaginator,
   MatDialog
 } from '@angular/material';
@@ -32,14 +32,14 @@ export class DelnoteComponent implements OnInit {
   displayedColumns: string[] = ['delnotelineref', 'deliveryDate', 'senderName', 'senderTown', 'senderMessage',
     'receiverName', 'receiverTown', 'receiverPhone', 'deliveryInstructions', 'status', 'actions'];
 
-  @ViewChild(MatSort) sort: MatSort;
+  // @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey = '';
 
   ngOnInit() {
 
     this.listData = new MatTableDataSource(this.delnotearray);
-    this.listData.sort = this.sort;
+    // this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
 
     this.listData.filterPredicate = (data, filter) => {

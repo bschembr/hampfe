@@ -17,69 +17,53 @@
     </mat-form-field>
     <input type="file" (change)="excelImport($event)" #xlfile accept=".xlsx" name='file' />
   <div class="mat-elevation-z8">
-    <mat-table [dataSource]="listData" matSort>
+    <mat-table [dataSource]="listData" >
       <ng-container matColumnDef="delnotelineref">
-        <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let i = index">{{i + 1}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="delnotedate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Del.N Date</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Del.N Date</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.delNoteDate | date:'dd-MM-yyyy'}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="delordref">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Instr/.</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Instr/.</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.deliveryInstructions}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="deliveryDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Del.N Date</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Del.N Date</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.deliveryDate | date:'dd-MM-yyyy'}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="senderName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Sender</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Sender</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.senderName}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="senderTown">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Send Town</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Send Town</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.senderTown}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="senderMessage">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Send Message</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Send Message</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.senderMessage}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="receiverName">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Receiver Name</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.receiverName}}</mat-cell>
       </ng-container>
-      <ng-container matColumnDef="receiverAddr1">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Addr1</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.receiverAddr1}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="receiverAddr2">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Addr2</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.receiverAddr2}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="receiverAddr3">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Addr3</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.receiverAddr3}}</mat-cell>
-      </ng-container>
-      <ng-container matColumnDef="receiverAddr4">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Addr4</mat-header-cell>
-        <mat-cell *matCellDef="let element">{{element.receiverAddr4}}</mat-cell>
-      </ng-container>
       <ng-container matColumnDef="receiverTown">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Town</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Receiver Town</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.receiverTown}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="receiverPhone">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Receiver Phone</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Receiver Phone</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.receiverPhone}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="deliveryInstructions">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Instructions</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Instructions</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.deliveryInstructions}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="status">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.status}}</mat-cell>
       </ng-container>
       <ng-container matColumnDef="actions">
