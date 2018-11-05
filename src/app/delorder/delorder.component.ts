@@ -19,6 +19,7 @@ import { DelnotedocComponent } from '../shared_prints/delnotedoc/delnotedoc.comp
 import { map, mergeMap } from 'rxjs/operators';
 import { forEach } from '@angular/router/src/utils/collection';
 import { LabeldocComponent } from '../shared_prints/labeldoc/labeldoc.component';
+import { QzTrayService } from '../shared_service/qz-tray.service';
 
 
 @Component({
@@ -30,6 +31,7 @@ import { LabeldocComponent } from '../shared_prints/labeldoc/labeldoc.component'
 export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   showSpinner = true;
   private clients: Clients[] = [];
+  job: string[] = [];
   @ViewChild(DelnoteComponent) _delnotes;
 
   maxDate;
@@ -104,6 +106,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
     public dialog: MatDialog,
     public printdialogdelnote: MatDialog,
     public printdialoglabel: MatDialog,
+    private printEngine: QzTrayService,
     private _router: Router
   ) {
   }
@@ -133,8 +136,9 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   }
 
   onSave() {
-    let job: DelNote[];
-    job = [];
+    const printers: string[] = new Array();
+    // let job: DelNote[];
+    // job string[] = [];
     const printdelnotearray: DelNote[] = new Array();
     // let delNoteInserted: DelNote = new DelNote();
     const delNoteInserted: DelNote[] = [];
@@ -190,22 +194,41 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
             delNoteInserted[delNoteInserted.length - 1].labelPrintDate = new Date();
           }
         }
-        if (isDelNoteRequested) { // ie User selected print delivery note checkbox
-          await this.printdialogdelnote.open(DelnotedocComponent, {
+        const delnotedialogref = await this.printdialogdelnote.open(DelnotedocComponent, {
+          height: '500px',
+          width: '500px',
+          data: { delnotedata: delNoteInserted, isLabelAndDelNote: true }
+        });
+        delnotedialogref.afterClosed().subscribe(async (delnotes) => {
+          printers.push('');
+          if (isDelNoteRequested) {
+            this.job.push(delnotes);
+          } else {
+            this.job.push('');
+          }
+
+          const labelsdialogref = await this.printdialoglabel.open(LabeldocComponent, {
             height: '500px',
             width: '500px',
-            data: delNoteInserted
+            data: { delnotedata: delNoteInserted, isLabelAndDelNote: true }
           });
-          await this.printdialogdelnote.closeAll();
-        }
-        if (isLabelRequested) { // ie User selected print label note checkbox
-          await this.printdialoglabel.open(LabeldocComponent, {
-            height: '500px',
-            width: '500px',
-            data: delNoteInserted
+          labelsdialogref.afterClosed().subscribe(async (labels) => {
+            printers.push('PDFCreator');
+            if (isLabelRequested) {
+              this.job.push(labels);
+            } else {
+              this.job.push('');
+            }
+
+            await this.printEngine.connectAndPrintLabelAndDelNote(printers, this.job);
+
           });
+
           await this.printdialoglabel.closeAll();
-        }
+
+
+        });
+        await this.printdialogdelnote.closeAll();
 
         this._router.navigate(['/']);
       }

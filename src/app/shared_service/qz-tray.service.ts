@@ -201,6 +201,7 @@ export class QzTrayService {
 
     // Print DelNote
     if (!(!data[0])) {
+      console.log('Printing Delivery Note');
       const defprinter = await qz.printers.getDefault();
       await config.setPrinter(defprinter);
       await qz.print(config, data[0]);
@@ -208,6 +209,7 @@ export class QzTrayService {
 
     if (!(!data[1])) {
       // Print Label
+      console.log('Printing label');
       config = await qz.configs.create(printer[1], labeloptions);
       await config.setPrinter(printer[1]);
       await qz.print(config, data[1]);
