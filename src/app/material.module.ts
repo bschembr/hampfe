@@ -14,6 +14,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
     imports: [
@@ -31,7 +33,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         MatAutocompleteModule,
         MatMenuModule,
         MatToolbarModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatSlideToggleModule,
+        MatRadioModule
     ],
     exports: [
         MatFormFieldModule,
@@ -48,7 +52,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         MatAutocompleteModule,
         MatMenuModule,
         MatToolbarModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatSlideToggleModule,
+        MatRadioModule
     ]
 })
 export class MaterialModule {}

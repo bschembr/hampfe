@@ -40,3 +40,15 @@ h4 {
     width: 40%;
     padding: 5%;    
  }
+
+ .searchcodename-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 40px;
+    font-size: 12px;
+  }
+  
+ .searchcodename-margin {
+    margin: 5px;
+ }

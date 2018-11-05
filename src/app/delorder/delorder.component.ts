@@ -35,6 +35,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   @ViewChild(DelnoteComponent) _delnotes;
 
   maxDate;
+  searchby;
   orderdate: Date;
   private custOrder: CustomerOrder;
   delnotearray: DelNote[] = new Array();
@@ -48,7 +49,8 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
     DelInstructions: new FormControl(),
     DefSendMsg: new FormControl(),
     InvoiceRef: new FormControl('', [Validators.required, Validators.maxLength(10)]),
-    Status: new FormControl()
+    Status: new FormControl(),
+    Searchbycodename: new FormControl()
   });
 
   ngAfterViewInit() {
@@ -57,32 +59,57 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
 
   displayValue(value: any): Observable<OptionEntry | null> {
     // console.log('finding display value for', value);
-    const client = this.clients.find((c: any) => c.account === parseInt(value || '', 10));
-    if (client) {
-      return of({
-        value: client.account,
-        display: client.account,
-        details: {}
-      });
+    if (this.orderform.controls['Searchbycodename'].value === 'code') {
+      const client = this.clients.find((c: any) => c.account === parseInt(value || '', 10));
+      if (client) {
+        return of({
+          value: client.account,
+          display: client.account,
+          details: {}
+        });
+      }
+    } else if (this.orderform.controls['Searchbycodename'].value === 'name') {
+      const client = this.clients.find((c: any) => c.name === parseInt(value || '', 10));
+      if (client) {
+        return of({
+          value: client.account,
+          display: client.account,
+          details: {}
+        });
+      }
     }
     return of(null);
   }
 
   search(term: string): Observable<OptionEntry[]> {
     // console.log('searching for', term);
-    const lowerTerm = typeof term === 'string' ? term.toLowerCase() : '';
-    const result = this.clients
-      .filter((c: any) => c.account.toLowerCase().indexOf(lowerTerm) >= 0)
-      .slice(0, 200)
-      .map((client: any) => ({
-        value: client.account,
-        display: client.account,
-        details: client
-      }));
-    return of(result);
+    if (this.orderform.controls['Searchbycodename'].value === 'code') {
+      const lowerTerm = typeof term === 'string' ? term.toLowerCase() : '';
+      const result = this.clients
+        .filter((c: any) => c.account.toLowerCase().indexOf(lowerTerm) >= 0)
+        .slice(0, 200)
+        .map((client: any) => ({
+          value: client.account,
+          display: client.account,
+          details: client
+        }));
+      return of(result);
+    } else if (this.orderform.controls['Searchbycodename'].value === 'name') {
+      const lowerTerm = typeof term === 'string' ? term.toLowerCase() : '';
+      const result = this.clients
+        .filter((c: any) => c.name.toLowerCase().indexOf(lowerTerm) >= 0)
+        .slice(0, 200)
+        .map((client: any) => ({
+          value: client.account,
+          display: client.account,
+          details: client
+        }));
+      return of(result);
+    }
   }
 
   ngOnInit() {
+    this.orderform.controls['Searchbycodename'].setValue('code');
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear(),
       this.maxDate.getMonth(),
@@ -112,26 +139,28 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   }
 
   onCustRefFocutOut() {
-    if (this.orderform.controls['CustRef'].value === '11CA921') {
-      this.orderform.controls['Client'].setValue('ENTER CLIENT DETAILS!');
-    } else {
-      const client = this.clients[this.clients.findIndex((element) => {
-        return element.account === this.orderform.controls['CustRef'].value;
-      })];
-      this.orderform.controls['Client'].setValue(client.name + '\n' +
-        client.addressln1 + '\n' +
-        client.addressln2 + '\n' +
-        client.addressln3 + '\n' +
-        client.addressln4 + '\n');
-
-      if (client.town !== '') {
-        this.orderform.controls['Town'].setValue(client.town);
+    if (!(!this.orderform.controls['CustRef'].value)) {
+      if (this.orderform.controls['CustRef'].value === '11CA921') {
+        this.orderform.controls['Client'].setValue('ENTER CLIENT DETAILS!');
       } else {
-        this.orderform.controls['Town'].setValue('');
-      }
+        const client = this.clients[this.clients.findIndex((element) => {
+          return element.account === this.orderform.controls['CustRef'].value;
+        })];
+        this.orderform.controls['Client'].setValue(client.name + '\n' +
+          client.addressln1 + '\n' +
+          client.addressln2 + '\n' +
+          client.addressln3 + '\n' +
+          client.addressln4 + '\n');
 
-      this.orderform.controls['Town'].disable();
-      this.orderform.controls['Client'].disable();
+        if (client.town !== '') {
+          this.orderform.controls['Town'].setValue(client.town);
+        } else {
+          this.orderform.controls['Town'].setValue('');
+        }
+
+        this.orderform.controls['Town'].disable();
+        this.orderform.controls['Client'].disable();
+      }
     }
   }
 

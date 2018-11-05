@@ -11,10 +11,22 @@
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
-              <div class="set-apart">
-                <app-select-client-mat-table (focusout)="onCustRefFocutOut()" formControlName="CustRef" [dataSource]="this">
-                </app-select-client-mat-table>
-              </div>
+            <div class="set-apart">
+              <app-select-client-mat-table (focusout)="onCustRefFocutOut()" formControlName="CustRef" [dataSource]="this">
+              </app-select-client-mat-table>
+            </div>
+
+            <section class="searchcodename-section">
+              <label class="searchcodename-margin">Client Code Search by:</label>
+              <mat-radio-group formControlName="Searchbycodename">
+                <mat-radio-button class="searchcodename-margin" value="code">
+                  Code
+                </mat-radio-button>
+                <mat-radio-button class="searchcodename-margin" value="name">
+                  Name
+                </mat-radio-button>
+              </mat-radio-group>
+            </section>
           </div>
         </mat-grid-tile>
 
