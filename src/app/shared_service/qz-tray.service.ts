@@ -200,16 +200,16 @@ export class QzTrayService {
     await qz.websocket.connect();
 
     // Print DelNote
-    if (!(!data[0])) {
-      console.log('Printing Delivery Note');
+    if (printer[0] !== 'nodelnoteprint') {
       const defprinter = await qz.printers.getDefault();
+      console.log('Printing Delivery Note on: ' + defprinter);
       await config.setPrinter(defprinter);
       await qz.print(config, data[0]);
     }
 
-    if (!(!data[1])) {
+    if (printer[1] !== 'nolabelprint') {
       // Print Label
-      console.log('Printing label');
+      console.log('Printing label on: ' + printer[1]);
       config = await qz.configs.create(printer[1], labeloptions);
       await config.setPrinter(printer[1]);
       await qz.print(config, data[1]);

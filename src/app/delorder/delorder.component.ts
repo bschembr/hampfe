@@ -229,10 +229,11 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
           data: { delnotedata: delNoteInserted, isLabelAndDelNote: true }
         });
         delnotedialogref.afterClosed().subscribe(async (delnotes) => {
-          printers.push('');
           if (isDelNoteRequested) {
+            printers.push('');
             this.job.push(delnotes);
           } else {
+            printers.push('nodelnoteprint');
             this.job.push('');
           }
 
@@ -242,10 +243,11 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
             data: { delnotedata: delNoteInserted, isLabelAndDelNote: true }
           });
           labelsdialogref.afterClosed().subscribe(async (labels) => {
-            printers.push('\\\\acodc1\\ZebraHamper1');
             if (isLabelRequested) {
+              printers.push('ZebraHampers1');
               this.job.push(labels);
             } else {
+              printers.push('nolabelprint');
               this.job.push('');
             }
 
