@@ -25,6 +25,8 @@ import { Observable } from 'rxjs';
 export class DellistComponent implements OnInit {
   subscribe: any;
   job: string[] = [];
+  isMasterCheckBoxSelected = false;
+
   constructor(public dialog: MatDialog,
     private _delnotesservice: DelNotesService,
     // public printdialog: MatDialog,
@@ -242,6 +244,7 @@ export class DellistComponent implements OnInit {
 
     if (this.selection.hasValue) {
 
+      console.log(this.selection.selected);
       const dialogRef = this.dialog.open(DocSelectComponent, {
         width: '320px',
         height: '220px',
@@ -338,16 +341,53 @@ export class DellistComponent implements OnInit {
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.listData.data.length;
-    return numSelected === numRows;
+    // const numSelected = this.selection.selected.length;
+    // const numRows = this.listData.data.length;
+    // return numSelected === numRows;
   }
 
   /** Selects all rows if they are not all selected; otherwise clear selection. */
   masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.listData.data.forEach(row => this.selection.select(row));
+    let startrow = 0;
+    let endrow = 0;
+    let pagesmodulus = 0;
+    this.isMasterCheckBoxSelected = !this.isMasterCheckBoxSelected;
+    if (this.isMasterCheckBoxSelected) {
+      console.log('check ticks');
+      console.log('pageIndex: ' + this.paginator.pageIndex + ' pageSize: ' + this.paginator.pageSize);
+
+      if (this.paginator.pageIndex > 0) {
+        startrow = (this.paginator.pageSize * this.paginator.pageIndex);
+        pagesmodulus = this.listData.data.length % this.paginator.pageSize;
+        if (pagesmodulus === 0) {
+          endrow = pagesmodulus;
+        } else {
+          if (this.paginator.getNumberOfPages() === this.paginator.pageIndex) {
+            endrow = (startrow + pagesmodulus) - 1;
+          } else {
+            endrow = ((this.paginator.pageSize - 1) + startrow);
+          }
+        }
+      } else {
+        startrow = 0;
+        pagesmodulus = this.listData.data.length % this.paginator.pageSize;
+        if (pagesmodulus === 0) {
+          endrow = (this.paginator.pageSize - 1);
+        } else {
+          endrow = pagesmodulus - 1;
+        }
+      }
+
+      console.log('pagesmodulus: ' + pagesmodulus + ' start row: ' + startrow + ' end row: ' + endrow + ' num of pages: '
+        + this.paginator.getNumberOfPages());
+
+      for (let i = startrow; i <= endrow; i++) {
+        this.selection.select(this.listData.data[i]);
+      }
+    } else {
+      this.selection.clear();
+      console.log('clear');
+    }
   }
 
   onRefresh() {
