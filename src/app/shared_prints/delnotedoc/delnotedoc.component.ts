@@ -38,6 +38,8 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
     @ViewChild('footerSenderName') HTMLfooterSenderName: ElementRef;
     @ViewChild('orderNoBarcode') HTMLorderNoBardcode: ElementRef;
     @ViewChild('orderNo') HTMLorderNo: ElementRef;
+    @ViewChild('DelDate') HTMLDelDate: ElementRef;
+    @ViewChild('DelTime') HTMLDelTime: ElementRef;
 
 
     constructor(private printEngine: QzTrayService,
@@ -84,6 +86,8 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
             this.HTMLfooterSenderName.nativeElement.innerHTML = element.senderName;
             this.HTMLorderNoBardcode.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
             this.HTMLorderNo.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
+            this.HTMLDelDate.nativeElement.innerHTML = element.delOrdRef.DelDate;
+            this.HTMLDelTime.nativeElement.innerHTML = element.delOrdRef.DelTime;
             const printContent = document.getElementById('content').innerHTML;
 
             this.content = '<!DOCTYPE html><html><head>  '
