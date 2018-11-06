@@ -242,7 +242,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
             data: { delnotedata: delNoteInserted, isLabelAndDelNote: true }
           });
           labelsdialogref.afterClosed().subscribe(async (labels) => {
-            printers.push('PDFCreator');
+            printers.push('\\\\acodc1\\ZebraHamper1');
             if (isLabelRequested) {
               this.job.push(labels);
             } else {

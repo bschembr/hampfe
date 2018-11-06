@@ -179,7 +179,7 @@ export class QzTrayService {
     const labeloptions = {
       rasterize: false,
       scaleContent: false,
-      size: { width: 210, height: 297 },
+      size: { width: 101, height: 75 },
       units: 'mm',
       orientation: 'portrait'
     };
