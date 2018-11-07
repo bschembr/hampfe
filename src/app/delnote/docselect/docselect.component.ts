@@ -29,8 +29,12 @@ export class DocSelectComponent {
     this.checkLabel = !this.checkLabel;
   }
 
-  onPrint() {
+  onSaveAndPrint() {
     this.dialogRef.close({delnote: this.checkDelnote, label: this.checkLabel});
+  }
+
+  onSaveOnly() {
+    this.dialogRef.close('SaveOnly');
   }
 
   onCancel() {

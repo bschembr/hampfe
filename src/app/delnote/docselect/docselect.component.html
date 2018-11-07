@@ -1,16 +1,38 @@
 <div class="container">
   <section class="docselect-form">
     <form [formGroup]="docselectform" class="docselect-form">
-      <div class="docSelection">
-        <mat-checkbox formControlName="CheckBoxDelNote" (click)="toggledelnote()" color="primary" class="requests">Delivery
-          Note</mat-checkbox>
 
-        <mat-checkbox formControlName="CheckBoxLabel" (click)="togglelabel()" color="primary" class="requests">Label</mat-checkbox>
-      </div>
-      <div>
-        <button mat-raised-button (click)="onPrint()" color="accent">Print</button>
-        <button mat-raised-button (click)="onCancel()" color="primary">Cancel</button>
-      </div>
+      <mat-grid-list cols="1" rowHeight="30px" style="padding-bottom:45px;">
+        <mat-grid-tile class="box">
+          <div class="docSelection">
+            <mat-checkbox formControlName="CheckBoxDelNote" (click)="toggledelnote()" color="primary" class="requests">Delivery
+              Note</mat-checkbox>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile class="box">
+          <div class="docSelection">
+            <mat-checkbox formControlName="CheckBoxLabel" (click)="togglelabel()" color="primary" class="requests">Label</mat-checkbox>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-grid-list cols="3" rowHeight="60px">
+        <mat-grid-tile>
+          <div>
+            <button mat-raised-button (click)="onSaveAndPrint()" color="primary">Print</button>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div>
+            <button mat-raised-button (click)="onSaveOnly()" color="accent">Save</button>
+          </div>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div>
+            <button mat-raised-button (click)="onCancel()" color="warn">Cancel</button>
+          </div>
+        </mat-grid-tile>
+      </mat-grid-list>
+
     </form>
   </section>
 </div>

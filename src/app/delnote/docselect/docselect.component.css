@@ -7,15 +7,24 @@
 }
 
 .docSelection{
+  display: flex;
   padding: 0px 8px 0px 0px;
-  font-size: 12pt;
-  height: 60px;
-  width: 60px;
+  font-size: 14pt;
+}
 
+.box {
+  display: flex;
+  align-items: left;
+  justify-content: left;
+}
+
+.box div {
+  width: 180px;
+  height: 10px;
 }
 
 ::ng-deep .mat-checkbox .mat-checkbox-inner-container {
   padding: 0px 0px 0px 0px;
-  height: 12px;
-  width: 12px;
+  height: 14px;
+  width: 14px;
 }
