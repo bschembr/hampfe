@@ -134,6 +134,7 @@ export class DelnoteComponent implements OnInit {
 
 
   excelImport(file: any) {
+    let xlimporterr = false;
     this.showSpinner = true;
     const target: DataTransfer = <DataTransfer>(file.target);
     if (target.files.length !== 1 && target.files.length !== 0) {
@@ -152,6 +153,9 @@ export class DelnoteComponent implements OnInit {
       // console.log(ws);
       // console.log('Ref: ' + ws['!ref'].split(':'));
       const range = XLSX.utils.decode_range(ws['!ref']);
+      const newrange = range;
+      newrange.e = range.e = { c: 23, r: range.e.r };
+      ws['!ref'] = XLSX.utils.encode_range( newrange );
       range.s = { c: 0, r: 1 };
       for (let R = range.s.r; R <= range.e.r; ++R) {
         const tmpDelNote = new DelNote();
@@ -164,9 +168,24 @@ export class DelnoteComponent implements OnInit {
         } else { tmpDelNote.deliveryDate = new Date(); }
         cell_address = { c: 1, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
+// --------------------
+        const err_cell_address = { c: 23, r: R };
+        const err_cell_ref = XLSX.utils.encode_cell(err_cell_address);
         if (!(!ws[cell_ref])) {
-          tmpDelNote.senderName = ws[cell_ref].w;
-        } else { tmpDelNote.senderName = ''; }
+          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50 ) {
+            tmpDelNote.senderName = ws[cell_ref].w;
+          } else {  ws[err_cell_ref] = { t: 's',
+                                         v: 'Sender Name must be greater than zero less than 50 characters existing field lenght is '
+                                    + (ws[cell_ref].w).length };
+                    xlimporterr = true;
+                 }
+        } else {
+          ws[err_cell_ref] = { t: 's',
+                                         v: 'Sender Name must be filled '
+                                    + (ws[cell_ref].w).length };
+          xlimporterr  = true;
+        }
+// --------------------
         cell_address = { c: 2, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
@@ -279,12 +298,20 @@ export class DelnoteComponent implements OnInit {
 
         tmpDelNote.status = 'P';
 
-        this.delnotearray.push(tmpDelNote);
+        if (!xlimporterr) {
+          this.delnotearray.push(tmpDelNote);
+        }
+
       }
       this.listData.data = this.delnotearray;
       this.showSpinner = false;
+      if (xlimporterr) {
+        alert('Your excel file is not correct refer to messages in same excel file');
+        XLSX.writeFile(wb, 'HampersError.xlsx');
+      }
     };
     reader.readAsBinaryString(target.files[0]);
+
   }
 
 }
