@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { QzTrayService } from '../../shared_service/qz-tray.service';
+import { DatePipe } from '@angular/common';
 import { CustomerOrder } from '../../customerorder';
 import { DelNote } from '../../delnote';
 
@@ -15,6 +16,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
 
     content;
     data = [];
+    private datePipe: DatePipe = new DatePipe('en-UK');
 
     @ViewChild('delNoteBarcode') HTMLdelNoteBarcode: ElementRef;
     @ViewChild('receiverName') HTMLreceiverName: ElementRef;
@@ -78,7 +80,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
             this.HTMLsenderAdd3.nativeElement.innerHTML = element.senderAddr3;
             this.HTMLsenderAdd4.nativeElement.innerHTML = element.senderAddr4;
             this.HTMLsenderTown.nativeElement.innerHTML = element.senderTown;
-            this.HTMLdocDate.nativeElement.innerHTML = element.delNoteDate;
+            this.HTMLdocDate.nativeElement.innerHTML = this.datePipe.transform(element.delNoteDate, 'dd-MM-yyyy');
             this.HTMLitemCode.nativeElement.innerHTML = element.itemCode;
             this.HTMLitemDesc.nativeElement.innerHTML = element.itemDescription;
             this.HTMLitemQty.nativeElement.innerHTML = element.qtyOrd;
@@ -86,7 +88,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
             this.HTMLfooterSenderName.nativeElement.innerHTML = element.senderName;
             this.HTMLorderNoBardcode.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
             this.HTMLorderNo.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
-            this.HTMLDelDate.nativeElement.innerHTML = element.deliveryDate;
+            this.HTMLDelDate.nativeElement.innerHTML = this.datePipe.transform(element.deliveryDate, 'dd-MM-yyyy');
             this.HTMLDelTime.nativeElement.innerHTML = element.deliveryTime;
             const printContent = document.getElementById('content').innerHTML;
 
