@@ -177,7 +177,7 @@ export class DellistComponent implements OnInit {
                   data: { delnotedata: joblabels, isLabelAndDelNote: true }
                 });
                 labelsdialogref.afterClosed().subscribe(async (labels) => {
-                  printers.push('ZebraHampers1');
+                  printers.push('\\\\acodc1\\ZebraHamper1');
                   job.push(labels);
 
                   await this.printEngine.connectAndPrintLabelAndDelNote(printers, job);
@@ -219,7 +219,7 @@ export class DellistComponent implements OnInit {
           });
           delnotedialogref.afterClosed().subscribe(async (labels) => {
             printers.push('nodelnoteprint');
-            printers.push('ZebraHampers1');
+            printers.push('\\\\acodc1\\ZebraHamper1');
             job.push('');
             job.push(labels);
             await this.printEngine.connectAndPrintLabelAndDelNote(printers, job);
@@ -290,7 +290,7 @@ export class DellistComponent implements OnInit {
                     data: { delnotedata: joblabels, isLabelAndDelNote: true }
                   });
                   labelsdialogref.afterClosed().subscribe(async (labels) => {
-                    printers.push('ZebraHampers1');
+                    printers.push('\\\\acodc1\\ZebraHamper1');
                     job.push(labels);
 
                     await this.printEngine.connectAndPrintLabelAndDelNote(printers, job);
@@ -326,7 +326,7 @@ export class DellistComponent implements OnInit {
             });
             delnotedialogref.afterClosed().subscribe(async (labels) => {
               printers.push('nodelnoteprint');
-              printers.push('ZebraHampers1');
+              printers.push('\\\\acodc1\\ZebraHamper1');
               job.push('');
               job.push(labels);
               await this.printEngine.connectAndPrintLabelAndDelNote(printers, job);

@@ -244,7 +244,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
           });
           labelsdialogref.afterClosed().subscribe(async (labels) => {
             if (isLabelRequested) {
-              printers.push('ZebraHampers1');
+              printers.push('\\\\acodc1\\ZebraHamper1');
               this.job.push(labels);
             } else {
               printers.push('nolabelprint');
