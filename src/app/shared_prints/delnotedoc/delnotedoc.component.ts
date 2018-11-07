@@ -16,6 +16,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
 
     content;
     data = [];
+    delreqTitle: string;
     private datePipe: DatePipe = new DatePipe('en-UK');
 
     @ViewChild('delNoteBarcode') HTMLdelNoteBarcode: ElementRef;
@@ -42,6 +43,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
     @ViewChild('orderNo') HTMLorderNo: ElementRef;
     @ViewChild('DelDate') HTMLDelDate: ElementRef;
     @ViewChild('DelTime') HTMLDelTime: ElementRef;
+    @ViewChild('delRequests') HTMLdelRequests: ElementRef;
 
 
     constructor(private printEngine: QzTrayService,
@@ -50,6 +52,10 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        if ( this.matdata.delnotedata.reqCalendar || this.matdata.delnotedata.reqDiary
+            || this.matdata.delnotedata.reqCard || (this.matdata.delnotedata.reqOther + '').length > 0 )  {
+            this.delreqTitle = 'Delivery Requests';
+        }
     }
 
     ngAfterViewInit() {
@@ -90,6 +96,20 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
             this.HTMLorderNo.nativeElement.innerHTML = element.delOrdRef.delOrdRef;
             this.HTMLDelDate.nativeElement.innerHTML = this.datePipe.transform(element.deliveryDate, 'dd-MM-yyyy');
             this.HTMLDelTime.nativeElement.innerHTML = element.deliveryTime;
+            this.HTMLdelRequests.nativeElement.innerHTML = '';
+            if (element.reqCalendar === true) {
+                this.HTMLdelRequests.nativeElement.innerHTML = this.HTMLdelRequests.nativeElement.innerHTML + 'Calendar\n';
+            }
+            if (element.reqDiary === true) {
+                this.HTMLdelRequests.nativeElement.innerHTML = this.HTMLdelRequests.nativeElement.innerHTML + 'Diary\n';
+            }
+            if (element.reqCard === true) {
+                this.HTMLdelRequests.nativeElement.innerHTML = this.HTMLdelRequests.nativeElement.innerHTML + 'Card\n';
+            }
+            if ((element.reqOther + '').length > 0 )  {
+                this.HTMLdelRequests.nativeElement.innerHTML = this.HTMLdelRequests.nativeElement.innerHTML + element.reqOther;
+            }
+
             const printContent = document.getElementById('content').innerHTML;
 
             this.content = '<!DOCTYPE html><html><head>  '
