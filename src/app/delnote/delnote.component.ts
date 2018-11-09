@@ -9,6 +9,7 @@ import { DelnotecrudComponent } from './delnotecrud/delnotecrud.component';
 import { DelNote } from '../delnote';
 import * as XLSX from 'xlsx';
 import { EyeselItemsService } from '../shared_service/eyesel-items.service';
+import { isDate, isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-delnote',
@@ -158,31 +159,38 @@ export class DelnoteComponent implements OnInit {
       ws['!ref'] = XLSX.utils.encode_range( newrange );
       range.s = { c: 0, r: 1 };
       for (let R = range.s.r; R <= range.e.r; ++R) {
+        let errmessage = '';
         const tmpDelNote = new DelNote();
         tmpDelNote.delNoteDate = new Date();
+        let err_cell_address = { c: 23, r: R };
+        let err_cell_ref = XLSX.utils.encode_cell(err_cell_address);
         let cell_address = { c: 0, r: R };
         let cell_ref = XLSX.utils.encode_cell(cell_address);
         // console.log('cell_ref: ' + cell_ref + ' == ' + ws[cell_ref].w);
         if (!(!ws[cell_ref])) {
+
+          if (XLSX.SSF.parse_date_code(ws[cell_ref].v).D > 0) {
           tmpDelNote.deliveryDate = new Date(ws[cell_ref].w);
-        } else { tmpDelNote.deliveryDate = new Date(); }
+        } else { errmessage = errmessage + ' Delivery Date must be Entered ';
+        xlimporterr = true;
+        }
+        } else {errmessage = errmessage + ' Delivery Date must be Entered and must be in date format (dd/mm/yyyy) ';
+        xlimporterr  = true;
+        }
+
+  // --------------------
         cell_address = { c: 1, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
-// --------------------
-        const err_cell_address = { c: 23, r: R };
-        const err_cell_ref = XLSX.utils.encode_cell(err_cell_address);
+
         if (!(!ws[cell_ref])) {
           if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50 ) {
             tmpDelNote.senderName = ws[cell_ref].w;
-          } else {  ws[err_cell_ref] = { t: 's',
-                                         v: 'Sender Name must be greater than zero less than 50 characters existing field lenght is '
-                                    + (ws[cell_ref].w).length };
+          } else {  errmessage = errmessage + ' Sender Name must be greater than zero less than 50 characters existing field length is '
+                                    + (ws[cell_ref].w).length;
                     xlimporterr = true;
                  }
         } else {
-          ws[err_cell_ref] = { t: 's',
-                                         v: 'Sender Name must be filled '
-                                    + (ws[cell_ref].w).length };
+          errmessage = errmessage +  ' Sender Name must be filled ';
           xlimporterr  = true;
         }
 // --------------------
@@ -216,16 +224,36 @@ export class DelnoteComponent implements OnInit {
         if (!(!ws[cell_ref])) {
           tmpDelNote.senderMessage = ws[cell_ref].w;
         } else { tmpDelNote.senderMessage = ''; }
+
+
         cell_address = { c: 8, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
+        err_cell_address = { c: 23, r: R };
+        err_cell_ref = XLSX.utils.encode_cell(err_cell_address);
         if (!(!ws[cell_ref])) {
+          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50 ) {
           tmpDelNote.receiverName = ws[cell_ref].w;
-        } else { tmpDelNote.receiverName = ''; }
+        } else { errmessage = errmessage + ' Receiver Name must be greater than zero less than 50 characters existing field lenght is ';
+        xlimporterr = true;
+        }
+        } else {errmessage = errmessage + ' Receiver Name must be filled ';
+              xlimporterr  = true;
+        }
+
         cell_address = { c: 9, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
+        err_cell_address = { c: 23, r: R };
+        err_cell_ref = XLSX.utils.encode_cell(err_cell_address);
         if (!(!ws[cell_ref])) {
-          tmpDelNote.receiverAddr1 = ws[cell_ref].w;
-        } else { tmpDelNote.receiverAddr1 = ''; }
+          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50 ) {
+            tmpDelNote.receiverAddr1 = ws[cell_ref].w;
+        } else {errmessage = errmessage + ' Receiver Address must be greater than zero less than 50 characters existing field length is ';
+        xlimporterr = true;
+        }
+        } else {errmessage = errmessage + ' Receiver Address must be filled ';
+        xlimporterr  = true;
+        }
+
         cell_address = { c: 10, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
@@ -241,16 +269,31 @@ export class DelnoteComponent implements OnInit {
         if (!(!ws[cell_ref])) {
           tmpDelNote.receiverAddr4 = ws[cell_ref].w;
         } else { tmpDelNote.receiverAddr4 = ''; }
+
         cell_address = { c: 13, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
+          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 20) {
           tmpDelNote.receiverTown = ws[cell_ref].w;
-        } else { tmpDelNote.receiverTown = ''; }
+        } else {errmessage = errmessage + ' Receiver Town must not be empty or longer than 50 characters ';
+        xlimporterr = true;
+        }
+        } else {errmessage = errmessage + ' Receiver Town must not be empty or longer than 50 characters ';
+        xlimporterr  = true;
+        }
+
         cell_address = { c: 14, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
-          tmpDelNote.receiverPhone = ws[cell_ref].w;
-        } else { tmpDelNote.receiverPhone = ''; }
+          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 20  && !isNaN((ws[cell_ref].w)) ) {
+            tmpDelNote.receiverPhone = ws[cell_ref].w;
+        } else {errmessage = errmessage + ' Receiver Telephone must be in number format';
+        xlimporterr = true;
+        }
+        } else {errmessage = errmessage + ' Receiver Telephone must be filled ';
+        xlimporterr  = true;
+        }
+
         cell_address = { c: 15, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
@@ -276,38 +319,69 @@ export class DelnoteComponent implements OnInit {
         if (!(!ws[cell_ref])) {
           tmpDelNote.reqOther = ws[cell_ref].w;
         } else { tmpDelNote.reqOther = ''; }
+
         cell_address = { c: 20, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
-          tmpDelNote.itemCode = ws[cell_ref].w;
-        } else { tmpDelNote.itemCode = ''; }
+          if ( (ws[cell_ref].w).length > 0 ) {
+            tmpDelNote.itemCode = ws[cell_ref].w;
+        } else {  errmessage = errmessage + ' Item Code must be filled ';
+                  xlimporterr = true;
+      }
+    } else {errmessage = errmessage + ' Item Code must be filled ';
+    xlimporterr = true;
+    }
         cell_address = { c: 21, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
-        if (!(!ws[cell_ref])) {
+          if (!(!ws[cell_ref])) {
+            if ( (ws[cell_ref].w) > 0 && !isNaN((ws[cell_ref].w)) ) {
           tmpDelNote.qtyOrd = ws[cell_ref].w;
-        } else { tmpDelNote.qtyOrd = 0; }
+        } else {  errmessage = errmessage + ' Item Quantity cannot be Zero and must be Number';
+        xlimporterr = true;
+        }
+        } else {errmessage = errmessage + ' Item Quantity must be filled ';
+        xlimporterr = true;
+        }
+
+
         cell_address = { c: 22, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
           tmpDelNote.customHamperRemarks = ws[cell_ref].w;
         } else { tmpDelNote.customHamperRemarks = ''; }
 
-        tmpDelNote.itemDescription = this.eyeselitems[this.itemcodeoptions.findIndex((element) => {
-          return element === tmpDelNote.itemCode;
-        })].description;
+        if (tmpDelNote.itemCode) {
+
+        const itemExists = this.itemcodeoptions.findIndex((element) => {
+            return element === tmpDelNote.itemCode;
+          });
+
+        if (itemExists === -1 ) {
+          xlimporterr = true;
+          errmessage = errmessage + ' Product Code does not exist';
+        } else {
+            tmpDelNote.itemDescription = this.eyeselitems[this.itemcodeoptions.findIndex((element) => {
+              return element === tmpDelNote.itemCode;
+            })].description;
+        }
+      }
 
         tmpDelNote.status = 'P';
 
         if (!xlimporterr) {
           this.delnotearray.push(tmpDelNote);
         }
-
+        // Write error in excel file
+        err_cell_address = { c: 23, r: R };
+        err_cell_ref = XLSX.utils.encode_cell(err_cell_address);
+        ws[err_cell_ref] = { t: 's', v: errmessage };
       }
-      this.listData.data = this.delnotearray;
       this.showSpinner = false;
       if (xlimporterr) {
         alert('Your excel file is not correct refer to messages in same excel file');
         XLSX.writeFile(wb, 'HampersError.xlsx');
+      } else {
+        this.listData.data = this.delnotearray;
       }
     };
     reader.readAsBinaryString(target.files[0]);

@@ -31,7 +31,7 @@ export class DelnotecrudComponent implements OnInit {
 
   delnoteform: FormGroup = new FormGroup({
     DelNoteDocDate: new FormControl(new Date()),
-    DelNoteDeliveryDate: new FormControl(new Date()),
+    DelNoteDeliveryDate: new FormControl(new Date(), [Validators.required]),
     DelNoteDeliveryTime: new FormControl(),
     CustHamperRemarks: new FormControl(),
     SenderNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200)]),
@@ -40,8 +40,8 @@ export class DelnotecrudComponent implements OnInit {
     ReceivNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     RecTown: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     RecPhone: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-    ItemCode: new FormControl(),
-    ItemDescr: new FormControl(),
+    ItemCode: new FormControl('', [Validators.required]),
+    ItemDescr: new FormControl('', [Validators.required]),
     QtyOrd: new FormControl('', [Validators.required, Validators.maxLength(4)]),
     DelRequestsOther: new FormControl(''),
     CheckBoxDiary: new FormControl(false),
