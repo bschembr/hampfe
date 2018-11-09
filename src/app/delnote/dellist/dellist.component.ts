@@ -27,6 +27,7 @@ export class DellistComponent implements OnInit, OnChanges  {
   subscribe: any;
   job: string[] = [];
   isMasterCheckBoxSelected = false;
+  showRefreshData = true;
 
   constructor(public dialog: MatDialog,
     private _delnotesservice: DelNotesService,
@@ -51,8 +52,9 @@ export class DellistComponent implements OnInit, OnChanges  {
   searchKey = '';
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changes: ' + JSON.stringify(changes));
-    console.log('changes ord number:' + changes.ordernum.currentValue);
+    // console.log('changes: ' + JSON.stringify(changes));
+    // console.log('changes ord number:' + changes.ordernum.currentValue);
+    this.showRefreshData = false;
     this.ordernum = changes.ordernum.currentValue;
     this.delnotearray.length = 0;
     this._delnotesservice.getDelNotesForOrder(this.ordernum).subscribe(list => {
@@ -89,6 +91,9 @@ export class DellistComponent implements OnInit, OnChanges  {
           this.showSpinner = false;
         });
       });
+      this.showRefreshData = true;
+    } else {
+      this.showRefreshData = false;
     }
 
   }
