@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   MatTableDataSource,
   MatSort,
@@ -22,10 +22,12 @@ import { Observable } from 'rxjs';
   styleUrls: ['./dellist.component.css']
 })
 
-export class DellistComponent implements OnInit {
+export class DellistComponent implements OnInit, OnChanges  {
+  @Input() ordernum: number;
   subscribe: any;
   job: string[] = [];
   isMasterCheckBoxSelected = false;
+  showRefreshData = true;
 
   constructor(public dialog: MatDialog,
     private _delnotesservice: DelNotesService,
@@ -49,6 +51,22 @@ export class DellistComponent implements OnInit {
 
   searchKey = '';
 
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log('changes: ' + JSON.stringify(changes));
+    // console.log('changes ord number:' + changes.ordernum.currentValue);
+    this.showRefreshData = false;
+    this.ordernum = changes.ordernum.currentValue;
+    this.delnotearray.length = 0;
+    this._delnotesservice.getDelNotesForOrder(this.ordernum).subscribe(list => {
+      list.forEach(element => {
+        // console.log(element);
+        this.delnotearray.push(element);
+        this.listData.data = this.delnotearray;
+        this.showSpinner = false;
+      });
+    });
+  }
+
   ngOnInit() {
 
     this.listData = new MatTableDataSource(this.delnotearray);
@@ -63,13 +81,20 @@ export class DellistComponent implements OnInit {
     };
     */
 
-    this._delnotesservice.getDelNotes().subscribe(list => {
-      list.forEach(element => {
-        this.delnotearray.push(element);
-        this.listData.data = this.delnotearray;
-        this.showSpinner = false;
+    // console.log('order: ' + this.ordernum);
+    if (!this.ordernum)  {
+      // console.log('all delivery notes');
+      this._delnotesservice.getDelNotes().subscribe(list => {
+        list.forEach(element => {
+          this.delnotearray.push(element);
+          this.listData.data = this.delnotearray;
+          this.showSpinner = false;
+        });
       });
-    });
+      this.showRefreshData = true;
+    } else {
+      this.showRefreshData = false;
+    }
 
   }
 

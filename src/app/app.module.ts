@@ -25,11 +25,13 @@ import { SearchSelectModule } from '@oasisdigital/angular-material-search-select
 import { SelectClientMatTableComponent } from './select-client-mat-table/select-client-mat-table.component';
 import { DocSelectComponent } from './delnote/docselect/docselect.component';
 import { LabeldocComponent } from './shared_prints/labeldoc/labeldoc.component';
+import { DelorderlistComponent } from './delorder/delorderlist/delorderlist.component';
 
 const appRoutes: Routes = [
   {path: '', component: MenumainComponent},
   {path: 'delorder', component: DelorderComponent},
   {path: 'delnotelist', component: DellistComponent},
+  {path: 'orderlist', component: DelorderlistComponent}
 ];
 
 @NgModule({
@@ -43,7 +45,8 @@ const appRoutes: Routes = [
     MenumainComponent,
     SelectClientMatTableComponent,
     DocSelectComponent,
-    LabeldocComponent
+    LabeldocComponent,
+    DelorderlistComponent
   ],
   imports: [
     BrowserModule,

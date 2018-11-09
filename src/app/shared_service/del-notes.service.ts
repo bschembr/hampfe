@@ -42,6 +42,19 @@ export class DelNotesService {
 
   }
 
+  getDelNotesForOrder(id: Number) {
+
+    return this._http
+      .get(this.baseUrl + '/delorder/' + id + '/delnotes', this.options)
+      .pipe(
+        map( (response: Response) => {
+          return response.json();
+        }), catchError(this.errorHandler)
+      );
+
+  }
+
+
   deleteDelNote(id: Number) {
 
     return this._http
