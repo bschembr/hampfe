@@ -1,0 +1,80 @@
+<div class="Orders">
+  <div class="headeractions">
+    <mat-grid-list cols="5" rowHeight="60px">
+      <mat-grid-tile colspan="4">
+        <div class="order-search-div">
+          <mat-form-field class="search-form-field" floatLabel="never">
+            <input matInput [(ngModel)]="searchKey" placeholder="Orders Search" autocomplete="off" (keyup)="applyFilter()">
+            <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="1">
+        <button mat-icon-button (click)="onRefresh()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="listDataOrders" matSort matSortActive="delnoteref" matSortDirection="asc">
+      <!-- Checkbox Column -->
+      
+      <ng-container matColumnDef="delordref">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Order Ref</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.delOrdRef}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="custname">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Client Name</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.custName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="custtown">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Town</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.custTown}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="delorddate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Order Date</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.delOrdDate | date:'dd-MM-yyyy'}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="invoiceref">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Invoice Ref</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.invoiceRef}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element; let j = index;">
+          <button mat-icon-button (click)="onGetDelNotes(j)">
+            <mat-icon>notes</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="loading">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Loading data...
+        </mat-footer-cell>
+      </ng-container>
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          No data.
+        </mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumnsOrders"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumnsOrders;"></mat-row>
+
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listDataOrders!=null}"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listDataOrders!=null && listDataOrders.data.length==0)}"></mat-footer-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+
+<hr>
+
+<div *ngIf="showdelnotes">
+  <app-dellist
+    [ordernum]="selectedorder">
+  </app-dellist>
+</div>
