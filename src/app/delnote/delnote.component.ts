@@ -20,8 +20,8 @@ import { FormGroup } from '@angular/forms';
 
 export class DelnoteComponent implements OnInit {
   @Input() userhelperdata: FormGroup;
-  senderDefaultData: DelNote = new DelNote();
   showSpinner = true;
+  senderDefaultData: DelNote;
   delnotearray: DelNote[] = new Array();
   private itemcodeoptions: string[] = [];
   private itemdescoptions: string[] = [];
@@ -83,7 +83,8 @@ export class DelnoteComponent implements OnInit {
 
   createDelNote() {
     // console.log(this.senderDefaultData);
-    if (!this.senderDefaultData.receiverName) {
+    if (!this.senderDefaultData) {
+      this.senderDefaultData = new DelNote();
       const SendNameAddr = String(this.userhelperdata.get('Client').value).split('\n');
       this.senderDefaultData.senderName = SendNameAddr[0];
       this.senderDefaultData.senderAddr1 = this.getBlankStringIfUndef(SendNameAddr[1]);
@@ -115,7 +116,9 @@ export class DelnoteComponent implements OnInit {
       if (dialogData !== 'Canceled') {
         this.senderDefaultData = dialogData;
         this.delnotearray.push(dialogData);
-        this.listData.data = this.delnotearray;
+        if (!this.senderDefaultData.receiverName) {
+          this.listData.data = this.delnotearray;
+        }
       }
     });
   }

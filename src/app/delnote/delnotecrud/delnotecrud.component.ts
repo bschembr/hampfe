@@ -98,7 +98,7 @@ export class DelnotecrudComponent implements OnInit {
       }
     });
 
-    if (this.data.delnote.receiverName === 'undefined') {
+    if (this.data.delnote.itemCode) {
       this.screenName = 'Update Delivery Note';
 
       this.delnoteform.controls['CustHamperRemarks'].setValue(this.data.delnote.customHamperRemarks);
