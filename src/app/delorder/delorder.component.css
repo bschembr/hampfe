@@ -16,14 +16,14 @@ h4 {
  .containercol1 {
      align-self: flex-start;
      width: 100%;
-     padding: 5%;    
+     padding: 5%;
  }
 
  .containercol2 {
     flex-flow: row;
     align-self: flex-start;
     flex-wrap: wrap;
-    width: 100%;  
+    width: 100%;
     margin-top: 10px;
  }
 
@@ -31,14 +31,14 @@ h4 {
     flex-flow: row;
     align-self: flex-start;
     flex-wrap: wrap;
-    width: 100%;  
+    width: 100%;
     margin-top: 10px;
  }
 
  .containercol4 {
     align-self: flex-start;
     width: 40%;
-    padding: 5%;    
+    padding: 5%;
  }
 
  .searchcodename-section {
@@ -48,7 +48,7 @@ h4 {
     height: 40px;
     font-size: 12px;
   }
-  
+
  .searchcodename-margin {
     margin: 5px;
  }

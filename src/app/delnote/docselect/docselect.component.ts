@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
 
 
@@ -9,7 +9,7 @@ import { FormGroup, FormControl } from '@angular/forms';
   styleUrls: ['./docselect.component.css']
 })
 
-export class DocSelectComponent {
+export class DocSelectComponent implements OnInit {
   checkDelnote = false;
   checkLabel = false;
 
@@ -18,8 +18,12 @@ export class DocSelectComponent {
     CheckBoxLabel: new FormControl(false),
   });
 
-  constructor(public dialogRef: MatDialogRef<any>) { }
+  constructor(public dialogRef: MatDialogRef<any>,
+    @Inject(MAT_DIALOG_DATA) public showSaveButton: boolean) { }
 
+  ngOnInit() {
+      console.log(this.showSaveButton);
+  }
 
   toggledelnote() {
     this.checkDelnote = !this.checkDelnote;

@@ -14,6 +14,7 @@ import { QzTrayService } from '../../shared_service/qz-tray.service';
 import { LabeldocComponent } from 'src/app/shared_prints/labeldoc/labeldoc.component';
 import { Observable } from 'rxjs';
 import { DocSelectComponent } from 'src/app/delnote/docselect/docselect.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-delorderlist',
@@ -32,6 +33,7 @@ export class DelorderlistComponent implements OnInit {
     // public printdialog: MatDialog,
     public printdialogdelnote: MatDialog,
     public printdialoglabel: MatDialog,
+    private _router: Router,
     private printEngine: QzTrayService) {
   }
   showSpinner = true;
@@ -151,5 +153,8 @@ export class DelorderlistComponent implements OnInit {
       });
       this.showSpinner = false;
     });
+  }
+  onBackButton() {
+    this._router.navigate(['/']);
   }
 }

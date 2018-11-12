@@ -1,6 +1,6 @@
 <div class="Orders">
   <div class="headeractions">
-    <mat-grid-list cols="5" rowHeight="60px">
+    <mat-grid-list cols="6" rowHeight="60px">
       <mat-grid-tile colspan="4">
         <div class="order-search-div">
           <mat-form-field class="search-form-field" floatLabel="never">
@@ -16,12 +16,15 @@
           <mat-icon>refresh</mat-icon>
         </button>
       </mat-grid-tile>
+      <mat-grid-tile colspan="1">
+          <button mat-raised-button color="primary" (click)="onBackButton()">Back</button>
+      </mat-grid-tile>
     </mat-grid-list>
   </div>
   <div class="mat-elevation-z8">
     <mat-table [dataSource]="listDataOrders" matSort matSortActive="delnoteref" matSortDirection="asc">
       <!-- Checkbox Column -->
-      
+
       <ng-container matColumnDef="delordref">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Order Ref</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.delOrdRef}}</mat-cell>

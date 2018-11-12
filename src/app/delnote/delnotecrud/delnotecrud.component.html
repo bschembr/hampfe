@@ -22,7 +22,7 @@
           <mat-grid-tile>
             <div class="delnotehead">
               <mat-form-field>
-                <input matInput [matDatepicker]="picker2" placeholder="Delivery Date" formControlName="DelNoteDeliveryDate">
+                <input matInput [matDatepicker]="picker2" [min]="maxDate" placeholder="Delivery Date" formControlName="DelNoteDeliveryDate" required>
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
               </mat-form-field>
@@ -49,13 +49,13 @@
         <div class="Detail1">
           <mat-grid-tile>
             <mat-form-field class="delnotedetail1">
-              <textarea matInput rows="5" placeholder="Sender Address" formControlName="SenderNameAddr">
+              <textarea matInput rows="5" placeholder="Sender Address" formControlName="SenderNameAddr" required>
               </textarea>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile>
             <mat-form-field class="delnotedetail1">
-              <textarea matInput rows="5" placeholder="Receiver Address" formControlName="ReceivNameAddr">
+              <textarea matInput rows="5" placeholder="Receiver Address" formControlName="ReceivNameAddr" required>
               </textarea>
             </mat-form-field>
           </mat-grid-tile>
@@ -66,7 +66,7 @@
         <div class="Detail2">
           <mat-grid-tile>
             <mat-form-field class="delnotedetail2">
-              <input matInput placeholder="Town" formControlName="SendTown" required>
+              <input matInput placeholder="Town" formControlName="SendTown">
             </mat-form-field>
             <mat-form-field class="delnotedetail2">
               <input matInput placeholder="Sender Message" formControlName="SendMessage">
@@ -74,10 +74,10 @@
           </mat-grid-tile>
           <mat-grid-tile>
             <mat-form-field class="delnotedetail2">
-              <input matInput placeholder="Town" formControlName="RecTown">
+              <input matInput placeholder="Town" formControlName="RecTown" required>
             </mat-form-field>
             <mat-form-field class="delnotedetail2">
-              <input matInput placeholder="Receiver Telephone" formControlName="RecPhone">
+              <input matInput placeholder="Receiver Telephone" formControlName="RecPhone" required>
             </mat-form-field>
           </mat-grid-tile>
         </div>
@@ -88,9 +88,9 @@
         <mat-grid-tile>
           <mat-form-field class="delnotedetail2" style="width: 90px;">
             <input (focusout)="itemCodeFocusOut()" type="text" placeholder="Code" aria-label="Number" matInput
-              formControlName="ItemCode" [matAutocomplete]="autoItemCode">
+              formControlName="ItemCode" [matAutocomplete]="autoItemCode" required>
             <mat-autocomplete autoActiveFirstOption #autoItemCode="matAutocomplete" style="width:150px">
-              <mat-option *ngFor="let itemcode of filteredItemCodesOptions | async" [value]="itemcode">
+              <mat-option *ngFor="let itemcode of filteredItemCodesOptions | async" [value]="itemcode" required>
                 {{itemcode}}
               </mat-option>
             </mat-autocomplete>
@@ -98,16 +98,16 @@
 
           <mat-form-field class="delnotedetail2">
             <input (focusout)="itemDescrFocusOut()" type="text" placeholder="Description" aria-label="Number" matInput
-              formControlName="ItemDescr" [matAutocomplete]="autoItemDesc">
+              formControlName="ItemDescr" [matAutocomplete]="autoItemDesc" required>
             <mat-autocomplete autoActiveFirstOption #autoItemDesc="matAutocomplete" style="width:150px">
-              <mat-option *ngFor="let itemdesc of filteredItemDescriptionOptions | async" [value]="itemdesc">
+              <mat-option *ngFor="let itemdesc of filteredItemDescriptionOptions | async" [value]="itemdesc" required>
                 {{itemdesc}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
 
-          <mat-form-field class="delnotedetail2" style="width: 35px;">
-            <input matInput placeholder="Qty" formControlName="QtyOrd">
+          <mat-form-field class="delnotedetail2" style="width: 40px;">
+            <input matInput placeholder="Qty" formControlName="QtyOrd" required>
           </mat-form-field>
 
         </mat-grid-tile>

@@ -45,7 +45,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
     DelOrdDate: new FormControl(new Date()),
     CustRef: new FormControl('', [Validators.required, Validators.maxLength(20)]),
     Client: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-    Town: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    Town: new FormControl('', [Validators.maxLength(20)]),
     DelInstructions: new FormControl(),
     DefSendMsg: new FormControl(),
     InvoiceRef: new FormControl('', [Validators.required, Validators.maxLength(10)]),
@@ -162,6 +162,10 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
         this.orderform.controls['Client'].disable();
       }
     }
+  }
+
+  onBackButton() {
+    this._router.navigate(['/']);
   }
 
   onSave() {

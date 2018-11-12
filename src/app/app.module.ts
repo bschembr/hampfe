@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { DelorderComponent } from './delorder/delorder.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { CustomerOrderService } from './shared_service/cust-order.service';
 import { HttpModule } from '@angular/http';
@@ -58,7 +59,8 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes),
     MatDialogModule,
-    SearchSelectModule
+    SearchSelectModule,
+    MatButtonToggleModule
   ],
   exports: [
     FormsModule,
@@ -67,7 +69,8 @@ const appRoutes: Routes = [
     MatDialogModule,
     DelnotedocComponent,
     DocSelectComponent,
-    LabeldocComponent
+    LabeldocComponent,
+    MatButtonToggleModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'en-GB'},
