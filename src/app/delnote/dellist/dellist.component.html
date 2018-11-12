@@ -1,11 +1,12 @@
 <div class="loading-indicator">
-  <mat-progress-spinner *ngIf="showSpinner" [color]="primary" [mode]="indeterminate"></mat-progress-spinner>
+  <mat-progress-spinner *ngIf="showSpinner" color="primary" mode="indeterminate"></mat-progress-spinner>
 </div>
 
 <div class="DelNotes">
   <div class="headeractions">
-    <mat-grid-list cols="5" rowHeight="60px">
-      <mat-grid-tile colspan="4">
+    <mat-grid-list cols="9" rowHeight="60px">
+
+          <mat-grid-tile colspan="4">
         <div class="search-div">
           <mat-form-field class="search-form-field" floatLabel="never">
             <input matInput [(ngModel)]="searchKey" placeholder="Delivery Notes Search" autocomplete="off" (keyup)="applyFilter()">
@@ -15,6 +16,21 @@
           </mat-form-field>
         </div>
       </mat-grid-tile>
+      <mat-grid-tile colspan="3">
+        <div style="padding-right: 5px;">Show:</div>
+      <mat-button-toggle-group #dellistFilter="matButtonToggleGroup">
+          <mat-button-toggle value="All">
+            <div>All</div>
+          </mat-button-toggle>
+          <mat-button-toggle value="DelNotes">
+            <div>Delivery Notes</div>
+          </mat-button-toggle>
+          <mat-button-toggle value="Labels">
+            <div>Labels</div>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+        <div class="example-selected-value">Selected value: {{dellistFilter.value}}</div>
+      </mat-grid-tile>
       <div *ngIf="showRefreshData">
         <mat-grid-tile colspan="1">
           <button mat-icon-button (click)="onRefresh()">
@@ -22,6 +38,9 @@
           </button>
         </mat-grid-tile>
       </div>
+      <mat-grid-tile colspan="1">
+          <button mat-raised-button color="primary" (click)="onBackButton()">Back</button>
+      </mat-grid-tile>
     </mat-grid-list>
   </div>
   <div class="mat-elevation-z8">

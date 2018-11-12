@@ -22,7 +22,7 @@
           </div>
         </mat-grid-tile>
         <mat-grid-tile>
-          <div>
+          <div *ngIf="showSaveButton">
             <button mat-raised-button (click)="onSaveOnly()" color="accent">Save</button>
           </div>
         </mat-grid-tile>

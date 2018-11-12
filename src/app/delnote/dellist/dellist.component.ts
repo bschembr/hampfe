@@ -15,6 +15,7 @@ import { QzTrayService } from '../../shared_service/qz-tray.service';
 import { DocSelectComponent } from '../docselect/docselect.component';
 import { LabeldocComponent } from 'src/app/shared_prints/labeldoc/labeldoc.component';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dellist',
@@ -28,9 +29,9 @@ export class DellistComponent implements OnInit, OnChanges  {
   job: string[] = [];
   isMasterCheckBoxSelected = false;
   showRefreshData = true;
-
   constructor(public dialog: MatDialog,
     private _delnotesservice: DelNotesService,
+    private _router: Router,
     // public printdialog: MatDialog,
     public printdialogdelnote: MatDialog,
     public printdialoglabel: MatDialog,
@@ -166,6 +167,7 @@ export class DellistComponent implements OnInit, OnChanges  {
       width: '320px',
       height: '220px',
       disableClose: true,
+      data: false
     });
 
     dialogRef.afterClosed().subscribe(async dialogData => {
@@ -426,6 +428,10 @@ export class DellistComponent implements OnInit, OnChanges  {
       });
       this.showSpinner = false;
     });
+  }
+
+  onBackButton() {
+    this._router.navigate(['/']);
   }
 
 }

@@ -16,6 +16,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @NgModule({
     imports: [
@@ -35,7 +36,9 @@ import { MatRadioModule } from '@angular/material/radio';
         MatToolbarModule,
         MatProgressSpinnerModule,
         MatSlideToggleModule,
-        MatRadioModule
+        MatRadioModule,
+        MatButtonToggleModule
+
     ],
     exports: [
         MatFormFieldModule,
@@ -54,7 +57,9 @@ import { MatRadioModule } from '@angular/material/radio';
         MatToolbarModule,
         MatProgressSpinnerModule,
         MatSlideToggleModule,
-        MatRadioModule
+        MatRadioModule,
+        MatButtonToggleModule
+
     ]
 })
 export class MaterialModule {}
