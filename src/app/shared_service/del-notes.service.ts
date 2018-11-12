@@ -36,7 +36,7 @@ export class DelNotesService {
       .get(this.baseUrl + '/delnote/' + id, this.options)
       .pipe(
         map( (response: Response) => {
-          response.json();
+          return response.json();
         }), catchError(this.errorHandler)
       );
 
@@ -97,6 +97,28 @@ export class DelNotesService {
       .pipe(
         map( (response: Response) => {
           return response.json();
+        }), catchError(this.errorHandler)
+      );
+
+  }
+
+  lockDelNote(id: number) {
+    return this._http
+      .put(this.baseUrl + '/lockdelnote/' + id, this.options)
+      .pipe(
+        map( (response: Response) => {
+          return response;
+        }), catchError(this.errorHandler)
+      );
+
+  }
+
+  unlockDelNote(id: number) {
+    return this._http
+      .put(this.baseUrl + '/unlockdelnote/' + id, this.options)
+      .pipe(
+        map( (response: Response) => {
+          return response;
         }), catchError(this.errorHandler)
       );
 

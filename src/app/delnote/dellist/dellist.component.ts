@@ -22,7 +22,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./dellist.component.css']
 })
 
-export class DellistComponent implements OnInit, OnChanges  {
+export class DellistComponent implements OnInit, OnChanges {
   @Input() ordernum: number;
   subscribe: any;
   job: string[] = [];
@@ -82,7 +82,7 @@ export class DellistComponent implements OnInit, OnChanges  {
     */
 
     // console.log('order: ' + this.ordernum);
-    if (!this.ordernum)  {
+    if (!this.ordernum) {
       // console.log('all delivery notes');
       this._delnotesservice.getDelNotes().subscribe(list => {
         list.forEach(element => {
@@ -135,23 +135,30 @@ export class DellistComponent implements OnInit, OnChanges  {
   }
 
   onEditLine(row: number) {
-
-    const dialogRef = this.dialog.open(DelnotecrudComponent, {
-      height: '530px',
-      width: '1050px',
-      disableClose: true,
-      data: { delnote: this.delnotearray[this.getRowPaginator(row)] }
-    });
-
-    dialogRef.afterClosed().subscribe(dialogData => {
-      if (dialogData !== 'Canceled') {
-        this._delnotesservice.updateDelNote(dialogData).subscribe(_return => {
+    this._delnotesservice.getDelNote(this.delnotearray[this.getRowPaginator(row)].delNoteRef).subscribe(_rec => {
+      if (_rec.locked) {
+        alert('Delivery note being updated by another user. Please try again later.');
+      } else {
+        this._delnotesservice.lockDelNote(this.delnotearray[this.getRowPaginator(row)].delNoteRef).subscribe();
+        const dialogRef = this.dialog.open(DelnotecrudComponent, {
+          height: '530px',
+          width: '1050px',
+          disableClose: true,
+          data: { delnote: this.delnotearray[this.getRowPaginator(row)] }
         });
 
-        this.delnotearray[this.getRowPaginator(row)] = dialogData;
-        this.listData.data = this.delnotearray;
+        dialogRef.afterClosed().subscribe(dialogData => {
+          if (dialogData !== 'Canceled') {
+            this._delnotesservice.updateDelNote(dialogData).subscribe(_return => {
+            });
+            this.delnotearray[this.getRowPaginator(row)] = dialogData;
+            this.listData.data = this.delnotearray;
+          }
+          this._delnotesservice.unlockDelNote(this.delnotearray[this.getRowPaginator(row)].delNoteRef).subscribe();
+        });
       }
     });
+
   }
 
   printSingle(row: number) {
