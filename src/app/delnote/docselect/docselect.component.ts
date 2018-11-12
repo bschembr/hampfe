@@ -19,7 +19,7 @@ export class DocSelectComponent implements OnInit {
   });
 
   constructor(public dialogRef: MatDialogRef<any>,
-    @Inject(MAT_DIALOG_DATA) private showSaveButton: boolean) { }
+    @Inject(MAT_DIALOG_DATA) public showSaveButton: boolean) { }
 
   ngOnInit() {
       console.log(this.showSaveButton);
