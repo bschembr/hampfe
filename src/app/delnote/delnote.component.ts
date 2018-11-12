@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import {
   MatTableDataSource,
   // MatSort,
@@ -10,6 +10,7 @@ import { DelNote } from '../delnote';
 import * as XLSX from 'xlsx';
 import { EyeselItemsService } from '../shared_service/eyesel-items.service';
 import { isDate, isNullOrUndefined } from 'util';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-delnote',
@@ -18,6 +19,8 @@ import { isDate, isNullOrUndefined } from 'util';
 })
 
 export class DelnoteComponent implements OnInit {
+  @Input() userhelperdata: FormGroup;
+  senderDefaultData: DelNote = new DelNote();
   showSpinner = true;
   delnotearray: DelNote[] = new Array();
   private itemcodeoptions: string[] = [];
@@ -69,17 +72,48 @@ export class DelnoteComponent implements OnInit {
     this.listData.filter = this.searchKey.trim().toLowerCase();
   }
 
-  createDelNote() {
+  getBlankStringIfUndef(stringele: string) {
+    // if (typeof stringele === 'undefined') {
+    if (!stringele) {
+      return '';
+    } else {
+      return stringele;
+    }
+  }
 
+  createDelNote() {
+    // console.log(this.senderDefaultData);
+    if (!this.senderDefaultData.receiverName) {
+      const SendNameAddr = String(this.userhelperdata.get('Client').value).split('\n');
+      this.senderDefaultData.senderName = SendNameAddr[0];
+      this.senderDefaultData.senderAddr1 = this.getBlankStringIfUndef(SendNameAddr[1]);
+      this.senderDefaultData.senderAddr2 = this.getBlankStringIfUndef(SendNameAddr[2]);
+      this.senderDefaultData.senderAddr3 = this.getBlankStringIfUndef(SendNameAddr[3]);
+      this.senderDefaultData.senderAddr4 = this.getBlankStringIfUndef(SendNameAddr[4]);
+      this.senderDefaultData.senderTown = this.userhelperdata.get('Town').value;
+      this.senderDefaultData.senderMessage = this.userhelperdata.get('DefSendMsg').value;
+      this.senderDefaultData.itemCode = '';
+    } else {
+      this.senderDefaultData.senderName = this.senderDefaultData.senderName;
+      this.senderDefaultData.senderAddr1 = this.senderDefaultData.senderAddr1;
+      this.senderDefaultData.senderAddr2 = this.senderDefaultData.senderAddr2;
+      this.senderDefaultData.senderAddr3 = this.senderDefaultData.senderAddr3;
+      this.senderDefaultData.senderAddr4 = this.senderDefaultData.senderAddr4;
+      this.senderDefaultData.senderTown = this.senderDefaultData.senderTown;
+      this.senderDefaultData.senderMessage =  this.senderDefaultData.senderMessage;
+      this.senderDefaultData.itemCode = '';
+    }
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '530px',
       width: '1050px',
       disableClose: true,
+      data: { delnote: this.senderDefaultData}
     });
 
     dialogRef.afterClosed().subscribe(dialogData => {
 
       if (dialogData !== 'Canceled') {
+        this.senderDefaultData = dialogData;
         this.delnotearray.push(dialogData);
         this.listData.data = this.delnotearray;
       }

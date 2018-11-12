@@ -98,7 +98,7 @@ export class DelnotecrudComponent implements OnInit {
       }
     });
 
-    if (this.data !== null) {
+    if (this.data.delnote.receiverName === 'undefined') {
       this.screenName = 'Update Delivery Note';
 
       this.delnoteform.controls['CustHamperRemarks'].setValue(this.data.delnote.customHamperRemarks);
@@ -142,6 +142,14 @@ export class DelnotecrudComponent implements OnInit {
       // Intitialize qty lines
     } else {
       this.screenName = 'Create Delivery Note';
+      this.delnoteform.controls['SenderNameAddr'].setValue(this.data.delnote.senderName + '\n' +
+        this.data.delnote.senderAddr1 + '\n' +
+        this.data.delnote.senderAddr2 + '\n' +
+        this.data.delnote.senderAddr3 + '\n' +
+        this.data.delnote.senderAddr4 + '\n');
+      this.delnoteform.controls['SendTown'].setValue(this.data.delnote.senderTown);
+      this.delnoteform.controls['SendMessage'].setValue(this.data.delnote.senderMessage);
+      // this.delnoteform.controls['ItemDescr'].setValue('');
     }
   }
 
