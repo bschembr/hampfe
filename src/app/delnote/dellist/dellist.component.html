@@ -37,9 +37,11 @@
           </button>
         </mat-grid-tile>
       </div>
+      <div *ngIf="showBackButton">
       <mat-grid-tile colspan="1">
           <button mat-raised-button color="primary" (click)="onBackButton()">Back</button>
       </mat-grid-tile>
+    </div>
     </mat-grid-list>
   </div>
   <div class="mat-elevation-z8">
