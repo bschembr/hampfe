@@ -19,6 +19,7 @@ export class DelnotecrudComponent implements OnInit {
   isreqcalendarchecked = false;
   isreqcardchecked = false;
   maxDate;
+  showCustHamper = false;
   codedescrdisabled = 'false';
   private itemcodeoptions: string[] = [];
   private itemdescoptions: string[] = [];
@@ -34,7 +35,7 @@ export class DelnotecrudComponent implements OnInit {
     DelNoteDeliveryDate: new FormControl(new Date(), [Validators.required]),
     DelNoteDeliveryTime: new FormControl(),
     CustHamperRemarks: new FormControl(),
-    SenderNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200)]),
+    SenderNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200), Validators.minLength(10)]),
     SendTown: new FormControl('', [Validators.maxLength(20)]),
     SendMessage: new FormControl(),
     ReceivNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200)]),
@@ -48,6 +49,7 @@ export class DelnotecrudComponent implements OnInit {
     CheckBoxCalendar: new FormControl(false),
     CheckBoxCard: new FormControl(false)
   });
+
 
   constructor(public dialogRef: MatDialogRef<DelnotecrudComponent>,
     private _eyeselitemsservice: EyeselItemsService,
@@ -92,8 +94,8 @@ export class DelnotecrudComponent implements OnInit {
         this.eyeselitems.push({ code: element.code, description: element.desc1 });
       });
       this.itemcodeoptions.push('CUST');
-      this.itemdescoptions.push('Custom made hamper');
-      this.eyeselitems.push({ code: 'CUST', description: 'Custom made hamper' });
+      this.itemdescoptions.push('Hamper');
+      this.eyeselitems.push({ code: 'CUST', description: 'Hamper' });
       if ((this.data !== null) && (!(!this.data.delnote.itemCode))) {
         this.delnoteform.controls['ItemDescr'].setValue(this.eyeselitems[this.itemcodeoptions.findIndex((element) => {
           return element === this.data.delnote.itemCode;
@@ -142,6 +144,13 @@ export class DelnotecrudComponent implements OnInit {
 
       this.delnoteform.controls['DelRequestsOther'].setValue(this.data.delnote.reqOther);
       this.delnoteform.controls['CustHamperRemarks'].setValue(this.data.delnote.customHamperRemarks);
+
+      if (this.delnoteform.controls['ItemCode'].value === 'CUST') {
+        this.showCustHamper = true;
+    } else {
+       this.showCustHamper = false;
+    }
+
       // Intitialize qty lines
     } else {
       this.screenName = 'Create Delivery Note';
@@ -171,6 +180,12 @@ export class DelnotecrudComponent implements OnInit {
     })].description);
     this.delnoteform.controls['ItemDescr'].disable({ onlySelf: true });
     this.delnoteform.controls['ItemCode'].disable({ onlySelf: true });
+
+    if (this.delnoteform.controls['ItemCode'].value === 'CUST') {
+        this.showCustHamper = true;
+    } else {
+       this.showCustHamper = false;
+    }
   }
 
   itemDescrFocusOut() {

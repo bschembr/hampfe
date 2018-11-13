@@ -55,6 +55,8 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
         if ( this.matdata.delnotedata.reqCalendar || this.matdata.delnotedata.reqDiary
             || this.matdata.delnotedata.reqCard || (this.matdata.delnotedata.reqOther + '').length > 0 )  {
             this.delreqTitle = 'Delivery Requests';
+        } else {
+          this.delreqTitle = '';
         }
     }
 

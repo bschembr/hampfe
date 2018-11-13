@@ -31,15 +31,9 @@
               </mat-form-field>
             </div>
           </mat-grid-tile>
-          <mat-grid-tile>
+          <mat-grid-tile colspan="2">
             <mat-form-field class="delnotehead">
               <input matInput placeholder="Delivery Time / Instructions" formControlName="DelNoteDeliveryTime">
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <mat-form-field class="delnotehead">
-              <textarea matInput rows="3" placeholder="Custom Hamper Remarks" formControlName="CustHamperRemarks">
-              </textarea>
             </mat-form-field>
           </mat-grid-tile>
         </div>
@@ -49,14 +43,12 @@
         <div class="Detail1">
           <mat-grid-tile>
             <mat-form-field class="delnotedetail1">
-              <textarea matInput rows="5" placeholder="Sender Address" formControlName="SenderNameAddr" required>
-              </textarea>
+              <textarea matInput rows="5" placeholder="Sender Address" formControlName="SenderNameAddr" required></textarea>
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile>
             <mat-form-field class="delnotedetail1">
-              <textarea matInput rows="5" placeholder="Receiver Address" formControlName="ReceivNameAddr" required>
-              </textarea>
+              <textarea matInput rows="5" placeholder="Receiver Address" formControlName="ReceivNameAddr" required></textarea>
             </mat-form-field>
           </mat-grid-tile>
         </div>
@@ -95,8 +87,8 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
-
-          <mat-form-field class="delnotedetail2">
+          <div *ngIf="!showCustHamper" class="delnotedetail2">
+          <mat-form-field style="width: 780px;">
             <input (focusout)="itemDescrFocusOut()" type="text" placeholder="Description" aria-label="Number" matInput
               formControlName="ItemDescr" [matAutocomplete]="autoItemDesc" required>
             <mat-autocomplete autoActiveFirstOption #autoItemDesc="matAutocomplete" style="width:150px">
@@ -105,13 +97,18 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
-
+        </div>
+        <div *ngIf="showCustHamper" class="delnotedetail2">
+          <mat-form-field style="width: 780px;">
+          <input type="text" placeholder="Custom Hamper Remarks" aria-label="Number" matInput
+          formControlName="CustHamperRemarks" required>
+        </mat-form-field>
+      </div>
           <mat-form-field class="delnotedetail2" style="width: 40px;">
             <input matInput placeholder="Qty" formControlName="QtyOrd" required>
           </mat-form-field>
 
         </mat-grid-tile>
-
       </mat-grid-list>
 
       <mat-grid-list cols="1" rowHeight="45px">
