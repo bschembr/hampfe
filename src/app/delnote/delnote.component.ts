@@ -116,9 +116,9 @@ export class DelnoteComponent implements OnInit {
       if (dialogData !== 'Canceled') {
         this.senderDefaultData = dialogData;
         this.delnotearray.push(dialogData);
-        if (!this.senderDefaultData.receiverName) {
+        // if (!this.senderDefaultData.receiverName) {
           this.listData.data = this.delnotearray;
-        }
+        // }
       }
     });
   }

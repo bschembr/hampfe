@@ -22,7 +22,7 @@ export class DocSelectComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public showSaveButton: boolean) { }
 
   ngOnInit() {
-      console.log(this.showSaveButton);
+      // console.log(this.showSaveButton);
   }
 
   toggledelnote() {
