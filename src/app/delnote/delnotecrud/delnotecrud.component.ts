@@ -91,6 +91,9 @@ export class DelnotecrudComponent implements OnInit {
         this.itemdescoptions.push(element.desc1);
         this.eyeselitems.push({ code: element.code, description: element.desc1 });
       });
+      this.itemcodeoptions.push('CUST');
+      this.itemdescoptions.push('Custom made hamper');
+      this.eyeselitems.push({ code: 'CUST', description: 'Custom made hamper' });
       if ((this.data !== null) && (!(!this.data.delnote.itemCode))) {
         this.delnoteform.controls['ItemDescr'].setValue(this.eyeselitems[this.itemcodeoptions.findIndex((element) => {
           return element === this.data.delnote.itemCode;
