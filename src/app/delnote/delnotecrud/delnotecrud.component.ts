@@ -35,7 +35,7 @@ export class DelnotecrudComponent implements OnInit {
     DelNoteDeliveryTime: new FormControl(),
     CustHamperRemarks: new FormControl(),
     SenderNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200)]),
-    SendTown: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    SendTown: new FormControl('', [Validators.maxLength(20)]),
     SendMessage: new FormControl(),
     ReceivNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     RecTown: new FormControl('', [Validators.required, Validators.maxLength(20)]),
