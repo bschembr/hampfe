@@ -34,7 +34,11 @@ export class DocSelectComponent implements OnInit {
   }
 
   onSaveAndPrint() {
-    this.dialogRef.close({delnote: this.checkDelnote, label: this.checkLabel});
+    if (this.checkDelnote === false && this.checkLabel === false) {
+      alert ('"Check your selections - either Delivery note or Label or Both need to be selected');
+    } else {
+      this.dialogRef.close({delnote: this.checkDelnote, label: this.checkLabel});
+    }
   }
 
   onSaveOnly() {

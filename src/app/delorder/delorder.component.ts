@@ -181,6 +181,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
       width: '320px',
       height: '220px',
       disableClose: true,
+      data: true
     });
 
     dialogRef.afterClosed().subscribe(async dialogData => {
@@ -190,6 +191,8 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
       } else {
         isDelNoteRequested = dialogData.delnote;
         isLabelRequested = dialogData.label;
+        console.log('Delnote: ' + isDelNoteRequested);
+        console.log('Label: ' + isLabelRequested);
         this.custOrder = new CustomerOrder();
 
         const NameAddr = String(this.orderform.controls['Client'].value).split('\n');
@@ -217,55 +220,57 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
         // this._delnotes.delnotearray.forEach(async function( delnote ) {
         for (let i = 0; i < this._delnotes.delnotearray.length; i++) {
           this._delnotes.delnotearray[i].delOrdRef = this.custOrder;
-          delNoteInserted.push(await this._delNotesService.createDelNotePromise(this._delnotes.delnotearray[i]));
-
           if (isDelNoteRequested) { // ie User selected print delivery note checkbox
-            delNoteInserted[delNoteInserted.length - 1].delNotePrintDate = new Date();
+            this._delnotes.delnotearray[i].delNotePrintDate = new Date();
           }
-
           if (isLabelRequested) { // ie User selected print label note checkbox
-            delNoteInserted[delNoteInserted.length - 1].labelPrintDate = new Date();
+            this._delnotes.delnotearray[i].labelPrintDate = new Date();
           }
+          delNoteInserted.push(await this._delNotesService.createDelNotePromise(this._delnotes.delnotearray[i]));
         }
-        const delnotedialogref = await this.printdialogdelnote.open(DelnotedocComponent, {
-          height: '500px',
-          width: '500px',
-          data: { delnotedata: delNoteInserted, isLabelAndDelNote: true }
-        });
-        delnotedialogref.afterClosed().subscribe(async (delnotes) => {
-          if (isDelNoteRequested) {
-            printers.push('');
-            this.job.push(delnotes);
-          } else {
-            printers.push('nodelnoteprint');
-            this.job.push('');
-          }
-
-          const labelsdialogref = await this.printdialoglabel.open(LabeldocComponent, {
+        if (dialogData !== 'SaveOnly') {
+          const delnotedialogref = await this.printdialogdelnote.open(DelnotedocComponent, {
             height: '500px',
             width: '500px',
             data: { delnotedata: delNoteInserted, isLabelAndDelNote: true }
           });
-          labelsdialogref.afterClosed().subscribe(async (labels) => {
-            if (isLabelRequested) {
-              printers.push('\\\\acodc1\\ZebraHamper1');
-              this.job.push(labels);
+          delnotedialogref.afterClosed().subscribe(async (delnotes) => {
+            if (isDelNoteRequested) {
+              printers.push('');
+              this.job.push(delnotes);
             } else {
-              printers.push('nolabelprint');
+              printers.push('nodelnoteprint');
               this.job.push('');
             }
 
-            await this.printEngine.connectAndPrintLabelAndDelNote(printers, this.job);
+            const labelsdialogref = await this.printdialoglabel.open(LabeldocComponent, {
+              height: '500px',
+              width: '500px',
+              data: { delnotedata: delNoteInserted, isLabelAndDelNote: true }
+            });
+            labelsdialogref.afterClosed().subscribe(async (labels) => {
+              if (isLabelRequested) {
+                printers.push('\\\\acodc1\\ZebraHamper1');
+                this.job.push(labels);
+              } else {
+                printers.push('nolabelprint');
+                this.job.push('');
+              }
+
+              await this.printEngine.connectAndPrintLabelAndDelNote(printers, this.job);
+
+            });
+
+
+            await this.printdialoglabel.closeAll();
+
 
           });
+          await this.printdialogdelnote.closeAll();
+        }
 
-          await this.printdialoglabel.closeAll();
+      this._router.navigate(['/']);
 
-
-        });
-        await this.printdialogdelnote.closeAll();
-
-        this._router.navigate(['/']);
       }
     });
   }

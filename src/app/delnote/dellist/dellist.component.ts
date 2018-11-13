@@ -212,11 +212,13 @@ export class DellistComponent implements OnInit, OnChanges {
           if (isDelNoteRequested && isLabelRequested) {
             if (isDelNoteRequested) { // ie User selected print delivery note checkbox
               this.delnotearray[this.getRowPaginator(row)].delNotePrintDate = new Date();
+              this._delnotesservice.updateDelNote(this.delnotearray[this.getRowPaginator(row)]).subscribe();
               jobdelnotes.push(this.delnotearray[this.getRowPaginator(row)]);
             }
 
             if (isLabelRequested) { // ie User selected print label note checkbox
               this.delnotearray[this.getRowPaginator(row)].labelPrintDate = new Date();
+              this._delnotesservice.updateDelNote(this.delnotearray[this.getRowPaginator(row)]).subscribe();
               joblabels.push(this.delnotearray[this.getRowPaginator(row)]);
             }
 
@@ -253,6 +255,7 @@ export class DellistComponent implements OnInit, OnChanges {
             }
           } else if (isDelNoteRequested && !isLabelRequested) {
             this.delnotearray[this.getRowPaginator(row)].delNotePrintDate = new Date();
+            this._delnotesservice.updateDelNote(this.delnotearray[this.getRowPaginator(row)]).subscribe();
             jobdelnotes.push(this.delnotearray[this.getRowPaginator(row)]);
 
             const delnotedialogref = await this.printdialogdelnote.open(DelnotedocComponent, {
@@ -270,6 +273,7 @@ export class DellistComponent implements OnInit, OnChanges {
 
           } else if (isLabelRequested && !isDelNoteRequested) {
             this.delnotearray[this.getRowPaginator(row)].delNotePrintDate = new Date();
+            this._delnotesservice.updateDelNote(this.delnotearray[this.getRowPaginator(row)]).subscribe();
             joblabels.push(this.delnotearray[this.getRowPaginator(row)]);
 
             const delnotedialogref = await this.printdialogdelnote.open(LabeldocComponent, {
@@ -304,7 +308,6 @@ export class DellistComponent implements OnInit, OnChanges {
 
       if (this.selection.hasValue) {
 
-        console.log(this.selection.selected);
         const dialogRef = this.dialog.open(DocSelectComponent, {
           width: '320px',
           height: '220px',
@@ -328,7 +331,7 @@ export class DellistComponent implements OnInit, OnChanges {
                   element.labelPrintDate = new Date();
                   joblabels.push(element);
                 }
-
+                this._delnotesservice.updateDelNote(element).subscribe();
               }
             });
 
@@ -413,9 +416,6 @@ export class DellistComponent implements OnInit, OnChanges {
       let pagesmodulus = 0;
       this.isMasterCheckBoxSelected = !this.isMasterCheckBoxSelected;
       if (this.isMasterCheckBoxSelected) {
-        console.log('check ticks');
-        console.log('pageIndex: ' + this.paginator.pageIndex + ' pageSize: ' + this.paginator.pageSize);
-
         if (this.paginator.pageIndex > 0) {
           startrow = (this.paginator.pageSize * this.paginator.pageIndex);
           pagesmodulus = this.listData.data.length % this.paginator.pageSize;
