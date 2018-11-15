@@ -46,11 +46,11 @@ export class DelnoteComponent implements OnInit {
     // this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
 
-    this.listData.filterPredicate = (data, filter) => {
+   /* this.listData.filterPredicate = (data, filter) => {
       return this.displayedColumns.some(ele => {
         return ele !== 'actions' && ele !== 'delnotelineref' && data[ele].toString().toLowerCase().indexOf(filter) !== -1;
       });
-    };
+    };*/
 
     this._eyeselitemsservice.getEyeSelItems().subscribe(items => {
       items.forEach(element => {
