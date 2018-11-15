@@ -191,8 +191,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
       } else {
         isDelNoteRequested = dialogData.delnote;
         isLabelRequested = dialogData.label;
-        console.log('Delnote: ' + isDelNoteRequested);
-        console.log('Label: ' + isLabelRequested);
+
         this.custOrder = new CustomerOrder();
 
         const NameAddr = String(this.orderform.controls['Client'].value).split('\n');
