@@ -105,7 +105,7 @@ export class DelnoteComponent implements OnInit {
       this.senderDefaultData.itemCode = '';
     }
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
-      height: '530px',
+      height: '580px',
       width: '1050px',
       disableClose: true,
       data: { delnote: this.senderDefaultData}

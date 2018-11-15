@@ -44,11 +44,11 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   orderform: FormGroup = new FormGroup({
     DelOrdDate: new FormControl(new Date()),
     CustRef: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-    Client: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+    Client: new FormControl('', [Validators.required, Validators.maxLength(200)]),
     Town: new FormControl('', [Validators.maxLength(20)]),
     DelInstructions: new FormControl(),
     DefSendMsg: new FormControl(),
-    InvoiceRef: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+    InvoiceRef: new FormControl('', [Validators.required, Validators.maxLength(10), Validators.pattern('^[0-9]*$')]),
     Status: new FormControl(),
     Searchbycodename: new FormControl()
   });

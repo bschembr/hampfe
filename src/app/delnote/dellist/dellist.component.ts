@@ -162,12 +162,13 @@ export class DellistComponent implements OnInit, OnChanges {
 
     onEditLine(row: number) {
       this._delnotesservice.getDelNote(this.delnotearray[this.getRowPaginator(row)].delNoteRef).subscribe(_rec => {
+        console.log(_rec.delNotePrintDate);
         if (_rec.locked) {
           alert('Delivery note being updated by another user. Please try again later.');
         } else {
           this._delnotesservice.lockDelNote(this.delnotearray[this.getRowPaginator(row)].delNoteRef).subscribe();
           const dialogRef = this.dialog.open(DelnotecrudComponent, {
-            height: '530px',
+            height: '500px',
             width: '1050px',
             disableClose: true,
             data: { delnote: this.delnotearray[this.getRowPaginator(row)] }
