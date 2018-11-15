@@ -1,3 +1,4 @@
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { QzTrayService } from '../../shared_service/qz-tray.service';
@@ -52,9 +53,12 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        if ( this.matdata.delnotedata.reqCalendar || this.matdata.delnotedata.reqDiary
-            || this.matdata.delnotedata.reqCard || (this.matdata.delnotedata.reqOther + '').length > 0 )  {
+        if ( this.matdata.delnotedata[0].reqCalendar || this.matdata.delnotedata[0].reqDiary
+            || this.matdata.delnotedata[0].reqCard || (!(!this.matdata.delnotedata[0].reqOther)) ) {
+            /*|| (this.matdata.delnotedata.reqOther + '').length > 0 )  {*/
             this.delreqTitle = 'Delivery Requests';
+            console.log(this.matdata.delnotedata[0].reqOther);
+            console.log(this.matdata);
         } else {
           this.delreqTitle = '';
         }
