@@ -10,7 +10,7 @@ h4 {
     flex-flow: column;
     height: 100%;
     margin: 0px 5px;
-    width: 1250px;
+    width: 1500px;
 }
 
  .containercol1 {
@@ -41,6 +41,12 @@ h4 {
     padding: 5%;
  }
 
+ .containercol5 {
+  align-self: flex-start;
+  width: 100%;
+  padding: 5%;
+}
+
  .searchcodename-section {
     display: flex;
     align-content: center;
@@ -52,3 +58,19 @@ h4 {
  .searchcodename-margin {
     margin: 5px;
  }
+
+
+ .example-container {
+  height: 200px;
+  width: 60%;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  height: 200px;
+}
+
+tr.mat-footer-row, tr.mat-row {
+  height: 24px;
+}
