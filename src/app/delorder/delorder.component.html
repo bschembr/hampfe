@@ -12,7 +12,7 @@
             </mat-form-field>
 
             <div class="set-apart">
-              <app-select-client-mat-table (focusout)="onCustRefFocutOut()" formControlName="CustRef" [dataSource]="this">
+              <app-select-client-mat-table (focusout)="onCustRefFocusOut()" formControlName="CustRef" [dataSource]="this">
               </app-select-client-mat-table>
             </div>
 
@@ -53,7 +53,7 @@
               <input matInput placeholder="Delivery Instructions" formControlName="DelInstructions">
             </mat-form-field> -->
             <mat-form-field class="orderhead">
-              <input matInput placeholder="InvoiceRef *" formControlName="InvoiceRef">
+              <input matInput (focusout)="onInvRefFocusOut()" placeholder="InvoiceRef *" formControlName="InvoiceRef">
             </mat-form-field>
             <!-- <mat-form-field class="orderhead">
               <input matInput placeholder="Status" formControlName="Status">
