@@ -27,6 +27,7 @@ import { SelectClientMatTableComponent } from './select-client-mat-table/select-
 import { DocSelectComponent } from './delnote/docselect/docselect.component';
 import { LabeldocComponent } from './shared_prints/labeldoc/labeldoc.component';
 import { DelorderlistComponent } from './delorder/delorderlist/delorderlist.component';
+import { EyeselInvdetailsService } from './shared_service/eyesel-invdetails.service';
 
 const appRoutes: Routes = [
   {path: '', component: MenumainComponent},
@@ -79,6 +80,7 @@ const appRoutes: Routes = [
     CustomerOrderService,
     DelNotesService,
     QzTrayService,
+    EyeselInvdetailsService,
     DelnotedocComponent,
     DocSelectComponent,
     LabeldocComponent

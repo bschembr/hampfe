@@ -20,6 +20,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { forEach } from '@angular/router/src/utils/collection';
 import { LabeldocComponent } from '../shared_prints/labeldoc/labeldoc.component';
 import { QzTrayService } from '../shared_service/qz-tray.service';
+import { EyeselInvdetailsService } from '../shared_service/eyesel-invdetails.service';
 
 
 @Component({
@@ -130,6 +131,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
     private _custOrderService: CustomerOrderService,
     private _delNotesService: DelNotesService,
     private _eyeselclientsservice: EyeselClientsService,
+    private _eyeselInvdetailsService: EyeselInvdetailsService,
     public dialog: MatDialog,
     public printdialogdelnote: MatDialog,
     public printdialoglabel: MatDialog,
@@ -138,7 +140,14 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   ) {
   }
 
-  onCustRefFocutOut() {
+  onInvRefFocusOut() {
+    console.log('Getting inv details...');
+    this._eyeselInvdetailsService.getEyeSelInvDetails(this.orderform.controls['InvoiceRef'].value).subscribe(invdetails => {
+      console.log(invdetails);
+    });
+  }
+
+  onCustRefFocusOut() {
     if (!(!this.orderform.controls['CustRef'].value)) {
       if (this.orderform.controls['CustRef'].value === '11CA921') {
         this.orderform.controls['Client'].setValue('ENTER CLIENT DETAILS!');
