@@ -296,9 +296,9 @@ export interface MatTableSummary {
 }
 
 const ELEMENT_DATA: MatTableSummary[] = [
-  {hamperCode: 'Hydrogen', eyeselInvQty: 1.0079, delNotesQty: 2},
-  {hamperCode: 'Helium', eyeselInvQty: 4.0026, delNotesQty: 1},
-  {hamperCode: 'Lithium', eyeselInvQty: 6.941, delNotesQty: 3},
-  {hamperCode: 'Beryllium', eyeselInvQty: 9.0122, delNotesQty: 5},
+  {hamperCode: 'HP010101', eyeselInvQty: 3, delNotesQty: 2},
+  {hamperCode: 'HP010102', eyeselInvQty: 4, delNotesQty: 1},
+  {hamperCode: 'HP010103', eyeselInvQty: 7, delNotesQty: 3},
+  {hamperCode: 'HP010104', eyeselInvQty: 9, delNotesQty: 5},
 ];
 
