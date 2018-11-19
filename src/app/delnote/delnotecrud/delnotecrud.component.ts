@@ -27,12 +27,11 @@ export class DelnotecrudComponent implements OnInit {
   filteredItemCodesOptions: Observable<string[]>;
   filteredItemDescriptionOptions: Observable<string[]>;
 
-  createdDelNote: DelNote = new DelNote();
   screenName: string;
 
   delnoteform: FormGroup = new FormGroup({
     DelNoteDocDate: new FormControl(new Date()),
-    DelNoteDeliveryDate: new FormControl(new Date(), [Validators.required]),
+    DelNoteDeliveryDate: new FormControl([Validators.required]),
     DelNoteDeliveryTime: new FormControl(),
     CustHamperRemarks: new FormControl(),
     SenderNameAddr: new FormControl('', [Validators.required, Validators.maxLength(200), Validators.minLength(10)]),
@@ -161,6 +160,7 @@ export class DelnotecrudComponent implements OnInit {
         this.data.delnote.senderAddr4 + '\n');
       this.delnoteform.controls['SendTown'].setValue(this.data.delnote.senderTown);
       this.delnoteform.controls['SendMessage'].setValue(this.data.delnote.senderMessage);
+      this.delnoteform.controls['DelNoteDeliveryDate'].setValue(this.data.delnote.deliveryDate);
       // this.delnoteform.controls['ItemDescr'].setValue('');
     }
   }
@@ -210,111 +210,112 @@ export class DelnotecrudComponent implements OnInit {
 
   onSave() {
 
+    const createdDelNote: DelNote = new DelNote();
     const SendNameAddr = String(this.delnoteform.controls['SenderNameAddr'].value).split('\n');
     const ReceNameAddr = String(this.delnoteform.controls['ReceivNameAddr'].value).split('\n');
 
     if (this.data !== null) {
-      this.createdDelNote.delNoteRef = this.data.delnote.delNoteRef;
-      this.createdDelNote.delOrdRef = this.data.delnote.delOrdRef;
+      createdDelNote.delNoteRef = this.data.delnote.delNoteRef;
+      createdDelNote.delOrdRef = this.data.delnote.delOrdRef;
     }
-    this.createdDelNote.reqCalendar = this.isreqcalendarchecked;
-    this.createdDelNote.reqDiary = this.isreqdiarychecked;
-    this.createdDelNote.reqCard = this.isreqcardchecked;
-    this.createdDelNote.reqOther = this.delnoteform.controls['DelRequestsOther'].value;
-    this.createdDelNote.customHamperRemarks = this.delnoteform.controls['CustHamperRemarks'].value;
-    this.createdDelNote.deliveryDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDeliveryDate'].value);
-    this.createdDelNote.delNoteDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDocDate'].value);
-    this.createdDelNote.deliveryTime = this.delnoteform.controls['DelNoteDeliveryTime'].value;
-    this.createdDelNote.senderName = SendNameAddr[0];
-    this.createdDelNote.senderAddr1 = this.getBlankStringIfUndef(SendNameAddr[1]);
-    this.createdDelNote.senderAddr2 = this.getBlankStringIfUndef(SendNameAddr[2]);
-    this.createdDelNote.senderAddr3 = this.getBlankStringIfUndef(SendNameAddr[3]);
-    this.createdDelNote.senderAddr4 = this.getBlankStringIfUndef(SendNameAddr[4]);
-    this.createdDelNote.senderTown = this.delnoteform.controls['SendTown'].value;
-    this.createdDelNote.senderMessage = this.delnoteform.controls['SendMessage'].value;
-    this.createdDelNote.receiverName = ReceNameAddr[0];
-    this.createdDelNote.receiverAddr1 = this.getBlankStringIfUndef(ReceNameAddr[1]);
-    this.createdDelNote.receiverAddr2 = this.getBlankStringIfUndef(ReceNameAddr[2]);
-    this.createdDelNote.receiverAddr3 = this.getBlankStringIfUndef(ReceNameAddr[3]);
-    this.createdDelNote.receiverAddr4 = this.getBlankStringIfUndef(ReceNameAddr[4]);
-    this.createdDelNote.receiverTown = this.delnoteform.controls['RecTown'].value;
-    this.createdDelNote.receiverPhone = this.delnoteform.controls['RecPhone'].value;
-    this.createdDelNote.itemCode = this.delnoteform.controls['ItemCode'].value;
-    this.createdDelNote.itemDescription = this.delnoteform.controls['ItemDescr'].value;
-    this.createdDelNote.qtyOrd = this.delnoteform.controls['QtyOrd'].value;
-    this.createdDelNote.status = 'P'; // pending status
+    createdDelNote.reqCalendar = this.isreqcalendarchecked;
+    createdDelNote.reqDiary = this.isreqdiarychecked;
+    createdDelNote.reqCard = this.isreqcardchecked;
+    createdDelNote.reqOther = this.delnoteform.controls['DelRequestsOther'].value;
+    createdDelNote.customHamperRemarks = this.delnoteform.controls['CustHamperRemarks'].value;
+    createdDelNote.deliveryDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDeliveryDate'].value);
+    createdDelNote.delNoteDate = AcoGeneral.getDateddmmyy(this.delnoteform.controls['DelNoteDocDate'].value);
+    createdDelNote.deliveryTime = this.delnoteform.controls['DelNoteDeliveryTime'].value;
+    createdDelNote.senderName = SendNameAddr[0];
+    createdDelNote.senderAddr1 = this.getBlankStringIfUndef(SendNameAddr[1]);
+    createdDelNote.senderAddr2 = this.getBlankStringIfUndef(SendNameAddr[2]);
+    createdDelNote.senderAddr3 = this.getBlankStringIfUndef(SendNameAddr[3]);
+    createdDelNote.senderAddr4 = this.getBlankStringIfUndef(SendNameAddr[4]);
+    createdDelNote.senderTown = this.delnoteform.controls['SendTown'].value;
+    createdDelNote.senderMessage = this.delnoteform.controls['SendMessage'].value;
+    createdDelNote.receiverName = ReceNameAddr[0];
+    createdDelNote.receiverAddr1 = this.getBlankStringIfUndef(ReceNameAddr[1]);
+    createdDelNote.receiverAddr2 = this.getBlankStringIfUndef(ReceNameAddr[2]);
+    createdDelNote.receiverAddr3 = this.getBlankStringIfUndef(ReceNameAddr[3]);
+    createdDelNote.receiverAddr4 = this.getBlankStringIfUndef(ReceNameAddr[4]);
+    createdDelNote.receiverTown = this.delnoteform.controls['RecTown'].value;
+    createdDelNote.receiverPhone = this.delnoteform.controls['RecPhone'].value;
+    createdDelNote.itemCode = this.delnoteform.controls['ItemCode'].value;
+    createdDelNote.itemDescription = this.delnoteform.controls['ItemDescr'].value;
+    createdDelNote.qtyOrd = this.delnoteform.controls['QtyOrd'].value;
+    createdDelNote.status = 'P'; // pending status
 
-    if (this.createdDelNote.delNoteRef === null) {
-      this.createdDelNote.delNoteRef = 0;
+    if (createdDelNote.delNoteRef === null) {
+      createdDelNote.delNoteRef = 0;
     }
-    if (this.createdDelNote.delNoteDate === null) {
-      this.createdDelNote.delNoteDate = new Date();
+    if (createdDelNote.delNoteDate === null) {
+      createdDelNote.delNoteDate = new Date();
     }
-    if (this.createdDelNote.senderName === 'null') {
-      this.createdDelNote.senderName = '';
+    if (createdDelNote.senderName === 'null') {
+      createdDelNote.senderName = '';
     }
-    if (this.createdDelNote.senderAddr1 === null) {
-      this.createdDelNote.senderAddr1 = ' ';
+    if (createdDelNote.senderAddr1 === null) {
+      createdDelNote.senderAddr1 = ' ';
     }
-    if (this.createdDelNote.senderAddr2 === null) {
-      this.createdDelNote.senderAddr2 = '';
+    if (createdDelNote.senderAddr2 === null) {
+      createdDelNote.senderAddr2 = '';
     }
-    if (this.createdDelNote.senderAddr3 === null) {
-      this.createdDelNote.senderAddr3 = '';
+    if (createdDelNote.senderAddr3 === null) {
+      createdDelNote.senderAddr3 = '';
     }
-    if (this.createdDelNote.senderAddr4 === null) {
-      this.createdDelNote.senderAddr4 = '';
+    if (createdDelNote.senderAddr4 === null) {
+      createdDelNote.senderAddr4 = '';
     }
-    if (this.createdDelNote.senderTown === null) {
-      this.createdDelNote.senderTown = '';
+    if (createdDelNote.senderTown === null) {
+      createdDelNote.senderTown = '';
     }
-    if (this.createdDelNote.deliveryDate === null) {
-      this.createdDelNote.deliveryDate = new Date();
+    if (createdDelNote.deliveryDate === null) {
+      createdDelNote.deliveryDate = new Date();
     }
-    if (this.createdDelNote.deliveryTime === null) {
-      this.createdDelNote.deliveryTime = '';
+    if (createdDelNote.deliveryTime === null) {
+      createdDelNote.deliveryTime = '';
     }
-    if (this.createdDelNote.senderMessage === null) {
-      this.createdDelNote.senderMessage = '';
+    if (createdDelNote.senderMessage === null) {
+      createdDelNote.senderMessage = '';
     }
-    if (this.createdDelNote.receiverName === 'null') {
-      this.createdDelNote.receiverName = '';
+    if (createdDelNote.receiverName === 'null') {
+      createdDelNote.receiverName = '';
     }
-    if (this.createdDelNote.receiverAddr1 === null) {
-      this.createdDelNote.receiverAddr1 = '';
+    if (createdDelNote.receiverAddr1 === null) {
+      createdDelNote.receiverAddr1 = '';
     }
-    if (this.createdDelNote.receiverAddr2 === null) {
-      this.createdDelNote.receiverAddr2 = '';
+    if (createdDelNote.receiverAddr2 === null) {
+      createdDelNote.receiverAddr2 = '';
     }
-    if (this.createdDelNote.receiverAddr3 === null) {
-      this.createdDelNote.receiverAddr3 = '';
+    if (createdDelNote.receiverAddr3 === null) {
+      createdDelNote.receiverAddr3 = '';
     }
-    if (this.createdDelNote.receiverAddr4 === null) {
-      this.createdDelNote.receiverAddr4 = '';
+    if (createdDelNote.receiverAddr4 === null) {
+      createdDelNote.receiverAddr4 = '';
     }
-    if (this.createdDelNote.receiverTown === null) {
-      this.createdDelNote.receiverTown = '';
+    if (createdDelNote.receiverTown === null) {
+      createdDelNote.receiverTown = '';
     }
-    if (this.createdDelNote.receiverPhone === null) {
-      this.createdDelNote.receiverPhone = '';
+    if (createdDelNote.receiverPhone === null) {
+      createdDelNote.receiverPhone = '';
     }
-    if (this.createdDelNote.customHamperRemarks === null) {
-      this.createdDelNote.customHamperRemarks = '';
+    if (createdDelNote.customHamperRemarks === null) {
+      createdDelNote.customHamperRemarks = '';
     }
-    if (this.createdDelNote.itemCode === null) {
-      this.createdDelNote.itemCode = '';
+    if (createdDelNote.itemCode === null) {
+      createdDelNote.itemCode = '';
     }
-    if (this.createdDelNote.itemDescription === null) {
-      this.createdDelNote.itemDescription = '';
+    if (createdDelNote.itemDescription === null) {
+      createdDelNote.itemDescription = '';
     }
-    if (this.createdDelNote.qtyOrd === null) {
-      this.createdDelNote.qtyOrd = 0;
+    if (createdDelNote.qtyOrd === null) {
+      createdDelNote.qtyOrd = 0;
     }
-    if (this.createdDelNote.status === null) {
-      this.createdDelNote.status = '';
+    if (createdDelNote.status === null) {
+      createdDelNote.status = '';
     }
 
-    this.dialogRef.close(this.createdDelNote);
+    this.dialogRef.close(createdDelNote);
   }
 
   onCancel(): void {

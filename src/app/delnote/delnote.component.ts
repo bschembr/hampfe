@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import {
   MatTableDataSource,
   // MatSort,
@@ -11,6 +11,7 @@ import * as XLSX from 'xlsx';
 import { EyeselItemsService } from '../shared_service/eyesel-items.service';
 import { isDate, isNullOrUndefined } from 'util';
 import { FormGroup } from '@angular/forms';
+import { elementEnd } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-delnote',
@@ -20,25 +21,23 @@ import { FormGroup } from '@angular/forms';
 
 export class DelnoteComponent implements OnInit {
   @Input() userhelperdata: FormGroup;
+  @Output() valueChange = new EventEmitter();
+  codesTot: [{ itemCode: string, qty: number }] = [{itemCode: '', qty: 0}];
   showSpinner = true;
   senderDefaultData: DelNote;
   delnotearray: DelNote[] = new Array();
   private itemcodeoptions: string[] = [];
   private itemdescoptions: string[] = [];
   private eyeselitems = new Array();
-
-  constructor(public dialog: MatDialog,
-    private _eyeselitemsservice: EyeselItemsService) { }
-
-  // listData: MatTableDataSource<any>;
   listData: MatTableDataSource<DelNote>;
 
   displayedColumns: string[] = ['delnotelineref', 'deliveryDate', 'senderName', 'senderTown', 'senderMessage',
     'receiverName', 'receiverTown', 'receiverPhone', 'deliveryInstructions', 'status', 'actions'];
-
-  // @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   searchKey = '';
+
+  constructor(public dialog: MatDialog,
+    private _eyeselitemsservice: EyeselItemsService) { }
 
   ngOnInit() {
 
@@ -46,11 +45,11 @@ export class DelnoteComponent implements OnInit {
     // this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
 
-   /* this.listData.filterPredicate = (data, filter) => {
-      return this.displayedColumns.some(ele => {
-        return ele !== 'actions' && ele !== 'delnotelineref' && data[ele].toString().toLowerCase().indexOf(filter) !== -1;
-      });
-    };*/
+    /* this.listData.filterPredicate = (data, filter) => {
+       return this.displayedColumns.some(ele => {
+         return ele !== 'actions' && ele !== 'delnotelineref' && data[ele].toString().toLowerCase().indexOf(filter) !== -1;
+       });
+     };*/
 
     this._eyeselitemsservice.getEyeSelItems().subscribe(items => {
       items.forEach(element => {
@@ -94,33 +93,45 @@ export class DelnoteComponent implements OnInit {
       this.senderDefaultData.senderTown = this.userhelperdata.get('Town').value;
       this.senderDefaultData.senderMessage = this.userhelperdata.get('DefSendMsg').value;
       this.senderDefaultData.itemCode = '';
-    } else {
-      this.senderDefaultData.senderName = this.senderDefaultData.senderName;
-      this.senderDefaultData.senderAddr1 = this.senderDefaultData.senderAddr1;
-      this.senderDefaultData.senderAddr2 = this.senderDefaultData.senderAddr2;
-      this.senderDefaultData.senderAddr3 = this.senderDefaultData.senderAddr3;
-      this.senderDefaultData.senderAddr4 = this.senderDefaultData.senderAddr4;
-      this.senderDefaultData.senderTown = this.senderDefaultData.senderTown;
-      this.senderDefaultData.senderMessage =  this.senderDefaultData.senderMessage;
-      this.senderDefaultData.itemCode = '';
     }
+
     const dialogRef = this.dialog.open(DelnotecrudComponent, {
       height: '580px',
       width: '1050px',
       disableClose: true,
-      data: { delnote: this.senderDefaultData}
+      data: { delnote: this.senderDefaultData }
     });
 
     dialogRef.afterClosed().subscribe(dialogData => {
 
       if (dialogData !== 'Canceled') {
-        this.senderDefaultData = dialogData;
+        this.senderDefaultData.senderName = dialogData.senderName;
+        this.senderDefaultData.senderAddr1 = dialogData.senderAddr1;
+        this.senderDefaultData.senderAddr2 = dialogData.senderAddr2;
+        this.senderDefaultData.senderAddr3 = dialogData.senderAddr3;
+        this.senderDefaultData.senderAddr4 = dialogData.senderAddr4;
+        this.senderDefaultData.senderTown = dialogData.senderTown;
+        this.senderDefaultData.senderMessage = dialogData.senderMessage;
+        this.senderDefaultData.deliveryDate = dialogData.deliveryDate;
         this.delnotearray.push(dialogData);
-        // if (!this.senderDefaultData.receiverName) {
-          this.listData.data = this.delnotearray;
-        // }
+        this.listData.data = this.delnotearray;
       }
+      /*
+      this.listData.data.forEach(element => {
+        codesTot.indexOf(element.itemCode) === -1 ? codesTot.push(element.itemCode) : console.log('item exists');
+      });
+      */
+      this.listData.data.map(element => {
+        const pos = this.codesTot.map(function(e) { return e.itemCode; }).indexOf(element.itemCode);
+        if (pos > 0) {
+          this.codesTot[pos].qty = Number(this.codesTot[pos].qty) + Number(element.qtyOrd); // item exists, update qty
+        } else {
+          this.codesTot.push({itemCode: element.itemCode, qty: Number(element.qtyOrd)}); // item does not exist
+        }
+      });
+      this.valueChange.emit(this.codesTot);
     });
+
   }
 
   onDeleteLine(row: number) {
@@ -193,7 +204,7 @@ export class DelnoteComponent implements OnInit {
       const range = XLSX.utils.decode_range(ws['!ref']);
       const newrange = range;
       newrange.e = range.e = { c: 23, r: range.e.r };
-      ws['!ref'] = XLSX.utils.encode_range( newrange );
+      ws['!ref'] = XLSX.utils.encode_range(newrange);
       range.s = { c: 0, r: 1 };
       for (let R = range.s.r; R <= range.e.r; ++R) {
         let errmessage = '';
@@ -207,30 +218,33 @@ export class DelnoteComponent implements OnInit {
         if (!(!ws[cell_ref])) {
 
           if (XLSX.SSF.parse_date_code(ws[cell_ref].v).D > 0) {
-          tmpDelNote.deliveryDate = new Date(ws[cell_ref].w);
-        } else { errmessage = errmessage + ' Delivery Date must be Entered ';
-        xlimporterr = true;
-        }
-        } else {errmessage = errmessage + ' Delivery Date must be Entered and must be in date format (dd/mm/yyyy) ';
-        xlimporterr  = true;
+            tmpDelNote.deliveryDate = new Date(ws[cell_ref].w);
+          } else {
+            errmessage = errmessage + ' Delivery Date must be Entered ';
+            xlimporterr = true;
+          }
+        } else {
+          errmessage = errmessage + ' Delivery Date must be Entered and must be in date format (dd/mm/yyyy) ';
+          xlimporterr = true;
         }
 
-  // --------------------
+        // --------------------
         cell_address = { c: 1, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
 
         if (!(!ws[cell_ref])) {
-          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50 ) {
+          if ((ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50) {
             tmpDelNote.senderName = ws[cell_ref].w;
-          } else {  errmessage = errmessage + ' Sender Name must be greater than zero less than 50 characters existing field length is '
-                                    + (ws[cell_ref].w).length;
-                    xlimporterr = true;
-                 }
+          } else {
+            errmessage = errmessage + ' Sender Name must be greater than zero less than 50 characters existing field length is '
+              + (ws[cell_ref].w).length;
+            xlimporterr = true;
+          }
         } else {
-          errmessage = errmessage +  ' Sender Name must be filled ';
-          xlimporterr  = true;
+          errmessage = errmessage + ' Sender Name must be filled ';
+          xlimporterr = true;
         }
-// --------------------
+        // --------------------
         cell_address = { c: 2, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
@@ -268,13 +282,15 @@ export class DelnoteComponent implements OnInit {
         err_cell_address = { c: 23, r: R };
         err_cell_ref = XLSX.utils.encode_cell(err_cell_address);
         if (!(!ws[cell_ref])) {
-          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50 ) {
-          tmpDelNote.receiverName = ws[cell_ref].w;
-        } else { errmessage = errmessage + ' Receiver Name must be greater than zero less than 50 characters existing field lenght is ';
-        xlimporterr = true;
-        }
-        } else {errmessage = errmessage + ' Receiver Name must be filled ';
-              xlimporterr  = true;
+          if ((ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50) {
+            tmpDelNote.receiverName = ws[cell_ref].w;
+          } else {
+            errmessage = errmessage + ' Receiver Name must be greater than zero less than 50 characters existing field lenght is ';
+            xlimporterr = true;
+          }
+        } else {
+          errmessage = errmessage + ' Receiver Name must be filled ';
+          xlimporterr = true;
         }
 
         cell_address = { c: 9, r: R };
@@ -282,13 +298,15 @@ export class DelnoteComponent implements OnInit {
         err_cell_address = { c: 23, r: R };
         err_cell_ref = XLSX.utils.encode_cell(err_cell_address);
         if (!(!ws[cell_ref])) {
-          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50 ) {
+          if ((ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 50) {
             tmpDelNote.receiverAddr1 = ws[cell_ref].w;
-        } else {errmessage = errmessage + ' Receiver Address must be greater than zero less than 50 characters existing field length is ';
-        xlimporterr = true;
-        }
-        } else {errmessage = errmessage + ' Receiver Address must be filled ';
-        xlimporterr  = true;
+          } else {
+            errmessage = errmessage + ' Receiver Address must be greater than zero less than 50 characters existing field length is ';
+            xlimporterr = true;
+          }
+        } else {
+          errmessage = errmessage + ' Receiver Address must be filled ';
+          xlimporterr = true;
         }
 
         cell_address = { c: 10, r: R };
@@ -310,25 +328,29 @@ export class DelnoteComponent implements OnInit {
         cell_address = { c: 13, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
-          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 20) {
-          tmpDelNote.receiverTown = ws[cell_ref].w;
-        } else {errmessage = errmessage + ' Receiver Town must not be empty or longer than 50 characters ';
-        xlimporterr = true;
-        }
-        } else {errmessage = errmessage + ' Receiver Town must not be empty or longer than 50 characters ';
-        xlimporterr  = true;
+          if ((ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 20) {
+            tmpDelNote.receiverTown = ws[cell_ref].w;
+          } else {
+            errmessage = errmessage + ' Receiver Town must not be empty or longer than 50 characters ';
+            xlimporterr = true;
+          }
+        } else {
+          errmessage = errmessage + ' Receiver Town must not be empty or longer than 50 characters ';
+          xlimporterr = true;
         }
 
         cell_address = { c: 14, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
-          if ( (ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 20  && !isNaN((ws[cell_ref].w)) ) {
+          if ((ws[cell_ref].w).length > 0 && (ws[cell_ref].w).length <= 20 && !isNaN((ws[cell_ref].w))) {
             tmpDelNote.receiverPhone = ws[cell_ref].w;
-        } else {errmessage = errmessage + ' Receiver Telephone must be in number format';
-        xlimporterr = true;
-        }
-        } else {errmessage = errmessage + ' Receiver Telephone must be filled ';
-        xlimporterr  = true;
+          } else {
+            errmessage = errmessage + ' Receiver Telephone must be in number format';
+            xlimporterr = true;
+          }
+        } else {
+          errmessage = errmessage + ' Receiver Telephone must be filled ';
+          xlimporterr = true;
         }
 
         cell_address = { c: 15, r: R };
@@ -360,24 +382,28 @@ export class DelnoteComponent implements OnInit {
         cell_address = { c: 20, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
         if (!(!ws[cell_ref])) {
-          if ( (ws[cell_ref].w).length > 0 ) {
+          if ((ws[cell_ref].w).length > 0) {
             tmpDelNote.itemCode = ws[cell_ref].w;
-        } else {  errmessage = errmessage + ' Item Code must be filled ';
-                  xlimporterr = true;
-      }
-    } else {errmessage = errmessage + ' Item Code must be filled ';
-    xlimporterr = true;
-    }
+          } else {
+            errmessage = errmessage + ' Item Code must be filled ';
+            xlimporterr = true;
+          }
+        } else {
+          errmessage = errmessage + ' Item Code must be filled ';
+          xlimporterr = true;
+        }
         cell_address = { c: 21, r: R };
         cell_ref = XLSX.utils.encode_cell(cell_address);
-          if (!(!ws[cell_ref])) {
-            if ( (ws[cell_ref].w) > 0 && !isNaN((ws[cell_ref].w)) ) {
-          tmpDelNote.qtyOrd = ws[cell_ref].w;
-        } else {  errmessage = errmessage + ' Item Quantity cannot be Zero and must be Number';
-        xlimporterr = true;
-        }
-        } else {errmessage = errmessage + ' Item Quantity must be filled ';
-        xlimporterr = true;
+        if (!(!ws[cell_ref])) {
+          if ((ws[cell_ref].w) > 0 && !isNaN((ws[cell_ref].w))) {
+            tmpDelNote.qtyOrd = ws[cell_ref].w;
+          } else {
+            errmessage = errmessage + ' Item Quantity cannot be Zero and must be Number';
+            xlimporterr = true;
+          }
+        } else {
+          errmessage = errmessage + ' Item Quantity must be filled ';
+          xlimporterr = true;
         }
 
 
@@ -389,19 +415,19 @@ export class DelnoteComponent implements OnInit {
 
         if (tmpDelNote.itemCode) {
 
-        const itemExists = this.itemcodeoptions.findIndex((element) => {
+          const itemExists = this.itemcodeoptions.findIndex((element) => {
             return element === tmpDelNote.itemCode;
           });
 
-        if (itemExists === -1 ) {
-          xlimporterr = true;
-          errmessage = errmessage + ' Product Code does not exist';
-        } else {
+          if (itemExists === -1) {
+            xlimporterr = true;
+            errmessage = errmessage + ' Product Code does not exist';
+          } else {
             tmpDelNote.itemDescription = this.eyeselitems[this.itemcodeoptions.findIndex((element) => {
               return element === tmpDelNote.itemCode;
             })].description;
+          }
         }
-      }
 
         tmpDelNote.status = 'P';
 

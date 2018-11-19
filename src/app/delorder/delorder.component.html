@@ -62,24 +62,21 @@
         </mat-grid-tile>
         <mat-grid-tile colspan="5">
             <div class="example-container mat-elevation-z8">
-                <table mat-table [dataSource]="dataSource">
+                <table mat-table [dataSource]="summarydataSource">
 
-                  <!-- Position Column -->
-                  <ng-container matColumnDef="Hamper Code">
+                  <ng-container matColumnDef="itemCode">
                     <th mat-header-cell *matHeaderCellDef> Hamper Code </th>
-                    <td mat-cell *matCellDef="let element"> {{element.hamperCode}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.itemCode}} </td>
                   </ng-container>
 
-                  <!-- Name Column -->
-                  <ng-container matColumnDef="Invoice Qty">
+                  <ng-container matColumnDef="itemQty">
                     <th mat-header-cell *matHeaderCellDef> Invoice Qty </th>
-                    <td mat-cell *matCellDef="let element"> {{element.eyeselInvQty}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.itemQty}} </td>
                   </ng-container>
 
-                  <!-- Weight Column -->
-                  <ng-container matColumnDef="Delivery Note Qty">
+                  <ng-container matColumnDef="DeliveryNoteQty">
                     <th mat-header-cell *matHeaderCellDef> Delivery Note Qty </th>
-                    <td mat-cell *matCellDef="let element"> {{element.delNotesQty}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.DeliveryNoteQty}} </td>
                   </ng-container>
 
                   <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
@@ -105,5 +102,6 @@
 </div>
 
 <app-delnote
+  (valueChange)='displayDelNotesTot($event)'
   [userhelperdata]="orderform">
 </app-delnote>

@@ -23,6 +23,13 @@ import { QzTrayService } from '../shared_service/qz-tray.service';
 import { EyeselInvdetailsService } from '../shared_service/eyesel-invdetails.service';
 
 
+export interface MatTableSummary {
+  itemCode: string;
+  itemQty: number;
+  DeliveryNoteQty: number;
+}
+
+
 @Component({
   selector: 'app-delorder',
   templateUrl: './delorder.component.html',
@@ -42,9 +49,10 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   delnotearray: DelNote[] = new Array();
   filteredClients: Observable<string[]>;
 
-  listHamperData: MatTableDataSource<DelNote>;
-  displayedColumns = ['Hamper Code', 'Invoice Qty', 'Delivery Note Qty'];
-  dataSource = ELEMENT_DATA;
+  // displayedColumns = ['itemCode', 'itemQty', 'DeliveryNoteQty'];
+  displayedColumns: string[] = ['itemCode', 'itemQty', 'DeliveryNoteQty'];
+  summarydataSource: MatTableDataSource<MatTableSummary>;
+  summaryDataArray: MatTableSummary[] = new Array();
 
   orderform: FormGroup = new FormGroup({
     DelOrdDate: new FormControl(new Date()),
@@ -115,6 +123,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
 
 
   ngOnInit() {
+    this.summarydataSource = new MatTableDataSource(this.summaryDataArray);
     this.orderform.controls['Searchbycodename'].setValue('code');
     this.maxDate = new Date();
     this.maxDate.setFullYear(this.maxDate.getFullYear(),
@@ -147,8 +156,12 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
 
   onInvRefFocusOut() {
     console.log('Getting inv details...');
+    this.summaryDataArray.length = 0;
     this._eyeselInvdetailsService.getEyeSelInvDetails(this.orderform.controls['InvoiceRef'].value).subscribe(invdetails => {
-      console.log(invdetails);
+      invdetails.forEach(element => {
+        this.summaryDataArray.push({ itemCode: element.itemCode, itemQty: element.itemQty, DeliveryNoteQty: 0 });
+      });
+      this.summarydataSource.data = this.summaryDataArray;
     });
   }
 
@@ -176,6 +189,13 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
         this.orderform.controls['Client'].disable();
       }
     }
+  }
+
+  displayDelNotesTot(codesTot) {
+    console.log('codesTotChk');
+    codesTot.forEach(element => {
+      console.log(element);
+    });
   }
 
   onBackButton() {
@@ -282,23 +302,9 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
           await this.printdialogdelnote.closeAll();
         }
 
-      this._router.navigate(['/']);
+        this._router.navigate(['/']);
 
       }
     });
   }
 }
-
-export interface MatTableSummary {
-  hamperCode: string;
-  eyeselInvQty: number;
-  delNotesQty: number;
-}
-
-const ELEMENT_DATA: MatTableSummary[] = [
-  {hamperCode: 'Hydrogen', eyeselInvQty: 1.0079, delNotesQty: 2},
-  {hamperCode: 'Helium', eyeselInvQty: 4.0026, delNotesQty: 1},
-  {hamperCode: 'Lithium', eyeselInvQty: 6.941, delNotesQty: 3},
-  {hamperCode: 'Beryllium', eyeselInvQty: 9.0122, delNotesQty: 5},
-];
-
