@@ -10,7 +10,7 @@ h4 {
     flex-flow: column;
     height: 100%;
     margin: 0px 5px;
-    width: 1500px;
+    width: 1450px;
 }
 
  .containercol1 {
@@ -60,9 +60,9 @@ h4 {
  }
 
 
- .example-container {
+ .matTableSummaryContainer {
   height: 200px;
-  width: 60%;
+  width: 80%;
   overflow: auto;
 }
 
@@ -73,4 +73,7 @@ table {
 
 tr.mat-footer-row, tr.mat-row {
   height: 24px;
+}
+th.mat-header-cell, td.mat-cell{
+  text-align: center;
 }

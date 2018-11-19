@@ -2,8 +2,8 @@
 <div class="container">
   <section class="order-form">
     <form (ngSubmit)="onSave()" [formGroup]="orderform" class="order-form">
-      <mat-grid-list cols="11" rowHeight="200px">
-        <mat-grid-tile colspan="1">
+      <mat-grid-list cols="18" rowHeight="200px">
+        <mat-grid-tile colspan="3">
           <div class="containercol1">
             <mat-form-field class="orderhead">
               <input matInput [matDatepicker]="picker" [max]="maxDate" placeholder="Order Date" formControlName="DelOrdDate">
@@ -11,7 +11,7 @@
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
 
-            <div class="set-apart">
+            <div>
               <app-select-client-mat-table (focusout)="onCustRefFocusOut()" formControlName="CustRef" [dataSource]="this">
               </app-select-client-mat-table>
             </div>
@@ -30,7 +30,7 @@
           </div>
         </mat-grid-tile>
 
-        <mat-grid-tile colspan="2">
+        <mat-grid-tile colspan="4">
           <div class="containercol2" dir="ltr" fxLayoutGap="20px" fxLayoutAlign="start start">
             <mat-form-field class="orderhead" style="width: 380px;">
               <textarea matInput rows="5" placeholder="Client *" formControlName="Client">
@@ -44,15 +44,15 @@
           </div>
         </mat-grid-tile>
 
-        <mat-grid-tile colspan="1">
+        <mat-grid-tile colspan="4">
           <div class="containercol3" dir="ltr" fxLayoutGap="20px" fxLayoutAlign="start start">
-            <mat-form-field class="orderhead">
+            <mat-form-field class="orderhead" style="width:350px;">
               <input matInput placeholder="Sender Message" formControlName="DefSendMsg">
             </mat-form-field>
            <!--  <mat-form-field class="orderhead">
               <input matInput placeholder="Delivery Instructions" formControlName="DelInstructions">
             </mat-form-field> -->
-            <mat-form-field class="orderhead">
+            <mat-form-field class="orderhead" style="width:300px;">
               <input matInput (focusout)="onInvRefFocusOut()" placeholder="InvoiceRef *" formControlName="InvoiceRef">
             </mat-form-field>
             <!-- <mat-form-field class="orderhead">
@@ -85,7 +85,7 @@
               </div>
         </mat-grid-tile>
 
-        <mat-grid-tile colspan="1">
+        <mat-grid-tile colspan="2">
           <div class="containercol4">
             <button mat-raised-button color="primary" [disabled]="!orderform.valid">Save</button>
             <button mat-raised-button color="accent" style="margin-top:5px;" (click)="onBackButton()">Cancel</button>
