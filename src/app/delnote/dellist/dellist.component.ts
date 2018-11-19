@@ -46,7 +46,7 @@ export class DellistComponent implements OnInit, OnChanges {
   listData: MatTableDataSource<DelNote>;
 
   displayedColumns: string[] = ['select', 'delnoteref', 'deliveryDate', 'senderName', 'senderTown', 'senderMessage',
-    'receiverName', 'receiverTown', 'receiverPhone', 'deliveryInstructions', 'status', 'actions'];
+    'receiverName', 'receiverTown', 'receiverPhone', 'deliveryInstructions', 'actions'];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -73,7 +73,7 @@ export class DellistComponent implements OnInit, OnChanges {
   ngOnInit() {
 
     this.listData = new MatTableDataSource(this.delnotearray);
-    this.listData.sort = this.sort;
+    // this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
 
     /*
@@ -162,7 +162,6 @@ export class DellistComponent implements OnInit, OnChanges {
 
     onEditLine(row: number) {
       this._delnotesservice.getDelNote(this.delnotearray[this.getRowPaginator(row)].delNoteRef).subscribe(_rec => {
-        console.log(_rec.delNotePrintDate);
         if (_rec.locked) {
           alert('Delivery note being updated by another user. Please try again later.');
         } else {
