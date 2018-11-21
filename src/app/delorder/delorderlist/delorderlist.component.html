@@ -48,7 +48,7 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let element; let j = index;">
-          <button mat-icon-button (click)="onGetDelNotes(j)">
+          <button mat-icon-button (click)="onGetDelNotes(j, $event)">
             <mat-icon>notes</mat-icon>
           </button>
         </mat-cell>

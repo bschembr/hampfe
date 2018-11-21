@@ -137,9 +137,11 @@ export class DelorderlistComponent implements OnInit {
     }
   }
 
-  onGetDelNotes(row: number) {
+  onGetDelNotes(row: number, event) {
     // console.log('Order Ref: ' + this.ordersarray[row].delOrdRef);
-    this.selectedorder = this.ordersarray[row].delOrdRef;
+    // console.log('Event: ' + event);
+    // console.log(this.listDataOrders.filteredData[row].delOrdRef);
+    this.selectedorder = this.listDataOrders.filteredData[row].delOrdRef;
     this.showdelnotes = true;
   }
 
