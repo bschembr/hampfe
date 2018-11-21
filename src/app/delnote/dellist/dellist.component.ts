@@ -4,7 +4,6 @@ import {
   MatSort,
   MatPaginator,
   MatDialog,
-  MatDialogRef
 } from '@angular/material';
 import { DelnotecrudComponent } from '../delnotecrud/delnotecrud.component';
 import { DelNote } from '../../delnote';
@@ -14,7 +13,6 @@ import { DelnotedocComponent } from '../../shared_prints/delnotedoc/delnotedoc.c
 import { QzTrayService } from '../../shared_service/qz-tray.service';
 import { DocSelectComponent } from '../docselect/docselect.component';
 import { LabeldocComponent } from 'src/app/shared_prints/labeldoc/labeldoc.component';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({

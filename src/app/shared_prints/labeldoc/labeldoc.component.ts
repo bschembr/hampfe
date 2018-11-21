@@ -1,7 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { QzTrayService } from '../../shared_service/qz-tray.service';
-import { DelNote } from '../../delnote';
 
 @Component({
   selector: 'app-labeldoc',

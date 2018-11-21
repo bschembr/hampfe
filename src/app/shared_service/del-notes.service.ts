@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { DelNote } from '../delnote';
-import { CustomerOrder } from '../customerorder';
 
 @Injectable({
   providedIn: 'root'

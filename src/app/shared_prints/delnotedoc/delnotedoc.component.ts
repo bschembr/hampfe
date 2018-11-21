@@ -1,11 +1,7 @@
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { QzTrayService } from '../../shared_service/qz-tray.service';
 import { DatePipe } from '@angular/common';
-import { CustomerOrder } from '../../customerorder';
-import { DelNote } from '../../delnote';
-
 
 @Component({
     selector: 'app-delnotedoc',

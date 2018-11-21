@@ -8,7 +8,6 @@ import { DelNotesService } from '../shared_service/del-notes.service';
 import * as moment from 'moment';
 import { DelnoteComponent } from '../delnote/delnote.component';
 import { DelNote } from '../delnote';
-import { AcoGeneral } from '../acogeneral';
 import { Observable, of } from 'rxjs';
 import { OptionEntry, DataSource } from '@oasisdigital/angular-material-search-select';
 import { Clients } from '../clients';
@@ -16,8 +15,6 @@ import { EyeselClientsService } from '../shared_service/eyesel-clients.service';
 import { DocSelectComponent } from '../delnote/docselect/docselect.component';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { DelnotedocComponent } from '../shared_prints/delnotedoc/delnotedoc.component';
-import { map, mergeMap } from 'rxjs/operators';
-import { forEach } from '@angular/router/src/utils/collection';
 import { LabeldocComponent } from '../shared_prints/labeldoc/labeldoc.component';
 import { QzTrayService } from '../shared_service/qz-tray.service';
 import { EyeselInvdetailsService } from '../shared_service/eyesel-invdetails.service';
@@ -155,13 +152,23 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   }
 
   onInvRefFocusOut() {
-    console.log('Getting inv details...');
     this.summaryDataArray.length = 0;
     this._eyeselInvdetailsService.getEyeSelInvDetails(this.orderform.controls['InvoiceRef'].value).subscribe(invdetails => {
-      invdetails.forEach(element => {
-        this.summaryDataArray.push({ itemCode: element.itemCode, itemQty: element.itemQty, DeliveryNoteQty: 0 });
-      });
-      this.summarydataSource.data = this.summaryDataArray;
+      // console.log(invdetails);
+      if (invdetails.length > 0) {
+        if (invdetails[0].clientCode === this.orderform.controls['CustRef'].value) {
+          invdetails.forEach(element => {
+            this.summaryDataArray.push({ itemCode: element.itemCode, itemQty: element.itemQty, DeliveryNoteQty: 0 });
+          });
+          this.summarydataSource.data = this.summaryDataArray;
+        } else {
+          this.orderform.controls['InvoiceRef'].setValue('');
+          alert('Incorrect invoice or Invoice provided was not issued for the account code given. Please correct');
+        }
+      } else {
+        this.orderform.controls['InvoiceRef'].setValue('');
+        alert ('Incorrect invoice number provided');
+      }
     });
   }
 
@@ -196,6 +203,17 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
     codesTot.forEach(element => {
       console.log(element);
     });
+
+    for (let i = 0; i < codesTot.length; i++) {
+      const summaryIndex = this.summaryDataArray.findIndex(summaryRec => summaryRec.itemCode === codesTot[i].itemCode);
+      if (summaryIndex >= 0) {
+        this.summaryDataArray[summaryIndex].DeliveryNoteQty = codesTot[i].qty;
+        this.summarydataSource.data = this.summaryDataArray;
+      } else {
+        this.summaryDataArray.push({ itemCode: codesTot[i].itemCode, itemQty: 0, DeliveryNoteQty: codesTot[i].qty });
+        this.summarydataSource.data = this.summaryDataArray;
+      }
+    }
   }
 
   onBackButton() {

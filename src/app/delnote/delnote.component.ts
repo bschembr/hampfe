@@ -9,9 +9,7 @@ import { DelnotecrudComponent } from './delnotecrud/delnotecrud.component';
 import { DelNote } from '../delnote';
 import * as XLSX from 'xlsx';
 import { EyeselItemsService } from '../shared_service/eyesel-items.service';
-import { isDate, isNullOrUndefined } from 'util';
 import { FormGroup } from '@angular/forms';
-import { elementEnd } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-delnote',
@@ -22,7 +20,6 @@ import { elementEnd } from '@angular/core/src/render3/instructions';
 export class DelnoteComponent implements OnInit {
   @Input() userhelperdata: FormGroup;
   @Output() valueChange = new EventEmitter();
-  codesTot: [{ itemCode: string, qty: number }] = [{itemCode: '', qty: 0}];
   showSpinner = true;
   senderDefaultData: DelNote;
   delnotearray: DelNote[] = new Array();
@@ -80,6 +77,20 @@ export class DelnoteComponent implements OnInit {
     }
   }
 
+  refreshDelNotesSummaryTotals() {
+    // For Inv summary table
+    const codesTot: { itemCode: string, qty: number }[] = [];
+    this.listData.data.map(element => {
+      const pos = codesTot.findIndex(delItemCode => delItemCode.itemCode === element.itemCode);
+      if (pos >= 0) {
+        codesTot[pos].qty = Number(codesTot[pos].qty) + Number(element.qtyOrd); // item exists, update qty
+      } else {
+        codesTot.push({ itemCode: element.itemCode, qty: Number(element.qtyOrd) }); // item does not exist
+      }
+    });
+    this.valueChange.emit(codesTot);
+  }
+
   createDelNote() {
     // console.log(this.senderDefaultData);
     if (!this.senderDefaultData) {
@@ -115,21 +126,9 @@ export class DelnoteComponent implements OnInit {
         this.senderDefaultData.deliveryDate = dialogData.deliveryDate;
         this.delnotearray.push(dialogData);
         this.listData.data = this.delnotearray;
+
+        this.refreshDelNotesSummaryTotals();
       }
-      /*
-      this.listData.data.forEach(element => {
-        codesTot.indexOf(element.itemCode) === -1 ? codesTot.push(element.itemCode) : console.log('item exists');
-      });
-      */
-      this.listData.data.map(element => {
-        const pos = this.codesTot.map(function(e) { return e.itemCode; }).indexOf(element.itemCode);
-        if (pos > 0) {
-          this.codesTot[pos].qty = Number(this.codesTot[pos].qty) + Number(element.qtyOrd); // item exists, update qty
-        } else {
-          this.codesTot.push({itemCode: element.itemCode, qty: Number(element.qtyOrd)}); // item does not exist
-        }
-      });
-      this.valueChange.emit(this.codesTot);
     });
 
   }
@@ -445,6 +444,7 @@ export class DelnoteComponent implements OnInit {
         XLSX.writeFile(wb, 'HampersError.xlsx');
       } else {
         this.listData.data = this.delnotearray;
+        this.refreshDelNotesSummaryTotals();
       }
     };
     reader.readAsBinaryString(target.files[0]);
