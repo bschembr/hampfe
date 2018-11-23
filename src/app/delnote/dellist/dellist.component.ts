@@ -180,6 +180,8 @@ export class DellistComponent implements OnInit, OnChanges {
 
         dialogRef.afterClosed().subscribe(dialogData => {
           if (dialogData !== 'Canceled') {
+            dialogData.delNotePrintDate = this.delnotearray[this.getRowPaginator(row)].delNotePrintDate;
+            dialogData.labelPrintDate = this.delnotearray[this.getRowPaginator(row)].labelPrintDate;
             this._delnotesservice.updateDelNote(dialogData).subscribe(_return => {
             });
             this.delnotearray[this.getRowPaginator(row)] = dialogData;
