@@ -28,14 +28,6 @@ export class DellistComponent implements OnInit, OnChanges {
   isMasterCheckBoxSelected = false;
   showRefreshData = true;
   showBackButton = true;
-  constructor(public dialog: MatDialog,
-    private _delnotesservice: DelNotesService,
-    private _router: Router,
-    // public printdialog: MatDialog,
-    public printdialogdelnote: MatDialog,
-    public printdialoglabel: MatDialog,
-    private printEngine: QzTrayService) {
-  }
   showSpinner = true;
 
   selection = new SelectionModel<DelNote>(true, []);
@@ -50,6 +42,16 @@ export class DellistComponent implements OnInit, OnChanges {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   searchKey = '';
+
+  showRecs = 'All';
+
+  constructor(public dialog: MatDialog,
+    private _delnotesservice: DelNotesService,
+    private _router: Router,
+    public printdialogdelnote: MatDialog,
+    public printdialoglabel: MatDialog,
+    private printEngine: QzTrayService) {
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     // console.log('changes: ' + JSON.stringify(changes));
@@ -70,6 +72,7 @@ export class DellistComponent implements OnInit, OnChanges {
 
   ngOnInit() {
 
+    this.showRecs = 'All';
     this.listData = new MatTableDataSource(this.delnotearray);
     // this.listData.sort = this.sort;
     this.listData.paginator = this.paginator;
@@ -111,6 +114,20 @@ export class DellistComponent implements OnInit, OnChanges {
     this.listData.filter = this.searchKey.trim().toLowerCase();
   }
 
+  setLabelsFilterPredicate() {
+    this.listData.filterPredicate =
+          (data: DelNote, filter: string) => {
+            return (data.labelPrintDate + '').indexOf(filter) !== -1;
+          };
+  }
+
+  setDelNotesFilterPredicate() {
+    this.listData.filterPredicate =
+    (data: DelNote, filter: string) => {
+      return (data.delNotePrintDate + '').indexOf(filter) !== -1;
+    };
+  }
+
   onDeleteLine(row: number) {
     let rowindex = 0;
 
@@ -127,31 +144,28 @@ export class DellistComponent implements OnInit, OnChanges {
     if ((!(!this.delnotearray[arrIndex].delNotePrintDate)) || (!(!this.delnotearray[arrIndex].labelPrintDate))) {
       alert('Delivery Note or Label has been printed - Delete not allowed');
     } else {
-      console.log(this.listData.filteredData[row].delNoteRef);
-      console.log(arrIndex);
       this.delnotearray.splice(arrIndex, 1);
       this.listData.data = this.delnotearray;
     }
   }
 
   onfilter(val: string) {
+    const tmpfilterPredicate = this.listData.filterPredicate;
     if (val === 'DelNotes') {
-      this.listData.filterPredicate =
-        (data: DelNote, filter: string) => {
-          return (data.delNotePrintDate + '').indexOf(filter) !== -1;
-        };
+      this.showRecs = 'DelNotes';
+      this.setDelNotesFilterPredicate();
       this.listData.filter = 'null';
     } else {
       if (val === 'Labels') {
-        this.listData.filterPredicate =
-          (data: DelNote, filter: string) => {
-            return (data.labelPrintDate + '').indexOf(filter) !== -1;
-          };
+        this.showRecs = 'Labels';
+        this.setLabelsFilterPredicate();
         this.listData.filter = 'null';
       } else {
+        this.showRecs = 'All';
         this.listData.filter = null;
       }
     }
+    this.listData.filterPredicate = tmpfilterPredicate;
   }
 
   getRowPaginator(row: number) {
