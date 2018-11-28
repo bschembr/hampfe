@@ -65,17 +65,17 @@
                 <table mat-table [dataSource]="summarydataSource">
 
                   <ng-container matColumnDef="itemCode">
-                    <th mat-header-cell *matHeaderCellDef> Hamper Code </th>
+                    <th mat-header-cell *matHeaderCellDef> Code </th>
                     <td mat-cell *matCellDef="let element"> {{element.itemCode}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="itemQty">
-                    <th mat-header-cell *matHeaderCellDef> Invoice Qty </th>
+                    <th mat-header-cell *matHeaderCellDef> - Inv Qty - </th>
                     <td mat-cell *matCellDef="let element"> {{element.itemQty}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="DeliveryNoteQty">
-                    <th mat-header-cell *matHeaderCellDef> Delivery Note Qty </th>
+                    <th mat-header-cell *matHeaderCellDef> - Del Qty - </th>
                     <td mat-cell *matCellDef="let element"> {{element.DeliveryNoteQty}} </td>
                   </ng-container>
 

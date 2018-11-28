@@ -146,7 +146,7 @@ export class DelnoteComponent implements OnInit {
     */
     this.delnotearray.splice(rowindex, 1);
     this.listData.data = this.delnotearray;
-
+    this.refreshDelNotesSummaryTotals();
   }
 
   onEditLine(row: number) {
@@ -175,6 +175,7 @@ export class DelnoteComponent implements OnInit {
         // console.log('Del Remarks: ' + dialogData.deliveryRemarks);
         this.delnotearray[rowindex] = dialogData;
         this.listData.data = this.delnotearray;
+        this.refreshDelNotesSummaryTotals();
       }
     });
 

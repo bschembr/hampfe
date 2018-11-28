@@ -18,6 +18,7 @@ import { DelnotedocComponent } from '../shared_prints/delnotedoc/delnotedoc.comp
 import { LabeldocComponent } from '../shared_prints/labeldoc/labeldoc.component';
 import { QzTrayService } from '../shared_service/qz-tray.service';
 import { EyeselInvdetailsService } from '../shared_service/eyesel-invdetails.service';
+import { AcoGeneral } from '../acogeneral';
 
 
 export interface MatTableSummary {
@@ -217,10 +218,7 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
 
   onSave() {
     const printers: string[] = new Array();
-    // let job: DelNote[];
-    // job string[] = [];
     const printdelnotearray: DelNote[] = new Array();
-    // let delNoteInserted: DelNote = new DelNote();
     const delNoteInserted: DelNote[] = [];
     let isDelNoteRequested = false;
     let isLabelRequested = false;
@@ -263,9 +261,9 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
 
         this.custOrder.delOrdRef = order.delOrdRef;
 
-        // this._delnotes.delnotearray.forEach(async function( delnote ) {
         for (let i = 0; i < this._delnotes.delnotearray.length; i++) {
           this._delnotes.delnotearray[i].delOrdRef = this.custOrder;
+          this._delnotes.delnotearray[i].deliveryDate = AcoGeneral.getDateddmmyy(this._delnotes.delnotearray[i].deliveryDate);
           if (isDelNoteRequested) { // ie User selected print delivery note checkbox
             this._delnotes.delnotearray[i].delNotePrintDate = new Date();
           }
