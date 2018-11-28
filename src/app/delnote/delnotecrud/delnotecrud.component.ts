@@ -208,6 +208,13 @@ export class DelnotecrudComponent implements OnInit {
     this.isreqcalendarchecked = !this.isreqcalendarchecked;
   }
 
+  onItemCodeDblClick() {
+    this.delnoteform.controls['ItemCode'].enable({ onlySelf: true });
+    this.delnoteform.controls['ItemDescr'].enable({ onlySelf: true });
+    this.delnoteform.controls['ItemCode'].setValue('');
+    this.delnoteform.controls['ItemDescr'].setValue('');
+  }
+
   onSave() {
 
     const createdDelNote: DelNote = new DelNote();

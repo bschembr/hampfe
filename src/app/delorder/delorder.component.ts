@@ -199,11 +199,6 @@ export class DelorderComponent implements OnInit, AfterViewInit, DataSource {
   }
 
   displayDelNotesTot(codesTot) {
-    console.log('codesTotChk');
-    codesTot.forEach(element => {
-      console.log(element);
-    });
-
     for (let i = 0; i < codesTot.length; i++) {
       const summaryIndex = this.summaryDataArray.findIndex(summaryRec => summaryRec.itemCode === codesTot[i].itemCode);
       if (summaryIndex >= 0) {

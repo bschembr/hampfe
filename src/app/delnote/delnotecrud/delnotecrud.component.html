@@ -22,7 +22,8 @@
           <mat-grid-tile>
             <div class="delnotehead">
               <mat-form-field>
-                <input matInput [matDatepicker]="picker2" placeholder="Delivery Date" formControlName="DelNoteDeliveryDate" required>
+                <input matInput [matDatepicker]="picker2" placeholder="Delivery Date" formControlName="DelNoteDeliveryDate"
+                  required>
                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                 <mat-datepicker #picker2></mat-datepicker>
               </mat-form-field>
@@ -78,9 +79,12 @@
       <mat-grid-list cols="1" rowHeight="80px">
 
         <mat-grid-tile>
+
           <mat-form-field class="delnotedetail2" style="width: 90px;">
-            <input (focusout)="itemCodeFocusOut()" type="text" placeholder="Code" aria-label="Number" matInput
-              formControlName="ItemCode" [matAutocomplete]="autoItemCode" required>
+            <div (dblclick)="onItemCodeDblClick()">
+              <input (focusout)="itemCodeFocusOut()" type="text" placeholder="Code" aria-label="Number" matInput
+                formControlName="ItemCode" [matAutocomplete]="autoItemCode" required>
+            </div>
             <mat-autocomplete autoActiveFirstOption #autoItemCode="matAutocomplete" style="width:150px">
               <mat-option *ngFor="let itemcode of filteredItemCodesOptions | async" [value]="itemcode" required>
                 {{itemcode}}
@@ -88,22 +92,22 @@
             </mat-autocomplete>
           </mat-form-field>
           <div *ngIf="!showCustHamper" class="delnotedetail2">
-          <mat-form-field style="width: 780px;">
-            <input (focusout)="itemDescrFocusOut()" type="text" placeholder="Description" aria-label="Number" matInput
-              formControlName="ItemDescr" [matAutocomplete]="autoItemDesc" required>
-            <mat-autocomplete autoActiveFirstOption #autoItemDesc="matAutocomplete" style="width:150px">
-              <mat-option *ngFor="let itemdesc of filteredItemDescriptionOptions | async" [value]="itemdesc" required>
-                {{itemdesc}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
-        <div *ngIf="showCustHamper" class="delnotedetail2">
-          <mat-form-field style="width: 780px;">
-          <input type="text" placeholder="Custom Hamper Remarks" aria-label="Number" matInput
-          formControlName="CustHamperRemarks" required>
-        </mat-form-field>
-      </div>
+            <mat-form-field style="width: 780px;">
+              <input (focusout)="itemDescrFocusOut()" type="text" placeholder="Description" aria-label="Number"
+                matInput formControlName="ItemDescr" [matAutocomplete]="autoItemDesc" required>
+              <mat-autocomplete autoActiveFirstOption #autoItemDesc="matAutocomplete" style="width:150px">
+                <mat-option *ngFor="let itemdesc of filteredItemDescriptionOptions | async" [value]="itemdesc" required>
+                  {{itemdesc}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div *ngIf="showCustHamper" class="delnotedetail2">
+            <mat-form-field style="width: 780px;">
+              <input type="text" placeholder="Custom Hamper Remarks" aria-label="Number" matInput formControlName="CustHamperRemarks"
+                required>
+            </mat-form-field>
+          </div>
           <mat-form-field class="delnotedetail2" style="width: 40px;">
             <input matInput placeholder="Qty" formControlName="QtyOrd" required>
           </mat-form-field>
