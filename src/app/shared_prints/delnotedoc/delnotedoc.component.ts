@@ -23,6 +23,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
     @ViewChild('receiverAdd3') HTMLreceiverAdd3: ElementRef;
     @ViewChild('receiverAdd4') HTMLreceiverAdd4: ElementRef;
     @ViewChild('receiverTown') HTMLreceiverTown: ElementRef;
+    @ViewChild('receiverPhone') HTMLreceiverPhone: ElementRef;
     @ViewChild('delNoteNo') HTMLdelNoteNo: ElementRef;
     @ViewChild('senderName') HTMLsenderName: ElementRef;
     @ViewChild('senderAdd1') HTMLsenderAdd1: ElementRef;
@@ -78,6 +79,7 @@ export class DelnotedocComponent implements OnInit, AfterViewInit {
             this.HTMLreceiverAdd3.nativeElement.innerHTML = element.receiverAddr3;
             this.HTMLreceiverAdd4.nativeElement.innerHTML = element.receiverAddr4;
             this.HTMLreceiverTown.nativeElement.innerHTML = element.receiverTown;
+            this.HTMLreceiverPhone.nativeElement.innerHTML = 'Contact Number: ' + element.receiverPhone;
             this.HTMLdelNoteNo.nativeElement.innerHTML = element.delNoteRef;
             this.HTMLdelNoteBarcode.nativeElement.innerHTML = element.delNoteRef;
             this.HTMLsenderName.nativeElement.innerHTML = element.senderName;
